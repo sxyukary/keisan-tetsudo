@@ -1,0 +1,305 @@
+:root{font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN",sans-serif;color:#193d47;background:#f2f4ee;font-synthesis:none}*{box-sizing:border-box}body{margin:0}button{font:inherit;cursor:pointer;border:0;touch-action:manipulation;color:inherit;background:white;border-radius:10px;min-height:44px;padding:10px 15px;font-weight:700}button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #d68c26;outline-offset:3px}button:disabled{opacity:.5;cursor:default}a{color:#246d7e}header{max-width:1480px;margin:auto;display:flex;justify-content:space-between;align-items:center;padding:22px 30px;gap:12px}.brand{text-decoration:none;font-size:26px;letter-spacing:.05em;font-weight:900;color:#193d47}.brand small{display:block;font-size:10px;font-weight:500;letter-spacing:.14em;margin-top:6px}nav{display:flex;gap:8px}nav button{border:1px solid #d4ded7;background:transparent;font-size:12px}main{max-width:1480px;margin:auto;padding:8px 30px 18px;display:grid;grid-template-columns:minmax(0,1.55fr) minmax(320px,1fr);gap:28px}.world{min-width:0}.world-heading{display:flex;align-items:center;justify-content:space-between;gap:12px}.eyebrow{font-size:10px;letter-spacing:.14em;font-weight:800;color:#6c8584}h1{font-size:clamp(25px,2.6vw,37px);line-height:1.5;margin:10px 0 16px}.network-counter{padding:14px 18px;border-left:1px solid #cfd9d3;text-align:center;white-space:nowrap}.network-counter strong{font-size:36px;display:block}.network-counter span{font-size:11px}.map-toolbar{display:flex;align-items:center;gap:5px;margin:4px 0 8px}.map-toolbar span{font-size:13px;margin-right:auto;font-weight:800}.map-toolbar button{font-size:11px;padding:8px 10px;background:#e0e8df;min-width:42px}.map-wrap{position:relative;background:#e9efe4;overflow:hidden;border:1px solid #d1ded0;border-radius:16px;height:370px;touch-action:none}.map-wrap svg{width:100%;height:100%;display:block;user-select:none}.map-wrap .station-node{cursor:pointer}.map-wrap text{font-family:inherit;paint-order:stroke;stroke:#eef3e8;stroke-width:5px;stroke-linejoin:round}.map-caption{position:absolute;bottom:9px;left:12px;padding:6px 9px;border-radius:6px;background:#fffffff0;color:#65796f;font-size:10px;pointer-events:none}.legend{display:flex;gap:7px 15px;flex-wrap:wrap;padding:12px 0;font-size:10px}.legend i{display:inline-block;width:16px;height:4px;margin-right:5px;vertical-align:middle;background:var(--line)}.map-selection{min-height:43px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:12px}.map-selection button{background:#dbe8dc;font-size:12px}.map-note{font-size:10px;color:#6d817a;line-height:1.6;margin:8px 0 16px}.destination{background:#fffdf6;border:1px solid #e0e4d9;padding:15px;border-radius:14px}#next-card{display:flex;gap:14px;align-items:center;margin-top:9px}#next-card img{width:105px;height:65px;object-fit:contain;background:#e6eae1;border-radius:7px}#next-card b{font-size:13px;display:block}#next-card p{font-size:12px;margin:6px 0 0;color:#64766c}.play{align-self:start;background:#fffef9;border:1px solid #dee4d9;border-radius:22px;padding:20px;box-shadow:0 10px 30px #193d4705}.station-sign{text-align:center;border:1px solid #cbd8ce;background:#fff;position:relative;border-radius:8px;overflow:hidden;padding:14px 8px 12px}.sign-line{height:7px;position:absolute;inset:0 0 auto;background:#247ab5}.station-sign small{font-size:11px;letter-spacing:.12em}.station-sign h2{font-size:29px;letter-spacing:.18em;margin:6px 0}.station-sign>span{font-size:9px;color:#7d8c84}.directions{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0}.directions button{flex:1;min-width:100px;border:1px solid #dce2d7;padding:9px 8px;font-size:14px;background:#f3f5ed}.directions button.active{border-color:#176654;background:#e4eee3;box-shadow:inset 0 -3px #176654}.directions small{display:block;font-size:9px;font-weight:500;margin-top:4px}.journey-progress{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:14px 0 18px;font-size:12px;font-weight:700}#dots{display:flex;gap:5px}#dots i{width:12px;height:12px;border-radius:50%;background:#d9e1d5}#dots i.on{background:#dfa445}.mode-tabs{display:flex;background:#edf0e7;padding:4px;border-radius:12px;gap:4px}.mode-tabs button{flex:1;background:transparent;font-size:14px;padding:8px}.mode-tabs button.active{background:#193d47;color:#fff}.equation{display:flex;justify-content:center;align-items:center;gap:13px;font-size:clamp(35px,3.7vw,49px);font-weight:800;margin:18px 0 10px;white-space:nowrap;font-variant-numeric:tabular-nums}output{border:2px solid #bacbab;background:#eff3df;border-radius:12px;min-width:78px;text-align:center;padding:7px 3px;color:#176654}#feedback{min-height:21px;font-size:12px;color:#6c7d70;text-align:center;margin:10px 0 15px}.keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.keypad button{height:56px;background:#edf0e7;box-shadow:0 3px 0 #dbe1d4;font-size:26px}.keypad .action{font-size:14px}.keypad .submit,.primary{background:#176654;color:white}.keypad button:active{transform:translateY(2px);box-shadow:none}.primary{width:100%;margin:10px 0;min-height:48px}.save-status{font-size:10px;color:#728379;text-align:center;line-height:1.7;margin:15px 0 0}footer{text-align:center;font-size:11px;color:#73847b;padding:20px}footer a{margin-left:15px}dialog{border:0;border-radius:22px;max-width:500px;width:calc(100% - 30px);max-height:90dvh;overflow:auto;padding:25px;color:#193d47;background:#fffef8;box-shadow:0 25px 100px #142c3740}dialog::backdrop{background:#193d4766;backdrop-filter:blur(3px)}dialog p{font-size:13px;line-height:1.8}.reward-reading{text-align:center;margin:18px 0 3px!important}#reward-title{text-align:center;font-size:32px;margin:0}#reward-text{text-align:center}.card{border:1px solid #d5dfd0;border-radius:13px;overflow:hidden;background:#fff}.card img{width:100%;height:180px;object-fit:contain;background:#e8ece4;display:block}.card .card-body{padding:13px}.card h3{font-size:17px;margin:0 0 6px}.card p{font-size:12px;margin:7px 0}.card .credit{font-size:9px;color:#7d8c82}.wide-dialog{max-width:940px}.dialog-heading{display:flex;align-items:center;justify-content:space-between;gap:10px}.dialog-heading h2{margin:0}#collection-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}.card.locked{background:#eaf0e5;border-style:dashed}.card.locked .placeholder{height:130px;display:grid;place-items:center;font-size:25px;color:#879b8e}.file-label{display:block;font-size:13px;margin:15px 0;padding:12px;border:1px solid #dae2d3;border-radius:9px}.file-label input{display:block;max-width:100%;margin-top:10px}.map-expanded{position:fixed!important;inset:15px!important;z-index:5;background:#f2f4ee;padding:16px;overflow:auto;border-radius:18px;box-shadow:0 0 0 100vmax #193d4770}.map-expanded .world-heading,.map-expanded .destination,.map-expanded .map-note{display:none}.map-expanded .map-wrap{height:calc(100dvh - 200px)}.map-expanded .legend{margin:0}.map-expanded .map-toolbar{margin-top:0}.sources{max-width:900px;margin:auto;padding:30px;line-height:1.8}.sources article{border-top:1px solid #ccd8cd;padding:20px 0}.sources img{width:220px;height:145px;object-fit:contain}.sources a{overflow-wrap:anywhere}@media(max-width:800px){header{padding:16px}.brand{font-size:20px}.brand small{font-size:8px}nav{gap:4px}nav button{font-size:10px;padding:8px}main{padding:8px 16px;grid-template-columns:1fr;gap:20px}.world-heading h1{font-size:24px}.network-counter strong{font-size:30px}.map-wrap{height:270px}.destination{padding:12px}.play{padding:18px}.map-note{margin:6px 0 10px}.map-toolbar button{font-size:10px;padding:8px}.map-toolbar span{font-size:11px}.equation{font-size:43px}.keypad button{height:58px}#collection-grid{grid-template-columns:1fr}}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+
+/* Map above, controls below: keep the railway visible while hands use the console. */
+header{max-width:1500px;padding:12px 24px}
+.brand{font-size:22px}
+.brand small{margin-top:2px}
+main{max-width:1500px;padding:4px 24px 12px;display:flex;flex-direction:column;gap:14px}
+.world{width:100%}
+.world-heading{min-height:42px}
+.world-heading h1{font-size:18px;line-height:1.25;margin:0}
+.world-heading h1 br{display:none}
+.world-heading .eyebrow{font-size:9px}
+.network-counter{padding:2px 12px}
+.network-counter strong{font-size:24px;line-height:1}
+.map-toolbar{justify-content:flex-end;margin:2px 0 6px}
+.map-toolbar span{margin-right:auto}
+.map-toolbar button{min-height:36px;padding:5px 10px}
+.map-wrap{height:clamp(230px,27vh,370px);border-radius:18px}
+.legend{padding:6px 0 2px}
+.map-selection{min-height:35px}
+.map-selection button{min-height:36px;padding:6px 10px}
+.map-note{margin:0;font-size:9px}
+.destination[hidden]{display:none!important}
+.play{width:100%;min-height:60vh;padding:16px 22px 12px;display:flex;flex-direction:column;align-items:center;gap:6px;border-radius:22px;background:#fffefb;box-shadow:0 12px 34px #193d470d}
+.travel-summary{display:grid;grid-template-columns:150px minmax(0,1fr) minmax(145px,205px);align-items:center;gap:12px;width:100%}
+.station-sign{padding:10px 8px 8px}
+.station-sign h2{font-size:25px;margin:3px 0;letter-spacing:.08em}
+.directions{margin:0;gap:8px}
+.directions button{min-width:100px;min-height:58px;padding:6px 8px;background:#f3f5ed}
+.journey-progress{margin:0;display:flex;flex-direction:column;align-items:flex-start;gap:7px;font-size:13px}
+#dots i{width:14px;height:14px}
+#use-credit{grid-column:1/-1;max-width:420px;justify-self:center;margin:0}
+.mode-tabs{width:max-content;max-width:100%;margin:4px auto 0;border-radius:999px;padding:3px}
+.mode-tabs button{flex:none;min-height:36px;padding:5px 17px;border-radius:999px;font-size:13px}
+.exercise{width:100%;display:flex;flex-direction:column;align-items:center}
+.equation{font-size:clamp(44px,5.8vw,68px);margin:4px 0 0;gap:18px;line-height:1.2}
+output{min-width:95px;padding:3px 8px;border-radius:15px}
+#feedback{min-height:20px;margin:3px 0 8px;font-size:13px}
+.keypad{width:min(100%,356px);grid-template-columns:repeat(3,minmax(0,1fr));gap:11px}
+.keypad button{height:clamp(74px,8.2vh,96px);min-width:0;padding:6px;font-size:32px;border-radius:18px;background:#edf2e8;box-shadow:0 5px 0 #cedbc8,0 7px 14px #193d4712}
+.keypad .action{font-size:17px}
+.keypad .submit{background:#198064;color:#fff;box-shadow:0 5px 0 #0e5947,0 7px 14px #193d4720}
+.keypad button:active{transform:translateY(4px);box-shadow:0 1px 0 #bcccb7}
+#next{max-width:356px;margin:14px 0 0}
+.save-status{margin:4px 0 0}
+footer{padding:10px 16px 20px}
+.map-expanded{display:block;min-height:0}
+.map-expanded .map-wrap{height:calc(100dvh - 200px)}
+
+@media(max-width:700px){
+ header{padding:10px 14px}.brand{font-size:19px}.brand small{font-size:8px}
+ main{padding:4px 12px 12px;gap:12px}
+ .world-heading .eyebrow{display:none}.world-heading h1{font-size:15px}
+ .map-wrap{height:clamp(220px,27vh,320px)}
+ .map-toolbar{flex-wrap:wrap}.map-toolbar button{font-size:10px;padding:5px 8px}
+ .map-note{display:none}
+ .play{padding:14px 12px}
+ .travel-summary{grid-template-columns:120px minmax(0,1fr);gap:8px}
+ .station-sign h2{font-size:22px}
+ .directions button{min-width:90px;font-size:12px}
+ .journey-progress{grid-column:1/-1;flex-direction:row;justify-content:center;align-items:center}
+ .equation{font-size:clamp(39px,9vw,58px)}
+ .keypad{width:min(100%,340px)}
+ .keypad button{height:clamp(68px,9vh,88px)}
+}
+@media(max-width:430px){
+ header{align-items:flex-start}.brand small{max-width:150px;line-height:1.2}
+ nav{flex-wrap:wrap;justify-content:flex-end}
+ .world-heading h1{max-width:200px}
+ .map-toolbar span{width:100%}
+ .travel-summary{grid-template-columns:1fr}
+ .station-sign{max-width:220px;width:100%;justify-self:center}
+ .directions{justify-content:center}
+ .journey-progress{grid-column:auto}
+ .keypad button{height:76px}
+}
+
+@media(min-width:701px) and (max-width:1100px) and (orientation:portrait){
+ .world{position:relative}
+ .map-toolbar{position:absolute;top:48px;right:10px;z-index:1;margin:0;padding:4px;border-radius:12px;background:#f8fbf1e8;box-shadow:0 2px 10px #193d4714}
+ .map-toolbar span{display:none}
+ .map-wrap{height:clamp(270px,24.5vh,320px)}
+ .map-note{display:none}
+ .keypad{width:min(100%,clamp(310px,34vw,356px));gap:9px}
+ .keypad button{height:clamp(74px,7vh,96px)}
+}
+@media(min-width:701px) and (max-width:1100px) and (orientation:portrait){
+ .play{gap:3px}
+ .station-sign{padding:6px 8px 5px}
+ .station-sign h2{font-size:23px;margin:1px 0}
+ .mode-tabs{margin-top:0}
+}
+
+/* The playable screen follows Safari's visible viewport, including its bars. */
+body.game{height:100dvh;max-height:100dvh;overflow:hidden;display:flex;flex-direction:column;overscroll-behavior:none}
+.game header{width:100%;flex:0 0 52px;min-height:0;margin:0 auto;padding:5px 16px}
+.game .brand{font-size:19px;line-height:1.1}
+.game .brand small{margin-top:1px}
+.game nav button{min-height:36px;padding:6px 10px}
+.game main{width:100%;flex:1;min-height:0;margin:0 auto;padding:0 12px 8px;gap:8px;overflow:hidden}
+.game footer{display:none}
+.game .world{position:relative;flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden}
+.game .world-heading{flex:0 0 32px;min-height:0}
+.game .world-heading .eyebrow{display:none}
+.game .world-heading h1{font-size:15px}
+.game .network-counter{padding:0 8px}
+.game .network-counter strong{font-size:21px}
+.game .map-toolbar{position:absolute;top:35px;right:6px;z-index:2;display:flex;flex-wrap:nowrap;width:auto;margin:0;padding:3px;border-radius:11px;background:#f8fbf1ee;box-shadow:0 2px 10px #193d4714}
+.game .map-toolbar span{display:none}
+.game .map-toolbar button{min-height:34px;padding:5px 9px;white-space:nowrap}
+.game .map-wrap{flex:1;min-height:0;height:auto}
+.game .legend{flex:0 0 auto;padding:4px 0 0}
+.game .map-selection{flex:0 0 auto;min-height:30px;font-size:11px;gap:6px}
+.game .map-selection button{min-height:30px;padding:3px 8px}
+.game .map-note{display:none}
+.game .play{flex:0 0 auto;align-self:stretch;width:100%;min-height:0;margin:0;padding:8px 12px 5px;gap:2px;overflow:hidden}
+.game .travel-summary{grid-template-columns:110px minmax(0,1fr) minmax(120px,170px);gap:7px}
+.game .station-sign{padding:5px 6px 3px}
+.game .station-sign h2{font-size:22px;margin:0}
+.game .station-sign small{font-size:9px}
+.game .station-sign>span{font-size:8px}
+.game .directions{gap:5px}
+.game .directions button{min-width:90px;min-height:48px;padding:3px 6px;font-size:13px}
+.game .directions small{font-size:8px;margin-top:1px}
+.game .journey-progress{gap:3px;font-size:11px}
+.game #dots i{width:11px;height:11px}
+.game .mode-tabs{margin:0;padding:2px}
+.game .mode-tabs button{min-height:31px;padding:3px 13px;font-size:12px}
+.game .equation{font-size:clamp(34px,5.2vw,51px);line-height:1.1;margin:1px 0 0;gap:10px}
+.game output{min-width:72px;padding:2px 6px;border-radius:11px}
+.game #feedback{min-height:15px;margin:1px 0 3px;font-size:11px;line-height:1.2}
+.game .keypad{width:min(100%,316px);gap:7px}
+.game .keypad button{height:clamp(52px,7dvh,74px);min-height:0;padding:3px;border-radius:14px;font-size:27px;box-shadow:0 3px 0 #cedbc8}
+.game .keypad .action{font-size:15px}
+.game .keypad .submit{box-shadow:0 3px 0 #0e5947}
+.game #next{min-height:48px;margin:6px 0 0}
+.game .save-status{min-height:12px;margin:1px 0 0;font-size:9px;line-height:1.2}
+
+/* Expanded route map occupies the whole visible viewport. */
+.game .world.map-expanded{position:fixed!important;inset:0!important;z-index:1000;width:100vw;height:100dvh;max-width:none;min-height:0;padding:10px;background:#f2f4ee;display:flex;flex-direction:column;overflow:hidden;border-radius:0;box-shadow:none}
+.game .map-expanded .world-heading{display:none}
+.game .map-expanded .map-toolbar{position:static;flex:0 0 auto;align-self:flex-end;margin:0 0 7px}
+.game .map-expanded .map-wrap{flex:1;min-height:0;height:auto;width:100%}
+.game .map-expanded .legend{flex:0 0 auto}
+.game .map-expanded .map-selection{flex:0 0 auto}
+
+@media(max-width:700px){
+ .game header{flex-basis:47px;padding:4px 9px}
+ .game .brand{font-size:16px}
+ .game .brand small{font-size:7px}
+ .game nav button{font-size:9px;padding:4px 6px}
+ .game main{padding:0 7px 6px;gap:5px}
+ .game .world-heading{flex-basis:26px}
+ .game .world-heading h1{font-size:12px;max-width:none}
+ .game .network-counter strong{font-size:17px}
+ .game .map-toolbar{top:29px;right:3px}
+ .game .map-toolbar button{min-width:34px;min-height:32px;padding:4px 5px;font-size:9px}
+ .game .legend{font-size:8px;gap:4px 7px}
+ .game .map-selection{font-size:10px}
+ .game .play{padding:6px 8px 4px;gap:1px}
+ .game .travel-summary{grid-template-columns:86px minmax(0,1fr);gap:4px}
+ .game .station-sign{max-width:none}
+ .game .station-sign h2{font-size:18px}
+ .game .directions{gap:3px}
+ .game .directions button{min-width:70px;min-height:43px;font-size:11px}
+ .game .directions small{font-size:7px}
+ .game .journey-progress{grid-column:1/-1;flex-direction:row;align-items:center;justify-content:center}
+ .game .equation{font-size:36px}
+ .game .keypad{width:min(100%,272px);gap:5px}
+ .game .keypad button{height:clamp(48px,6.5dvh,60px);font-size:24px}
+ .game .keypad .action{font-size:13px}
+ .game .map-expanded .map-toolbar{top:auto;right:auto}
+}
+.game-root{height:100%;max-height:100%;overflow:hidden;overscroll-behavior:none}
+
+/* Keep the answer area the same size before and after a correct answer. */
+.game .travel-summary{grid-template-columns:170px minmax(0,1fr) minmax(120px,150px)}
+.game .station-sign{min-height:92px;padding:9px 8px 6px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.game .station-sign small{font-size:11px;line-height:1.2}
+.game .station-sign h2{font-size:clamp(28px,3.6vw,34px);line-height:1.15;letter-spacing:.04em;margin:2px 0}
+.game .station-sign>span{font-size:10px}
+.game .exercise{display:grid;grid-template-columns:minmax(0,1fr);justify-items:center;align-items:start}
+.game .exercise .equation{grid-column:1;grid-row:1}
+.game #feedback{grid-column:1;grid-row:2}
+.game .keypad{grid-column:1;grid-row:3}
+.game #next{grid-column:1;grid-row:3;align-self:start;width:min(100%,316px);max-width:316px;margin:8px 0 0;z-index:1}
+@media(max-width:700px){
+ .game .travel-summary{grid-template-columns:105px minmax(0,1fr)}
+ .game .station-sign{min-height:72px;padding:5px 3px 3px}
+ .game .station-sign small{font-size:9px}
+ .game .station-sign h2{font-size:22px}
+ .game .station-sign>span{font-size:8px}
+ .game #next{width:min(100%,272px);max-width:272px}
+}
+.game #next{align-self:center;margin:0}
+
+/* Two clear work areas: choose the next station, then solve the problem. */
+.game .play{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:auto auto;align-items:stretch;gap:10px;padding:0;background:transparent;border:0;border-radius:0;box-shadow:none;overflow:visible}
+.game .travel-panel,.game .exercise{min-width:0;min-height:0;height:100%;padding:12px;background:#fffefb;border:1px solid #dee4d9;border-radius:20px;box-shadow:0 8px 24px #193d470a}
+.game .travel-panel{display:flex;flex-direction:column;gap:10px}
+.game .travel-summary{display:flex;flex-direction:column;align-items:stretch;gap:10px;width:100%}
+.game .station-sign{width:100%;min-height:106px;padding:12px 8px 8px}
+.game .station-sign small{font-size:14px}
+.game .station-sign h2{font-size:clamp(32px,4.4vw,42px);margin:3px 0}
+.game .station-sign>span{font-size:13px}
+.game .directions{display:flex;flex-direction:column;gap:7px;width:100%;margin:0}
+.game .directions button{flex:none;width:100%;min-height:56px;padding:5px 8px;font-size:21px}
+.game .directions small{font-size:13px;margin-top:0}
+.game .journey-progress{display:flex;flex-direction:row;align-items:center;justify-content:space-between;gap:8px;width:100%;font-size:16px}
+.game #dots i{width:14px;height:14px}
+.game #use-credit{width:100%;max-width:none;margin:0;font-size:16px}
+.game .travel-panel .mode-tabs{align-self:stretch;width:100%;margin-top:auto}
+.game .mode-tabs button{flex:1;min-height:39px;font-size:15px}
+.game .exercise{grid-template-rows:auto auto auto;align-content:center;justify-items:center}
+.game .equation{font-size:clamp(40px,5.8vw,56px);gap:12px;margin:0}
+.game output{min-width:80px;padding:4px 6px}
+.game #feedback{font-size:16px;min-height:21px;margin:2px 0 6px}
+.game .keypad{width:min(100%,340px);gap:8px}
+.game .keypad button{height:clamp(60px,8.2dvh,78px);font-size:32px}
+.game .keypad .action{font-size:17px}
+.game #next{width:min(100%,340px);max-width:340px;font-size:18px}
+.game .save-status{grid-column:1/-1;justify-self:stretch;margin:0;padding:4px 10px;font-size:14px;text-align:center}
+.game .save-status[hidden]{display:none}
+.game .brand small,.game .map-caption,.game .legend,.game .station-reading{display:none!important}
+.game .world-heading h1{font-size:20px}
+.game .network-counter span{font-size:13px}
+.game .map-selection{font-size:14px;min-height:35px}
+.game .map-selection button{font-size:14px;min-height:36px}
+.game nav button{font-size:14px}
+.game .map-toolbar button{font-size:13px;min-height:40px}
+@media(max-width:700px){
+ .game .play{gap:5px}
+ .game .travel-panel,.game .exercise{padding:6px;border-radius:14px}
+ .game .travel-panel,.game .travel-summary{gap:5px}
+ .game .station-sign{min-height:72px;padding:5px 3px 3px}
+ .game .station-sign small{font-size:10px}
+ .game .station-sign h2{font-size:24px;margin:1px 0}
+ .game .station-sign>span{font-size:9px}
+ .game .directions{gap:4px}
+ .game .directions button{min-height:44px;padding:2px;font-size:15px}
+ .game .directions small{font-size:9px}
+ .game .journey-progress{flex-wrap:wrap;justify-content:center;font-size:12px}
+ .game #dots i{width:10px;height:10px}
+ .game #use-credit{font-size:12px;min-height:44px;padding:3px}
+ .game .mode-tabs button{min-height:34px;padding:3px;font-size:11px}
+ .game .equation{font-size:26px;gap:3px}
+ .game output{min-width:42px;padding:1px 2px}
+ .game #feedback{font-size:11px;min-height:26px;text-align:center;margin:2px 0 4px}
+ .game .keypad{width:100%;gap:4px}
+ .game .keypad button{height:clamp(48px,6.5dvh,60px);font-size:23px}
+ .game .keypad .action{font-size:11px}
+ .game #next{width:100%;max-width:none;font-size:13px}
+ .game .world-heading h1{font-size:15px}
+ .game nav button{font-size:10px}
+ .game .map-toolbar button{min-height:34px;font-size:10px}
+ .game .map-selection{font-size:11px;min-height:31px}
+ .game .map-selection button{font-size:11px;min-height:32px}
+}
+.game .map-selection:empty{display:none}
+
+/* Compact header badge and map controls. */
+.game header nav{align-items:center;flex-wrap:nowrap;min-width:0}
+.game .network-counter{display:flex;align-items:center;justify-content:center;gap:4px;flex:none;min-height:36px;padding:5px 11px;border:1px solid #bad3c4;border-radius:999px;background:#e7f2e9;color:#245c48;white-space:nowrap;line-height:1.2;font-size:14px;font-weight:800}
+.game .network-counter strong{display:inline;font-size:18px;line-height:1.2;font-variant-numeric:tabular-nums}
+.game .network-counter span{font-size:13px;line-height:1.2}
+.game .map-toolbar{top:6px;right:6px;gap:4px;padding:4px;max-width:calc(100% - 12px)}
+.game .map-toolbar button{flex:none;min-width:40px;min-height:40px;padding:6px 9px;font-size:12px}
+
+/* The route color and arrow connect each choice to the diagram. */
+.game .directions .direction-choice{display:grid;grid-template-columns:36px minmax(0,1fr) auto;align-items:center;column-gap:8px;width:100%;min-height:67px;padding:7px 11px;text-align:left;line-height:1.2;border-radius:13px;box-shadow:none}
+.game .direction-choice.forward{border:2px solid #cbdcd4;border-left:9px solid var(--route-color);background:#fffefb;color:#193d47}
+.game .direction-choice.forward.active{border-color:#176654;border-left-color:var(--route-color);background:#e8f2e9;box-shadow:0 2px 7px #1766541c}
+.game .direction-choice.return{border:1px solid #d9dfdc;border-left:5px solid #aebbb5;background:#f0f2ef;color:#52635f}
+.game .direction-arrow{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:#e3eee7;color:#176654;font-size:26px;font-weight:800;line-height:1}
+.game .return .direction-arrow{background:#e3e8e4;color:#687973}
+.game .direction-name{min-width:0;font-size:19px;font-weight:800;white-space:nowrap}
+.game .direction-name small{display:block;margin-top:2px;font-size:11px;font-weight:500;line-height:1.2}
+.game .direction-action{font-size:13px;font-weight:700}
+.game .direction-detail{justify-self:end;max-width:118px;color:#45695b;font-size:11px;font-weight:700;text-align:right;line-height:1.3}
+.game .return .direction-detail{color:#74817b}
+.game .map-expanded .map-toolbar{max-width:100%}
+@media(max-width:700px){
+ .game .network-counter{min-height:32px;padding:4px 7px;gap:2px}
+ .game .network-counter strong{font-size:15px}
+ .game .network-counter span{font-size:10px}
+ .game .map-toolbar{top:4px;right:4px;gap:2px;padding:3px}
+ .game .map-toolbar button{min-width:32px;min-height:34px;padding:4px 5px;font-size:10px}
+ .game .directions .direction-choice{grid-template-columns:25px minmax(0,1fr);column-gap:4px;min-height:51px;padding:4px 5px}
+ .game .direction-arrow{width:24px;height:24px;font-size:19px}
+ .game .direction-name{font-size:13px}
+ .game .direction-name small{font-size:9px}
+ .game .direction-action{font-size:10px}
+ .game .direction-detail{grid-column:2;justify-self:start;max-width:none;font-size:9px;text-align:left}
+}
+@media(max-width:700px){.game .map-toolbar button{font-size:12px}}
+.game .map-selection{position:absolute;left:8px;bottom:6px;z-index:3;max-width:calc(100% - 16px);min-height:0;padding:4px 8px;background:#fffefbf2;border-radius:9px;box-shadow:0 2px 8px #193d4714}
+.game .map-selection:empty{display:none}
+
+.update-section{margin:22px 0;padding:18px 0;border-top:1px solid #dae2d3;border-bottom:1px solid #dae2d3}
+.update-section h3{font-size:16px;margin:0 0 8px}
+.update-section p{margin:8px 0 12px}
+.update-section button{border:1px solid #cbdcd0;background:#e4eee3;min-height:48px;width:100%;text-align:center}
+.update-section .update-version{font-size:11px;color:#728379;margin:12px 0 0}
+#update-status{font-size:12px;margin:10px 0 0}
+#update-status:empty{display:none}
