@@ -5,7 +5,7 @@
     "reading": "227けい レッドウィング",
     "category": "でんしゃ",
     "image": "assets/redwing.jpg",
-    "fact": "ひろしまエリアの赤い電車。山陽本線・呉線・可部線で活躍する227系だよ。",
+    "fact": "ひろしまエリアの あかい でんしゃ。山陽本線・呉線・可部線で かつやくする 227けいだよ。",
     "factSource": "https://www.westjr.co.jp/press/article/2015/03/page_6919.html",
     "checked": "2026-09-19",
     "credit": "MaedaAkihiko",
@@ -23,7 +23,7 @@
     "reading": "500けい しんかんせん",
     "category": "しんかんせん",
     "image": "assets/500.jpg",
-    "fact": "広島駅には、山陽新幹線もやってくるよ。これは新幹線の500系。在来線とは別の線路を走るよ。",
+    "fact": "広島えきには、さんよう しんかんせんも やってくるよ。これは しんかんせんの 500けい。ざいらいせんとは べつの せんろを はしるよ。",
     "factSource": "https://commons.wikimedia.org/wiki/File:JR_West_500_series_shinkansen_set_V8_at_Hakata_Station_20200115.jpg",
     "checked": "2026-09-19",
     "credit": "Rick888chen",
@@ -41,7 +41,7 @@
     "reading": "EF210がた　ももたろう",
     "category": "かもつれっしゃ",
     "image": "assets/ef210.jpg",
-    "fact": "山陽本線でも貨物列車をひく「桃太郎」。重い荷物を運ぶ電気機関車だよ。",
+    "fact": "山陽本線でも かもつれっしゃを ひく「ももたろう」。おもい にもつを はこぶ でんききかんしゃだよ。",
     "factSource": "https://www.jrfreight.co.jp/",
     "checked": "2026-09-20",
     "credit": "Mitsuki-2368",
@@ -59,7 +59,7 @@
     "reading": "227けい Urara（うらら）",
     "category": "でんしゃ",
     "image": "assets/urara.jpg",
-    "fact": "岡山・備後エリアの227系。三原まで来ると、Uraraの走るエリアにつながるよ。",
+    "fact": "おかやま・びんごエリアの 227けい。三原まで くると、Uraraの はしる エリアに つながるよ。",
     "factSource": "https://www.westjr.co.jp/press/article/items/230529_00_press_okatetsu.pdf",
     "checked": "2026-09-19",
     "credit": "Travelweb.au",
@@ -77,7 +77,7 @@
     "reading": "227けい Kizashi（きざし）",
     "category": "でんしゃ",
     "image": "assets/kizashi.jpg",
-    "fact": "山口エリアの227系。山陽本線の岩国〜下関で運行する、黒と金色のKizashiだよ。",
+    "fact": "やまぐちエリアの 227けい。山陽本線の 岩国〜しものせきを はしる、くろと きんいろの Kizashiだよ。",
     "factSource": "https://www.westjr.co.jp/press/article/2026/05/29/items/260529_00_press_Kizashi_shixyupatushiki.pdf",
     "checked": "2026-09-19",
     "credit": "家族撮影",
@@ -102,7 +102,7 @@
     "checked": "2026-09-22",
     "station": "岩国",
     "name": "115系3000番台",
-    "fact": "山陽本線で活躍してきた黄色い電車。写真は山口エリアの115系3000番台だよ。",
+    "fact": "山陽本線で かつやくしてきた きいろい でんしゃ。しゃしんは やまぐちエリアの 115けい 3000ばんだいだよ。",
     "factSource": "https://www.westjr.co.jp/press/article/items/160122_00_spring_hiroshima.pdf"
   },
   {
@@ -118,7 +118,7 @@
     "checked": "2026-09-22",
     "station": "下深川",
     "name": "キハ40形（広島色）",
-    "fact": "芸備線にゆかりのあるディーゼル車。写真は2004年の広島色。昔のすがたも集めよう。",
+    "fact": "芸備線に ゆかりのある ディーゼルしゃ。しゃしんは 2004ねんの ひろしまいろ。むかしの すがたも あつめよう。",
     "factSource": "https://www.pref.hiroshima.lg.jp/site/hiroshimalocalline/geibisen-gaiyou.html"
   },
   {
@@ -134,7 +134,7 @@
     "checked": "2026-09-22",
     "station": "呉",
     "name": "etSETOra（エトセトラ）",
-    "fact": "呉線を通って瀬戸内を旅する観光列車。海の青と、波の白をまとっているよ。",
+    "fact": "呉線を とおって せとうちを たびする かんこうれっしゃ。うみの あおと、なみの しろを まとっているよ。",
     "factSource": "https://www.jr-odekake.net/railroad/kankoutrain/etsetora/"
   }
 ];if(typeof module!=='undefined')module.exports=cards;else r.RailCards=cards;})(globalThis);

@@ -311,3 +311,158 @@ body.game{height:100dvh;max-height:100dvh;overflow:hidden;display:flex;flex-dire
 .reset-section #reset-undo{margin-top:10px;border-color:#cbdcd0;background:#e4eee3;color:inherit}
 #update-status{font-size:12px;margin:10px 0 0}
 #update-status:empty{display:none}
+
+/* Home redesign: a station platform. Dark signage for choices, an LED board for the problem, ticket-machine keys. */
+.game{--ink:#16323c;--sign:#1c2f37;--sign-2:#26404a;--paper:#efebdf;--card:#fffdf7;--rim:#e2dbc9;--amber:#ffb23e;--go:#17895f;--go-deep:#0d6443;--num:ui-rounded,-apple-system,BlinkMacSystemFont,"Hiragino Sans",sans-serif;background:var(--paper);color:var(--ink)}
+.game header{max-width:none;flex-basis:56px;padding:6px max(16px,calc((100% - 1500px)/2 + 16px));background:var(--sign);box-shadow:0 3px 0 var(--amber)}
+.game .brand{display:flex;align-items:center;gap:9px;color:#fff;font-size:21px;letter-spacing:.08em;white-space:nowrap}
+.game nav button{white-space:nowrap}
+.brand-mark{display:grid;place-items:center;flex:none;width:36px;height:36px;border-radius:11px;background:var(--amber)}
+.brand-mark svg{width:26px;height:26px}
+.brand-mark rect:first-child{fill:#fff}
+.game nav{gap:8px}
+.game .network-counter{min-height:38px;padding:4px 13px 4px 10px;border:1px solid #3c5862;background:#0f1d22;color:#b7c6c9;box-shadow:inset 0 2px 4px #0006}
+.game .network-counter>span:first-child{filter:saturate(1.2)}
+.game .network-counter strong{font-family:var(--num);font-size:21px;color:var(--amber);text-shadow:0 0 10px #ffb23e66}
+.game nav button{min-height:38px;border-radius:999px;font-size:14px}
+.game #collection-open{padding:6px 8px 6px 15px;border:0;background:var(--amber);color:var(--ink);box-shadow:0 3px 0 #c9831c}
+.game #collection-open:active{transform:translateY(2px);box-shadow:0 1px 0 #c9831c}
+.game #collection-count{display:inline-block;margin-left:4px;padding:2px 8px;border-radius:999px;background:#fff8e6;font-family:var(--num);font-size:13px}
+.game #parent{border:1px solid #ffffff38;color:#dfe8ea;background:transparent}
+.game main{padding-top:10px}
+
+/* Route map board */
+.game .world{padding:1px 1px 5px}
+.game .map-wrap{background:#eef0e2;border:3px solid #fff;border-radius:20px;box-shadow:0 0 0 1px var(--rim),0 4px 0 var(--rim)}
+.game .map-wrap text{stroke:#eef0e2}
+.game .map-toolbar{top:10px;right:10px;gap:2px;padding:4px;border-radius:14px;background:#fffdf7f2;box-shadow:0 2px 0 var(--rim),0 6px 16px #16323c1f}
+.game .map-toolbar button{background:transparent;color:var(--ink);border-radius:10px}
+.game .map-toolbar button:active{background:#ece6d6}
+.game #zoom-in,.game #zoom-out{font-family:var(--num);font-size:20px;background:#f1ecdf}
+.game .map-selection{border:2px solid var(--rim);border-radius:12px;padding:5px 6px 5px 12px;font-size:15px}
+.game .map-selection strong{font-size:17px}
+.game .map-selection button{border-radius:999px;background:var(--go);color:#fff;box-shadow:0 2px 0 var(--go-deep)}
+.game .map-selection [data-move]{background:var(--sign-2);box-shadow:0 2px 0 var(--sign)}
+.current-halo{transform-box:fill-box;transform-origin:center;animation:halo 1.8s ease-out infinite}
+@keyframes halo{from{transform:scale(.7);opacity:.6}to{transform:scale(1.7);opacity:0}}
+
+/* Panels */
+.game .travel-panel,.game .exercise{background:var(--card);border:1px solid var(--rim);border-radius:22px;box-shadow:0 3px 0 var(--rim),0 12px 28px #16323c0d}
+.game .travel-panel{padding:12px}
+
+/* Station nameplate: the line's colour band runs along the bottom, as on real signs. */
+.game .station-sign{position:relative;min-height:112px;padding:14px 10px 34px;border:0;border-radius:14px;background:#fff;box-shadow:0 0 0 1px #d9d3c3,0 3px 0 #d9d3c3}
+.game .station-sign .sign-line{position:absolute;inset:auto 0 0;height:26px;display:grid;place-items:center;color:#fff;font-size:13px;font-weight:800;letter-spacing:.3em}
+.game .station-sign small{font-size:14px;letter-spacing:.3em;color:#51656b}
+.game .station-sign h2{font-size:clamp(34px,4.6vw,46px);font-weight:900;letter-spacing:.2em;margin:2px 0 0 .2em;line-height:1.1}
+.game .station-sign>span{position:absolute;top:9px;left:10px;padding:3px 9px;border-radius:999px;background:var(--amber);color:var(--ink);font-size:11px;font-weight:800}
+
+/* Direction signs */
+.game .directions{gap:8px}
+.game .directions .direction-choice{min-height:66px;border-radius:14px;padding:7px 12px 7px 9px;grid-template-columns:40px minmax(0,1fr) auto}
+.game .direction-choice.forward{border:0;border-left:0;background:var(--sign);color:#fff;box-shadow:0 4px 0 #0e191e}
+.game .direction-choice.forward:active{transform:translateY(3px);box-shadow:0 1px 0 #0e191e}
+.game .direction-choice.forward.active{border:0;background:var(--sign-2);box-shadow:0 0 0 3px var(--amber),0 4px 0 #0e191e}
+.game .direction-arrow{width:38px;height:38px;border-radius:11px;background:#e7ebe6;color:var(--ink);font-size:26px}
+.game .forward .direction-arrow{background:var(--route-color);color:#fff}
+.game .direction-name{font-size:21px;letter-spacing:.04em}
+.game .direction-action{font-size:13px;opacity:.8}
+.game .forward .direction-name small{color:#aabdc2}
+.game .forward .direction-detail{color:var(--amber);font-size:12px}
+.game .direction-choice.return{border:1px solid var(--rim);border-left:1px solid var(--rim);background:#f4f0e5;color:#55686d}
+.game .direction-choice.return .direction-name{font-size:18px}
+
+/* Five answers move the train along the track to the next station. */
+.game .journey-progress{flex-direction:column;align-items:stretch;gap:2px;padding:8px 14px 6px;border-radius:14px;background:#f4f0e5;font-size:16px}
+.game #dots{position:relative;flex:none;width:auto;max-width:none;height:36px;display:flex;align-items:flex-end;gap:4px;padding:0 14px 3px 0}
+.game #dots i{flex:1;width:auto;height:8px;border-radius:4px;background:#e4ddcb}
+.game #dots i.on{background:var(--amber)}
+.game #dots::after{content:"";position:absolute;right:0;bottom:0;width:14px;height:14px;border-radius:50%;background:#fff;border:3px solid var(--ink);box-sizing:border-box}
+.dots-train{position:absolute;bottom:8px;left:calc((100% - 14px)*var(--step)/5 - 4px)}
+.dots-train svg{display:block;width:44px;height:26px}
+.game #use-credit{border-radius:14px;background:var(--amber);color:var(--ink);box-shadow:0 4px 0 #c9831c}
+
+/* Mode switch */
+.game .mode-tabs{background:#ece6d6;padding:4px}
+.game .mode-tabs button{color:#5b6b6f}
+.game .mode-tabs button.active{background:var(--ink);color:#fff;box-shadow:0 2px 0 #0b1a1f}
+
+/* LED board for the problem */
+.game .equation{font-family:var(--num);width:min(100%,400px);justify-content:center;padding:10px 18px;border-radius:18px;background:#131c20;color:#ffc766;text-shadow:0 0 14px #ffb23e59;box-shadow:inset 0 0 0 3px #2c3c42,0 4px 0 #0a1013}
+.game output{min-width:84px;border:3px solid #3a5058;background:#0a1114;color:#83f0ae;text-shadow:0 0 12px #5ee49a73}
+.game .exercise:not(.solved) output{animation:blink 1.6s steps(2,start) infinite}
+.game .solved output{border-color:#5ee49a;box-shadow:0 0 0 4px #5ee49a33;animation:pop .45s cubic-bezier(.3,1.6,.5,1)}
+@keyframes blink{50%{border-color:#ffb23e}}
+@keyframes pop{0%{transform:scale(.7)}100%{transform:scale(1)}}
+.game #feedback{font-weight:700;color:#6a7a7e}
+.game .solved #feedback{color:var(--go);font-size:22px;font-weight:900;letter-spacing:.1em}
+
+/* Ticket-machine keys */
+.game .keypad button{font-family:var(--num);font-weight:800;background:#fff;color:var(--ink);border:1.5px solid #e1d9c5;box-shadow:0 5px 0 #ddd4bf,0 8px 14px #16323c0f}
+.game .keypad button:active{transform:translateY(4px);box-shadow:0 1px 0 #ddd4bf}
+.game .keypad .action{background:#f1ecdf;color:#55686d}
+.game .keypad .submit{background:var(--go);color:#fff;border-color:var(--go);box-shadow:0 5px 0 var(--go-deep),0 8px 14px #0d64433a}
+.game .keypad .submit:active{box-shadow:0 1px 0 var(--go-deep)}
+.game #next{border-radius:18px;min-height:64px;font-size:21px;background:var(--go);box-shadow:0 5px 0 var(--go-deep);animation:pop .4s cubic-bezier(.3,1.6,.5,1)}
+
+/* Platform edge: tactile paving along the bottom. */
+body.game::after{content:"";flex:0 0 14px;border-top:3px solid #fff;background:#f2c230 radial-gradient(circle,#d8a414 2.4px,transparent 3px) 0 2px/12px 12px}
+
+/* Dialogs share the signage */
+.game dialog{background:var(--card);color:var(--ink);border-radius:26px}
+.game dialog .primary{border-radius:16px;background:var(--go);box-shadow:0 4px 0 var(--go-deep)}
+#reward{text-align:center}
+#reward[open]{animation:pop .45s cubic-bezier(.3,1.6,.5,1)}
+#reward>.eyebrow{display:inline-block;padding:5px 14px;border-radius:999px;background:var(--amber);color:var(--ink);font-size:12px}
+#reward #reward-title{margin-top:14px;font-size:36px;font-weight:900;letter-spacing:.08em;line-height:1.5}
+#reward #reward-title rt{font-size:.42em;font-weight:700;letter-spacing:.1em}
+.game .card{border:1px solid var(--rim);border-radius:16px;box-shadow:0 3px 0 var(--rim)}
+.game .card.locked{background:#f4f0e5;border:2px dashed #d3cab3;box-shadow:none}
+.game .world.map-expanded{background:var(--paper)}
+
+@media(max-width:700px){
+ .game header{flex-basis:50px;padding:4px 9px}
+ .game .brand{font-size:16px;gap:6px}
+ .brand-mark{width:28px;height:28px;border-radius:9px}.brand-mark svg{width:20px;height:20px}
+ .game nav{gap:4px}.game nav button{min-height:32px;font-size:11px;padding:4px 8px}
+ .game #collection-open{padding:4px 5px 4px 9px}.game #collection-count{font-size:11px;padding:1px 5px}
+ .game .network-counter{min-height:32px}
+ .game .station-sign{min-height:78px;padding:8px 3px 24px}
+ .game .station-sign .sign-line{height:19px;font-size:10px;letter-spacing:.15em}
+ .game .station-sign h2{font-size:24px;letter-spacing:.08em;margin-left:.08em}
+ .game .station-sign small{font-size:10px;letter-spacing:.15em}
+ .game .station-sign>span{display:none}
+ .game .directions .direction-choice{grid-template-columns:26px minmax(0,1fr);min-height:52px;padding:4px 6px}
+ .game .direction-arrow{width:26px;height:26px;border-radius:8px;font-size:18px}
+ .game .direction-name,.game .direction-choice.return .direction-name{font-size:14px}
+ .game .forward .direction-detail{font-size:10px}
+ .game .journey-progress{padding:4px 6px;font-size:12px}
+ .game #dots{height:26px}
+ .dots-train svg{width:30px;height:18px}
+ .game .equation{padding:6px 8px;border-radius:12px}
+ .game output{min-width:44px;border-width:2px}
+ .game .solved #feedback{font-size:15px}
+ .game #next{min-height:48px;font-size:14px}
+ body.game::after{flex-basis:10px}
+}
+@media(max-width:430px){.game .brand-name{display:none}}
+@media(prefers-reduced-motion:reduce){.current-halo,.game output,.game #next,#reward[open]{animation:none!important}}
+
+/* Breathing room between the LED board and its message. */
+.game #feedback{margin:14px 0 12px}
+
+/* Collection: bigger type, kana-first text, readings over station and line names. */
+.game ruby{ruby-align:center}
+.game ruby rt{font-size:.55em;font-weight:700;letter-spacing:0}
+#collection .collection-lead,.game .card p,.game .card .eyebrow{word-break:keep-all;overflow-wrap:anywhere}
+#collection .dialog-heading h2{font-size:30px}
+.collection-got{display:inline-block;margin-left:8px;padding:3px 12px;border-radius:999px;background:var(--amber);font-family:var(--num);font-size:18px;vertical-align:middle}
+#collection .collection-lead{font-size:18px;font-weight:700;line-height:1.7;margin:10px 0 18px}
+#collection #collection-grid{gap:20px}
+.game .card .card-body{padding:16px 20px 18px}
+.game .card .eyebrow{font-size:15px;letter-spacing:.04em;color:#5e7074;line-height:1.9}
+.game .card h3{font-size:24px;line-height:1.35;margin:2px 0 8px}
+.game .card p{font-size:18px;line-height:1.9;margin:6px 0}
+.game .card .credit{font-size:12px;line-height:1.6}
+.game .card.locked h3{font-size:26px}
+@media(max-width:700px){#collection .dialog-heading h2{font-size:24px}#collection .collection-lead{font-size:16px}.game .card h3{font-size:20px}.game .card p{font-size:16px}}
