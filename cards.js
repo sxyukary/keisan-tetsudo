@@ -15,6 +15,25 @@
     "source": "https://commons.wikimedia.org/wiki/File:JRW_Series227-0_A48.jpg",
     "change": "Wikimedia提供の縮小画像を使用。写真の描き換えなし。",
     "photoDescription": "A rapid train \"City Liner\" bound for Hiroshima, led by the 227-0 series A48 formation, running between Itsukaichi Station and Shin-Inokuchi Station on the JR Sanyo Main Line.",
+    "station": "玖波",
+    "first": true
+  },
+  {
+    "id": "apex",
+    "name": "広島電鉄5200形 Greenmover APEX",
+    "reading": "ひろでん 5200がた グリーンムーバー エイペックス",
+    "category": "ろめんでんしゃ",
+    "image": "assets/apex.jpg",
+    "fact": "2019ねん、ひろでん宮島口えきで しゅっぱつしきを して デビューした ろめんでんしゃ。5つの しゃたいが つながっているよ。",
+    "factSource": "https://news.mynavi.jp/article/20190314-greenmoverapex/",
+    "checked": "2026-09-24",
+    "credit": "MaedaAkihiko",
+    "sourceTitle": "Hiroden Series5200-5205B Ekimae-route-HM.jpg",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "source": "https://commons.wikimedia.org/wiki/File:Hiroden_Series5200-5205B_Ekimae-route-HM.jpg",
+    "change": "Wikimedia提供の縮小画像（長辺1280px）を使用。トリミング・AI補正なし。",
+    "photoDescription": "A train bound for Nishi-Hiroshima, operated by 5200 series 5205 set, runs between Takanobashi Station and Shiyakusho-mae Station on the Hiroshima Electric Railway Ujina Line.",
     "station": "宮島口"
   },
   {
@@ -90,6 +109,24 @@
     "station": "徳山"
   },
   {
+    "id": "kiha40-gantoku",
+    "image": "assets/kiha40-gantoku.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:JRW_Gantoku-line_Kiha47.jpg",
+    "sourceTitle": "JRW Gantoku-line Kiha47.jpg",
+    "credit": "MaedaAkihiko",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "photoDescription": "A local train of JR West's Kiha 40 series 47 and 40 that crosses the Nishiki River between Nishi-Iwakuni Station and Kawanishi Station on the Iwantoku Line.",
+    "change": "Wikimedia提供の縮小画像（長辺1280px）を使用。トリミング・AI補正なし。",
+    "checked": "2026-09-24",
+    "station": "岩国",
+    "name": "キハ40系（岩徳線）",
+    "reading": "キハ40けい がんとくせん",
+    "category": "ディーゼルしゃ",
+    "fact": "岩徳線を はしる オレンジいろの ディーゼルしゃ。しゃしんは 西岩国と 川西の あいだで、にしきがわの てっきょうを わたるところだよ。",
+    "factSource": "https://commons.wikimedia.org/wiki/File:JRW_Gantoku-line_Kiha47.jpg"
+  },
+  {
     "id": "115",
     "image": "assets/115.jpg",
     "source": "https://commons.wikimedia.org/wiki/File:JRW_Series115-3000_N-16.jpg",
@@ -100,7 +137,7 @@
     "photoDescription": "A local train with the 115-3000 series N-16 formation that runs between Shin-Shimonoseki Station and Chofu Station on the Sanyo Main Line.",
     "change": "Wikimedia提供画像を使用。トリミング・AI補正なし。",
     "checked": "2026-09-22",
-    "station": "岩国",
+    "station": "南岩国",
     "name": "115系3000番台",
     "fact": "山陽本線で かつやくしてきた きいろい でんしゃ。しゃしんは やまぐちエリアの 115けい 3000ばんだいだよ。",
     "factSource": "https://www.westjr.co.jp/press/article/items/160122_00_spring_hiroshima.pdf"
