@@ -1,17 +1,18 @@
 (function(root){
 'use strict';
 const R=typeof module!=='undefined'?require('./routes.js'):root.RailRoutes;
-const KEY='keisan-tetsudo-v2',LEGACY_KEY='keisan-tetsudo-v1';
+const KEY='keisan-tetsudo-v2',LEGACY_KEY='keisan-tetsudo-v1',RESET_KEY='keisan-tetsudo-v2-before-reset',LEGACY_ORIGIN='大竹';
 const stationIds=Object.keys(R.stations),edgeById=Object.fromEntries(R.edges.map(e=>[e.id,e]));
 function pool(mode){const out=[];for(let a=0;a<=10;a++)for(let b=0;b<=10;b++){if(mode==='add'&&a+b<=10)out.push({a,b,result:a+b});if(mode==='sub'&&b<=a)out.push({a,b,result:a-b});}return out;}
 function problem(mode,previous,random=Math.random){const choices=pool(mode).filter(p=>!previous||p.a!==previous.a||p.b!==previous.b);return choices[Math.floor(random()*choices.length)];}
 function adjacent(id){return R.edges.filter(e=>e.a===id||e.b===id).map(e=>({...e,to:e.a===id?e.b:e.a}));}
-function opened(s){return [...new Set([R.origin,...s.edges.flatMap(id=>[edgeById[id].a,edgeById[id].b])])];}
+function start(s){return s.origin||LEGACY_ORIGIN;}
+function opened(s){return [...new Set([start(s),...s.edges.flatMap(id=>[edgeById[id].a,edgeById[id].b])])];}
 function credits(s){return Math.floor(s.total/5)-s.edges.length;}
 function earned(s){const unlocked=opened(s);return (root.RailCards|| (typeof module!=='undefined'?require('./cards.js'):[])).filter(c=>unlocked.includes(c.station)).map(c=>c.id);}
-function fresh(){return {version:2,mode:'sub',total:0,stats:{add:0,sub:0},edges:[],current:R.origin,target:'玖波',problem:problem('sub'),solved:false,pending:null};}
+function fresh(){return {version:2,origin:R.origin,mode:'sub',total:0,stats:{add:0,sub:0},edges:[],current:R.origin,target:'大野浦',problem:problem('sub'),solved:false,pending:null};}
 function common(s){return s&&['add','sub'].includes(s.mode)&&Number.isSafeInteger(s.total)&&s.total>=0&&s.total<=1000000&&s.stats&&['add','sub'].every(m=>Number.isSafeInteger(s.stats[m])&&s.stats[m]>=0)&&s.stats.add+s.stats.sub===s.total&&typeof s.solved==='boolean'&&pool(s.mode).some(p=>p.a===s.problem?.a&&p.b===s.problem?.b&&p.result===s.problem?.result);}
-function valid(s){if(!common(s)||s.version!==2||!Array.isArray(s.edges)||new Set(s.edges).size!==s.edges.length||s.edges.some(id=>!edgeById[id])||credits(s)<0)return false;const reached=new Set([R.origin]);for(const id of s.edges){const e=edgeById[id];if(!reached.has(e.a)&&!reached.has(e.b))return false;reached.add(e.a);reached.add(e.b);}if(!reached.has(s.current))return false;if(s.target!==null&&!adjacent(s.current).some(e=>e.to===s.target&&!s.edges.includes(e.id)))return false;if(s.pending!==null){if(!s.pending||!s.edges.includes(s.pending.edge)||s.pending.station!==s.current||![edgeById[s.pending.edge].a,edgeById[s.pending.edge].b].includes(s.pending.station))return false;}return true;}
+function valid(s){if(!common(s)||s.version!==2||!Array.isArray(s.edges)||new Set(s.edges).size!==s.edges.length||s.edges.some(id=>!edgeById[id])||credits(s)<0||(s.origin!==undefined&&!R.stations[s.origin]))return false;const reached=new Set([start(s)]);for(const id of s.edges){const e=edgeById[id];if(!reached.has(e.a)&&!reached.has(e.b))return false;reached.add(e.a);reached.add(e.b);}if(!reached.has(s.current))return false;if(s.target!==null&&!adjacent(s.current).some(e=>e.to===s.target&&!s.edges.includes(e.id)))return false;if(s.pending!==null){if(!s.pending||!s.edges.includes(s.pending.edge)||s.pending.station!==s.current||![edgeById[s.pending.edge].a,edgeById[s.pending.edge].b].includes(s.pending.station))return false;}return true;}
 function migrate(s){if(!common(s)||s.version!==1||!Array.isArray(s.stations)||s.stations.length!==Math.floor(s.total/15)||!s.stations.every(x=>['green','sea','sun'].includes(x))||typeof s.pending!=='boolean')return null;const next=fresh();for(const k of ['mode','total','stats','problem','solved'])next[k]=JSON.parse(JSON.stringify(s[k]));return next;}
 function choose(s,to){if(s.pending)return false;const e=adjacent(s.current).find(e=>e.to===to&&!s.edges.includes(e.id));if(!e)return false;s.target=to;return true;}
 function move(s,id){if(s.pending||!opened(s).includes(id))return false;s.current=id;s.target=adjacent(id).find(e=>!s.edges.includes(e.id))?.to||null;return true;}
@@ -19,5 +20,5 @@ function build(s){if(s.pending||credits(s)<1)return false;const e=adjacent(s.cur
 function solve(s,value){if(s.solved||s.pending||value===''||!/^\d{1,2}$/.test(String(value))||Number(value)!==s.problem.result)return false;s.solved=true;s.total++;s.stats[s.mode]++;if(s.total%5===0)build(s);return true;}
 function next(s){if(s.pending||!s.solved)return false;s.problem=problem(s.mode,s.problem);s.solved=false;return true;}
 function nearestReward(s,cards,directional=false){const unlocked=new Set(opened(s));const targets=cards.filter(c=>!unlocked.has(c.station));const start=directional&&s.target?s.target:s.current;const initial=start===s.current?0:1;const queue=[{id:start,cost:initial}],dist={[start]:initial};while(queue.length){queue.sort((a,b)=>a.cost-b.cost);const item=queue.shift();if(item.cost!==dist[item.id])continue;for(const e of adjacent(item.id)){if(directional&&s.target&&e.to===s.current)continue;const cost=item.cost+(s.edges.includes(e.id)?0:1);if(dist[e.to]===undefined||cost<dist[e.to]){dist[e.to]=cost;queue.push({id:e.to,cost});}}}return targets.filter(c=>dist[c.station]!==undefined).map(c=>({...c,remaining:dist[c.station]})).sort((a,b)=>a.remaining-b.remaining)[0]||null;}
-const api={KEY,LEGACY_KEY,pool,problem,fresh,valid,migrate,adjacent,opened,credits,earned,choose,move,build,solve,next,nearestReward,edgeById};if(typeof module!=='undefined')module.exports=api;else root.RailMath=api;
+const api={KEY,LEGACY_KEY,RESET_KEY,pool,problem,fresh,valid,migrate,adjacent,opened,credits,earned,choose,move,build,solve,next,nearestReward,edgeById};if(typeof module!=='undefined')module.exports=api;else root.RailMath=api;
 })(typeof window==='undefined'?globalThis:window);

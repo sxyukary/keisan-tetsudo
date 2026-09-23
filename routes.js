@@ -1,6 +1,6 @@
 (function(r){const data={
   "version": 2,
-  "origin": "大竹",
+  "origin": "玖波",
   "stations": {
     "徳山": {
       "id": "徳山",
