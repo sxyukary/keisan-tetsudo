@@ -221,7 +221,7 @@ function start(id){
 function arrive(kind){
   phase='arrived';notch=0;notchUI(false);doorTarget=1;$('drive-skip').hidden=true;$('drive-change').hidden=true;
   document.querySelector('#drive .n-brake').classList.remove('hint');
-  const r=trip.to.reading,quick=kind==='skip';$('drive-led').textContent=`${r}　${r}`;
+  const r=trip.to.reading,quick=kind==='skip';$('drive-led').textContent=r;
   later(()=>{chime();say(`${r}、${r}。`);},quick?50:500);
   later(()=>{
     $('drive-console').hidden=true;$('drive-arrive').hidden=false;
@@ -335,7 +335,7 @@ function platform(c,wx,stop,st,next,hC,yRail){
   const sx=wx(stop);c.fillStyle='#2b3336';c.fillRect(sx-1.5,top-hC*.55,3,hC*.55); // 停止位置目標
   c.fillStyle='#fff';c.strokeStyle='#e0572e';c.lineWidth=2.5;c.beginPath();c.rect(sx-hC*.17,top-hC*.85,hC*.34,hC*.32);c.fill();c.stroke();
   c.fillStyle='#e0572e';c.font=`900 ${hC*.22}px system-ui`;c.textAlign='center';c.textBaseline='middle';c.fillText('3',sx,top-hC*.69);
-  const nx=wx(stop+9),bw=hC*2.6,bh=hC*.95,by=top-hC*1.35; // 駅名標
+  const bw=Math.min(hC*2.6,W*.3),bh=hC*.95,by=top-hC*1.35,nx=wx(stop+Math.min(9,(W*.37-bw/2-8)/(wx(stop)-wx(stop+1)))); // 駅名標（縦長の画面では小さくして、画面の左からはみ出さない位置へ寄せる）
   c.fillStyle='#2b3336';c.fillRect(nx-bw*.35,by+bh,4,top-by-bh);c.fillRect(nx+bw*.35,by+bh,4,top-by-bh);
   c.fillStyle='#fff';c.fillRect(nx-bw/2,by,bw,bh);c.strokeStyle='#9aa4a6';c.lineWidth=1;c.strokeRect(nx-bw/2,by,bw,bh);
   c.fillStyle=trip.line.color;c.fillRect(nx-bw/2,by+bh*.62,bw,bh*.14);
