@@ -106,8 +106,16 @@ function drawTrain(c,t,yRail,h,o){
 }
 
 /* ---------- おと ---------- */
-let soundOn=true,ac=null,motor=null,hornNode=null,shapeCurve=null,jaVoice=null;
-function audio(){if(!ac){try{ac=new (window.AudioContext||window.webkitAudioContext)();}catch(e){return null;}}if(ac.state==='suspended')ac.resume().catch(()=>{});return ac;}
+/* おと あり／なしは アプリ全体の 設定（ホームと 運転画面の ボタン）。このブラウザに おぼえておく */
+const SOUND_KEY='keisan-tetsudo-sound';
+let soundOn=true,ac=null,motor=null,hornNode=null,shapeCurve=null,jaVoice=null;try{soundOn=localStorage.getItem(SOUND_KEY)!=='off';}catch(e){}
+/* iPadでは 読み上げなどの あとで 音が 止まったまま（interrupted）に なることがある。
+   さわるたびに 動かしなおし、止まったままなら 作りなおす（読みこんだ 効果音は そのまま つかえる） */
+function audio(){if(ac&&ac.state!=='running'&&ac.state!=='suspended'){try{ac.close().catch(()=>{});}catch(e){}ac=null;motor=null;hornNode=null;}if(!ac){try{ac=new (window.AudioContext||window.webkitAudioContext)();}catch(e){ac=null;return null;}}if(ac.state==='suspended')ac.resume().catch(()=>{});return ac;}
+/* おうちの方へ の「おとの テスト」：正解の音を 鳴らして、音の じょうたいを かえす */
+function soundTest(){const a=audio();loadSfx();if(a&&soundOn&&!play('seikai',0))beep(1047,.3,'triangle',.08);return new Promise(ok=>setTimeout(()=>ok(`おと：${soundOn?'あり':'なし'} ／ しくみ：${ac?ac.state:'つかえない'} ／ 音ファイル：${Object.values(sfx).filter(b=>b instanceof AudioBuffer).length}/${Object.keys(SFX).length}`),500));}
+function soundUI(){const t=soundOn?'おと あり':'おと なし',i=soundOn?'🔊':'🔈',d=$('drive-sound'),h=$('sound-toggle');d.setAttribute('aria-pressed',String(soundOn));d.textContent=`${i} ${t}`;if(h){h.setAttribute('aria-pressed',String(soundOn));h.setAttribute('aria-label',t);h.innerHTML=`${i}<span class="wide-only"> ${t}</span>`;}}
+function toggleSound(){soundOn=!soundOn;try{localStorage.setItem(SOUND_KEY,soundOn?'on':'off');}catch(e){}soundUI();if(!soundOn){hornStop();try{speechSynthesis.cancel();}catch(e){}}else if(audio())beep(880,.18,'sine',.1);updateMotor(v,notch);}
 function makeMotor(t){
   stopMotor();const a=audio();if(!a)return;
   const g=a.createGain();g.gain.value=0;const f=a.createBiquadFilter();f.type='lowpass';
@@ -133,6 +141,33 @@ function click(vol){
   for(let i=0;i<n;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/n,4);
   const s=a.createBufferSource(),g=a.createGain(),f=a.createBiquadFilter();f.type='lowpass';f.frequency.value=700;g.gain.value=vol;s.buffer=buf;s.connect(f);f.connect(g);g.connect(a.destination);s.start();
 }
+/* えきスタンプを おす音（モックアップの打刻音）。スタンプは タップの 0.18びょうあとに 紙に つく（style.css の stamp-slam）→ トン＋カツッ → キラキラ → よみあげ */
+function sweep(f0,f1,dur,type,vol,when){
+  const a=ac;if(!a||!soundOn)return;const t0=a.currentTime+when,o=a.createOscillator(),g=a.createGain();o.type=type;o.frequency.setValueAtTime(f0,t0);o.frequency.exponentialRampToValueAtTime(f1,t0+dur);
+  g.gain.setValueAtTime(0,t0);g.gain.linearRampToValueAtTime(vol,t0+.008);g.gain.exponentialRampToValueAtTime(.0001,t0+dur);o.connect(g);g.connect(a.destination);o.start(t0);o.stop(t0+dur+.05);
+}
+function hiss(dur,vol,when,f0,f1){
+  const a=ac;if(!a||!soundOn)return;const t0=a.currentTime+when,n=a.sampleRate*dur|0,buf=a.createBuffer(1,n,a.sampleRate),d=buf.getChannelData(0);
+  for(let i=0;i<n;i++)d[i]=(Math.random()*2-1)*Math.sin(Math.PI*i/n);
+  const s=a.createBufferSource(),g=a.createGain(),f=a.createBiquadFilter();f.type='bandpass';f.Q.value=1.2;f.frequency.setValueAtTime(f0,t0);f.frequency.exponentialRampToValueAtTime(f1,t0+dur);g.gain.value=vol;s.buffer=buf;s.connect(f);f.connect(g);g.connect(a.destination);s.start(t0);
+}
+/* 効果音ファイル（OtoLogic、CC BY 4.0。クレジットは sources.html）。どれも 頭に 約0.1びょうの 無音がある。
+   キラーンは iPadで 聞きくらべて 低い音に きめた（2026-09-26 ゆかりさん）
+   けいさんの 正解の音は iPadで 聞きくらべて 2に きめた（2026-09-26 ゆかりさん） */
+const SFX={press:'assets/sound/stamp-press.mp3',kira:'assets/sound/stamp-kira-low.mp3',seikai:'assets/sound/correct-2.mp3',retry:'assets/sound/retry.mp3'},sfx={};
+function loadSfx(){const a=audio();if(!a)return;for(const [k,u] of Object.entries(SFX))if(!sfx[k])sfx[k]=fetch(u).then(r=>{if(!r.ok)throw r.status;return r.arrayBuffer();}).then(b=>new Promise((ok,ng)=>a.decodeAudioData(b,ok,ng))).then(b=>sfx[k]=b,()=>{delete sfx[k];});}
+function play(k,when,vol=1){
+  const a=ac,b=sfx[k];if(!(b instanceof AudioBuffer))return false;if(!a||!soundOn)return true;
+  const s=a.createBufferSource(),g=a.createGain();g.gain.value=vol;s.buffer=b;s.connect(g);g.connect(a.destination);s.start(a.currentTime+Math.max(0,when));return true;
+}
+function pon(reading){
+  if(!audio())return;const hit=.18;loadSfx();
+  if(!play('press',hit-.1))sweep(170,36,.14,'triangle',.7,hit),hiss(.04,.35,hit,1400,1400); // ポン（ファイルが まだ なければ 合成音の トン・カツッ）
+  if(!play('kira',hit-.06,.8))[1047,1319,1568,2093].forEach((f,i)=>beep(f,.4,'triangle',.05,hit+.25+i*.07)); // キラーン（星と いっしょ）
+  if(reading)setTimeout(()=>say(`${reading}えき、スタンプ ゲット！`),1100);
+}
+function seikai(){if(!audio())return;loadSfx();if(!play('seikai',0))beep(1047,.3,'triangle',.08),beep(1568,.5,'triangle',.08,.12);} // けいさん 正解（ファイルが まだ なければ 合成音）
+function retry(){if(!audio())return;loadSfx();if(!play('retry',0))beep(523,.3,'sine',.08),beep(392,.45,'sine',.08,.2);} // もう一回（やさしく）
 function chime(){beep(784,.5,'sine',.14);beep(659,.8,'sine',.14,.32);}
 /* けいてき：おしている あいだ鳴る。2つの音を重ね、息の立ち上がりと ひずみ・山びこで空気笛らしくする */
 function hornStart(){
@@ -239,6 +274,8 @@ function tick(now){
 const TOWN=new Set(['新井口','西広島','横川','新白島','広島','天神川','向洋','海田市','三滝','安芸長束','下祇園','矢賀']);
 const INLAND=new Set(['安芸中野','中野東','瀬野','八本松','寺家','西条','西高屋','白市','入野','河内','本郷']);
 function sceneFor(from,to,line){if(TOWN.has(from.id)&&TOWN.has(to.id))return 'town';if(['kabe','geibi','gantoku'].includes(line.id)||INLAND.has(from.id)||INLAND.has(to.id))return 'hills';return 'sea';}
+/* えきスタンプの模様。lines はその駅を通る路線の id */
+function stationScene(id,lines){if(TOWN.has(id))return 'town';if(INLAND.has(id)||lines.every(l=>['kabe','geibi','gantoku'].includes(l)))return 'hills';return 'sea';}
 const rnd=k=>{const x=Math.sin(k*127.1+311.7)*43758.5453;return x-Math.floor(x);};
 const loop=(k,gap,p,sc)=>((k*gap+s*sc*p)%(W+gap)+W+gap)%(W+gap)-gap/2;
 function draw(){
@@ -340,14 +377,15 @@ function wire(){
   hb.addEventListener('contextmenu',e=>e.preventDefault());
   hb.addEventListener('click',e=>{if(e.detail===0){hornStart();setTimeout(hornStop,700);}});
   $('drive-skip').onclick=skipRun;$('drive-change').onclick=choose;$('drive-again').onclick=()=>start(cur.id);$('drive-done').onclick=finish;
-  $('drive-sound').onclick=()=>{soundOn=!soundOn;$('drive-sound').setAttribute('aria-pressed',String(soundOn));$('drive-sound').textContent=soundOn?'🔊 おと あり':'🔈 おと なし';if(!soundOn){hornStop();try{speechSynthesis.cancel();}catch(e){}}updateMotor(v,notch);};
+  $('drive-sound').onclick=toggleSound;
   $('drive').addEventListener('cancel',e=>{e.preventDefault();if(!$('drive-choose').hidden)start(cur.id);else if(phase==='arrived')finish();else skipRun();});
 }
 /* 開通した区間を走る。from→to、next は to の先の駅（駅名標の矢印用）。owned は乗れる車両の id */
 function open(o){
-  wire();trip={...o,scene:sceneFor(o.from,o.to,o.line)};$('drive-title').innerHTML=`<ruby>${esc(o.from.name)}<rt>${esc(o.from.reading)}</rt></ruby><i style="background:${o.line.color}"></i><ruby>${esc(o.to.name)}<rt>${esc(o.to.reading)}</rt></ruby>`;
+  wire();loadSfx();trip={...o,scene:sceneFor(o.from,o.to,o.line)};$('drive-title').innerHTML=`<ruby>${esc(o.from.name)}<rt>${esc(o.from.reading)}</rt></ruby><i style="background:${o.line.color}"></i><ruby>${esc(o.to.name)}<rt>${esc(o.to.reading)}</rt></ruby>`;
   $('drive-from').textContent=o.from.reading;$('drive-to').textContent=o.to.reading;$('drive-arrive-title').innerHTML=`<ruby>${esc(o.to.name)}<rt>${esc(o.to.reading)}</rt></ruby> に とうちゃく！`;
   if(!$('drive').open)$('drive').showModal();start(o.train);
 }
-root.RailDrive={open,TRAINS,STARTER};
+soundUI();
+root.RailDrive={open,pon,seikai,retry,toggleSound,soundTest,loadSfx,stationScene,TRAINS,STARTER};
 })(globalThis);
