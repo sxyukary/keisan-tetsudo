@@ -319,6 +319,9 @@ body.game{height:100dvh;max-height:100dvh;overflow:hidden;display:flex;flex-dire
 .game nav button{white-space:nowrap}
 /* iOS 26+ home screen apps blur the top edge unless a fixed element there has a solid colour to sample. */
 .status-sampler{position:fixed;top:0;left:0;right:0;height:1px;background:var(--sign);pointer-events:none;z-index:0}
+/* The iPhone SE still blurred with only the strip, so the header itself is the fixed element at the top edge. */
+.game header{position:fixed;top:0;left:0;right:0;z-index:20;height:56px}
+body.game{padding-top:56px}
 .brand-mark{display:grid;place-items:center;flex:none;width:36px;height:36px;border-radius:11px;background:var(--amber)}
 .brand-mark svg{width:26px;height:26px}
 .brand-mark rect:first-child{fill:#fff}
@@ -448,6 +451,7 @@ body.game::after{content:"";flex:0 0 14px;border-top:3px solid #fff;background:#
  .game #next{min-height:48px;font-size:14px}
  body.game::after{flex-basis:10px}
 }
+@media(max-width:700px){.game header{height:50px}body.game{padding-top:50px}}
 @media(max-width:430px){.game .brand{display:none}.game header{justify-content:center;padding-left:6px;padding-right:6px}}
 @media(prefers-reduced-motion:reduce){.current-halo,.game output,.game #next,#reward[open]{animation:none!important}}
 
@@ -604,6 +608,7 @@ body.game::after{content:"";flex:0 0 14px;border-top:3px solid #fff;background:#
  .game:not(.quiz) .exercise{display:none}
  .game.quiz header,.game.quiz .world,.game.quiz .travel-panel{display:none}
  .game.quiz .status-sampler{background:var(--paper)}
+ .game.quiz{padding-top:0}
  .game.quiz main{padding:8px 8px 6px}
  .game.quiz .play{flex:1;display:flex;flex-direction:column;min-height:0}
  .game.quiz .exercise{flex:1;min-height:0;display:grid;grid-template-rows:auto auto auto minmax(0,1fr);align-content:stretch;padding:10px 12px 14px}
