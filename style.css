@@ -519,6 +519,7 @@ body.game::after{content:"";flex:0 0 14px;border-top:3px solid #fff;background:#
 .game #sound-toggle .wide-only{font-size:13px}
 @media(max-width:820px){.game #sound-toggle .wide-only{display:none}}
 @media(max-width:460px){.game #stamps-open .wide-only,.game .network-counter>span:last-child{display:none}}
+@media(max-width:900px){.game #collection-open .wide-only,.game #parent .wide-only{display:none}}
 @media(prefers-reduced-motion:reduce){.stamp-pulse,#reward.stamping,#reward.stamping *{animation:none!important}.stamp-spark{display:none}}
 
 /* Driving after a section opens: scenery above, a driver's console below (speed LED, route bar, three-step lever). */
@@ -675,3 +676,43 @@ body.game::after{content:"";flex:0 0 14px;border-top:3px solid #fff;background:#
 .drive-arrive .drive-buttons button,.drive-arrive .drive-buttons .drive-go{flex:1 1 0;max-width:220px;min-height:56px;padding:8px 10px;font-size:18px;white-space:nowrap}
 .dialog-heading h2{word-break:keep-all}
 @media(max-width:600px){#collection .dialog-heading h2,#stampbook .dialog-heading h2{font-size:20px}.dialog-heading>.dialog-close{padding:6px 13px}}
+/* People: the header badge, だれが あそぶ？, the celebration for new kinds, and the settings in おうちの方へ. Each place has its own color (--who). */
+.game .who-badge{display:inline-flex;align-items:center;gap:6px;flex:0 1 auto;min-width:36px;max-width:9.5em;padding:4px 12px 4px 5px;border:0;background:#fff;color:var(--ink);box-shadow:0 3px 0 #0b1a1f55}
+.game .who-badge i{display:grid;place-items:center;flex:none;width:26px;height:26px;border-radius:50%;background:var(--who);box-shadow:inset 0 0 0 2px #fff;color:#fff;font-size:13px;font-style:normal;font-weight:900;text-shadow:0 1px 1px #0006}
+.game .who-badge span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:800}
+@media(max-width:900px){.game .who-badge{flex:none;padding:3px;box-shadow:0 2px 0 #0b1a1f55}.game .who-badge span{display:none}.game .who-badge i{width:30px;height:30px;font-size:15px}}
+.who-dialog{width:min(720px,calc(100% - 24px));padding:24px;text-align:center}
+.who-dialog h2{margin:0 0 18px;font-size:32px;letter-spacing:.08em}
+.who-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:12px}
+.who-list button{display:flex;flex-direction:column;align-items:center;gap:6px;min-height:150px;padding:14px 8px;border-radius:20px;border:3px solid var(--who);background:#fff;box-shadow:0 5px 0 var(--who)}
+.who-list button:active{transform:translateY(3px);box-shadow:0 2px 0 var(--who)}
+.who-list i{display:grid;place-items:center;width:64px;height:64px;border-radius:50%;background:var(--who);color:#fff;font-size:30px;font-style:normal;font-weight:900;text-shadow:0 1px 2px #0005}
+.who-list b{max-width:100%;overflow-wrap:anywhere;font-size:20px}
+.who-list small{color:#5b6b6f;font-size:13px}
+.who-dialog .dialog-close{margin-top:18px;min-height:44px;padding:6px 22px;border-radius:999px;background:#f1ecdf}
+@media(max-width:600px){.who-dialog{padding:16px}.who-dialog h2{font-size:26px;margin-bottom:12px}.who-list{grid-template-columns:repeat(2,1fr);gap:10px}.who-list button{min-height:112px;padding:10px 6px}.who-list i{width:48px;height:48px;font-size:24px}.who-list b{font-size:17px}}
+.news-dialog{max-width:520px;text-align:center}
+.news-dialog[open]{animation:pop .45s cubic-bezier(.3,1.6,.5,1)}
+.news-dialog>.eyebrow{display:inline-block;padding:5px 14px;border-radius:999px;background:var(--amber);color:var(--ink);font-size:12px}
+.news-dialog h2{margin:14px 0;font-size:26px;line-height:1.5;word-break:keep-all}
+.news-list{display:grid;gap:10px;margin:0 0 20px;padding:0;list-style:none}
+.news-list li{display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:16px;background:#fff6e2;font-size:20px;font-weight:800;text-align:left}
+.news-list b{display:grid;place-items:center;flex:none;width:44px;height:44px;border-radius:50%;background:var(--ink);color:#fff;font-size:26px}
+@media(prefers-reduced-motion:reduce){.news-dialog[open]{animation:none}}
+.people-section{margin-bottom:18px;padding-bottom:18px;border-bottom:1px solid #dae2d3}
+.people-section h3{margin:0 0 8px;font-size:18px}
+.people-section h4{margin:16px 0 4px;font-size:15px}
+.who-now{padding:2px 12px;border-radius:999px;border:2px solid var(--who)}
+.kind-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px}
+.kind-list fieldset{margin:0;padding:8px 12px;border:1px solid #dae2d3;border-radius:12px}
+.kind-list legend{padding:0 4px;font-weight:800}
+.kind-list label{display:flex;align-items:center;gap:8px;min-height:40px}
+.kind-list input{width:22px;height:22px;flex:none}
+.name-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-bottom:8px}
+.name-list label{display:flex;align-items:center;gap:6px}
+.name-list i{flex:none;width:20px;height:20px;border-radius:50%;background:var(--who)}
+.name-list input{width:100%;min-width:0;min-height:40px;padding:4px 8px;border:1px solid #c9d2c8;border-radius:8px;font:inherit}
+#guest-clear{margin-top:10px}
+.kind-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.game .mode-tabs.many button{padding-left:4px;padding-right:4px;white-space:nowrap}
+@media(max-width:600px){.game .mode-tabs.many button{font-size:12px;letter-spacing:0}}
