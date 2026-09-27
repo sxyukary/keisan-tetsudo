@@ -619,8 +619,8 @@ body.game::after{content:"";flex:0 0 14px;border-top:3px solid #fff;background:#
  .game #quiz-dots{flex:none;display:flex;gap:4px}
  .game #quiz-dots i{width:13px;height:13px;border-radius:50%;background:#e4ddcb}
  .game #quiz-dots i.on{background:var(--amber)}
- .game.quiz .exercise .equation{grid-row:2;width:100%;font-size:clamp(40px,12vw,54px);padding:10px 12px;gap:10px;border-radius:18px}
- .game.quiz output{min-width:1.9em;border-width:3px}
+ .game.quiz .exercise .equation{grid-row:2;width:100%;font-size:clamp(32px,10.5vw,54px);padding:10px 12px;gap:8px;border-radius:18px}
+ .game.quiz output{flex:none;min-width:1.9em;border-width:3px}
  .game.quiz #feedback{grid-row:3;font-size:17px;min-height:26px;margin:8px 0}
  .game.quiz .solved #feedback{font-size:24px}
  .game.quiz .keypad{grid-row:4;width:100%;height:100%;max-height:480px;grid-template-rows:repeat(4,minmax(0,1fr));gap:10px}
