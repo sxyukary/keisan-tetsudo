@@ -426,6 +426,8 @@ function open(o){
   $('drive-from').textContent=o.from.reading;$('drive-to').textContent=o.to.reading;$('drive-arrive-title').innerHTML=`<ruby>${esc(o.to.name)}<rt>${esc(o.to.reading)}</rt></ruby> に とうちゃく！`;
   if(!$('drive').open)$('drive').showModal();start(o.train);
 }
+// のりかえ案内：チャイムのあとに読み上げ
+function norikae(text){if(!audio())return;chime();setTimeout(()=>say(text),900);}
 soundUI();
-root.RailDrive={open,pon,seikai,retry,toggleSound,soundTest,loadSfx,stationScene,TRAINS,STARTER};
+root.RailDrive={open,pon,norikae,seikai,retry,toggleSound,soundTest,loadSfx,stationScene,TRAINS,STARTER};
 })(globalThis);

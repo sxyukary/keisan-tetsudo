@@ -693,6 +693,9 @@ body.game::after{content:"";flex:0 0 14px;border-top:3px solid #fff;background:#
 @media(max-width:600px){.who-dialog{padding:16px}.who-dialog h2{font-size:26px;margin-bottom:12px}.who-list{grid-template-columns:repeat(2,1fr);gap:10px}.who-list button{min-height:112px;padding:10px 6px}.who-list i{width:48px;height:48px;font-size:24px}.who-list b{font-size:17px}}
 .news-dialog{max-width:520px;text-align:center}
 .news-dialog[open]{animation:pop .45s cubic-bezier(.3,1.6,.5,1)}
+.transfer-dialog p{margin:0 0 18px;font-size:17px;line-height:1.6;word-break:keep-all}
+.transfer-actions{display:grid;gap:10px}
+.transfer-actions button{min-height:52px;font-size:18px}
 .news-dialog>.eyebrow{display:inline-block;padding:5px 14px;border-radius:999px;background:var(--amber);color:var(--ink);font-size:12px}
 .news-dialog h2{margin:14px 0;font-size:26px;line-height:1.5;word-break:keep-all}
 .news-list{display:grid;gap:10px;margin:0 0 20px;padding:0;list-style:none}
