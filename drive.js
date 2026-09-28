@@ -204,7 +204,8 @@ function pon(reading){
   if(!play('kira',hit-.06,.8))[1047,1319,1568,2093].forEach((f,i)=>beep(f,.4,'triangle',.05,hit+.25+i*.07)); // キラーン（星と いっしょ）
   if(reading)setTimeout(()=>say(`${reading}えき、スタンプ ゲット！`),1100);
 }
-function seikai(){if(!audio())return;loadSfx();if(!play('seikai',0))beep(1047,.3,'triangle',.08),beep(1568,.5,'triangle',.08,.12);} // けいさん 正解（ファイルが まだ なければ 合成音）
+/* 起動して さいしょの 正解は、音ファイルが まだ 読みこみ中の ことがある。0.6びょうまでは 読みこみを まって ファイルの音を 鳴らし、まにあわなければ 合成音 */
+function seikai(){if(!audio())return;loadSfx();const b=sfx.seikai;if(play('seikai',0))return;const beeps=()=>{beep(1047,.3,'triangle',.08);beep(1568,.5,'triangle',.08,.12);};if(!b)return beeps();let done=false;const t=setTimeout(()=>{done=true;beeps();},600);b.then(()=>{if(done)return;clearTimeout(t);if(!play('seikai',0))beeps();});} // けいさん 正解
 function retry(){if(!audio())return;loadSfx();if(!play('retry',0))beep(523,.3,'sine',.08),beep(392,.45,'sine',.08,.2);} // もう一回（やさしく）
 function chime(){beep(784,.5,'sine',.14);beep(659,.8,'sine',.14,.32);}
 /* けいてき：おしている あいだ鳴る。2つの音を重ね、息の立ち上がりと ひずみ・山びこで空気笛らしくする */
