@@ -422,7 +422,7 @@ function wire(){
 }
 /* 開通した区間を走る。from→to、next は to の先の駅（駅名標の矢印用）。owned は乗れる車両の id */
 function open(o){
-  wire();loadSfx();trip={...o,scene:sceneFor(o.from,o.to,o.line)};$('drive-title').innerHTML=`<ruby>${esc(o.from.name)}<rt>${esc(o.from.reading)}</rt></ruby><i style="background:${o.line.color}"></i><ruby>${esc(o.to.name)}<rt>${esc(o.to.reading)}</rt></ruby>`;
+  wire();loadSfx();$('drive-heading').textContent=o.ride?'しゅっぱつ！':'かいつう！';trip={...o,scene:sceneFor(o.from,o.to,o.line)};$('drive-title').innerHTML=`<ruby>${esc(o.from.name)}<rt>${esc(o.from.reading)}</rt></ruby><i style="background:${o.line.color}"></i><ruby>${esc(o.to.name)}<rt>${esc(o.to.reading)}</rt></ruby>`;
   $('drive-from').textContent=o.from.reading;$('drive-to').textContent=o.to.reading;$('drive-arrive-title').innerHTML=`<ruby>${esc(o.to.name)}<rt>${esc(o.to.reading)}</rt></ruby> に とうちゃく！`;
   if(!$('drive').open)$('drive').showModal();start(o.train);
 }
