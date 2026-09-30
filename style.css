@@ -500,6 +500,8 @@ body.game::after{content:"";flex:0 0 14px;border-top:3px solid #fff;background:#
 #reward.stamping .stamp-page{animation:stamp-thud .24s .18s ease-out}
 #reward.stamping #reward-text,#reward.stamping .stamp-day,#reward.stamping #reward-close{animation:stamp-after .4s .55s both}
 #reward.stamping #reward-cards>*{animation:stamp-after .4s both}
+#reward.card-step #reward-cards>*{animation:card-pop .7s cubic-bezier(.18,.9,.32,1.3) both}
+@keyframes card-pop{0%{opacity:0;transform:scale(.4) rotate(-8deg)}60%{opacity:1;transform:scale(1.06) rotate(1deg)}100%{transform:none}}
 @keyframes stamp-slam{0%{opacity:0;transform:scale(2.2) rotate(-8deg);filter:blur(3px)}65%{opacity:1;transform:scale(.97);filter:none}100%{opacity:1;transform:none}}
 @keyframes stamp-thud{40%{transform:scale(.975)}}
 @keyframes stamp-spark{0%{opacity:0;transform:rotate(var(--a)) translateY(-70px) scale(.3)}20%{opacity:1}100%{opacity:0;transform:rotate(var(--a)) translateY(calc(-1*var(--d))) scale(1)}}
@@ -520,7 +522,7 @@ body.game::after{content:"";flex:0 0 14px;border-top:3px solid #fff;background:#
 @media(max-width:820px){.game #sound-toggle .wide-only{display:none}}
 @media(max-width:460px){.game #stamps-open .wide-only,.game .network-counter>span:last-child{display:none}}
 @media(max-width:900px){.game #collection-open .wide-only,.game #parent .wide-only{display:none}}
-@media(prefers-reduced-motion:reduce){.stamp-pulse,#reward.stamping,#reward.stamping *{animation:none!important}.stamp-spark{display:none}}
+@media(prefers-reduced-motion:reduce){.stamp-pulse,#reward.stamping,#reward.stamping *,#reward.card-step #reward-cards>*{animation:none!important}.stamp-spark{display:none}}
 
 /* Driving after a section opens: scenery above, a driver's console below (speed LED, route bar, three-step lever). */
 .drive-dialog{max-width:1100px;width:calc(100% - 24px);max-height:calc(100dvh - 24px);padding:16px;background:var(--paper);display:none;flex-direction:column;gap:10px}
@@ -711,6 +713,9 @@ body.game::after{content:"";flex:0 0 14px;border-top:3px solid #fff;background:#
 .kind-list legend{padding:0 4px;font-weight:800}
 .kind-list label{display:flex;align-items:center;gap:8px;min-height:40px}
 .kind-list input{width:22px;height:22px;flex:none}
+.kind-list .look-way{margin-top:6px;padding-top:6px;border-top:1px dashed #dae2d3}
+.kind-list .look-way label{flex-wrap:wrap}
+.kind-list select{min-height:40px;font:inherit;max-width:100%}
 .name-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-bottom:8px}
 .name-list label{display:flex;align-items:center;gap:6px}
 .name-list i{flex:none;width:20px;height:20px;border-radius:50%;background:var(--who)}
@@ -745,3 +750,22 @@ body.game::after{content:"";flex:0 0 14px;border-top:3px solid #fff;background:#
 .rest-dialog{max-height:calc(100dvh - 20px);overflow:auto}
 @media(max-width:600px),(max-height:700px){.rest-dialog{padding:14px 16px}.rest-dialog h2{margin:4px 0;font-size:22px}.rest-dialog #rest-text{margin-bottom:6px;font-size:14px;line-height:1.5}.rest-done{margin-bottom:8px;font-size:14px}.rest-done b{font-size:18px}.rest-left{margin:4px 0 8px;font-size:18px}.rest-depot svg{width:min(130px,40vw);margin-top:4px}.rest-adult{margin-top:6px}}
 @media(max-width:600px) and (orientation:portrait){.game .play>.rest-note{margin:0 0 6px}.game.quiz .play>.rest-note{flex:none}}
+/* パッと見 (ROADMAP 11): in the LED board, a car with two 5-seat benches passes the platform. Sizes follow the stage width (cqw), so it scales with the board. */
+.look-stage{position:relative;flex:none;width:clamp(150px,4.4em,280px);aspect-ratio:2.2;container-type:inline-size;overflow:hidden;padding:0;border-radius:.16em;background:linear-gradient(#dfeef3 0 74%,#b9b2a0 74% 77%,#8d8778 77% 79%,#cfc8b4 79%);box-shadow:inset 0 0 0 2px #2c3c42;color:#fff;text-shadow:none;font-family:inherit}
+.look-train{position:absolute;left:10cqw;top:4cqw;width:80cqw;display:grid;gap:3cqw;padding:3cqw 2.5cqw;border:1.2cqw solid #c8323c;border-radius:4cqw;background:#f4f1e8;box-shadow:0 1cqw 0 #0002;visibility:hidden}
+.look-stage.watching .look-train,.look-stage.open .look-train{visibility:visible}
+.look-bench{display:flex;justify-content:center;gap:2.5cqw;padding:1.2cqw 1.5cqw .8cqw;border-radius:2.5cqw;background:#6b8fa0;box-shadow:inset 0 -1.5cqw 0 #0002}
+.look-bench i{position:relative;width:11cqw;height:12cqw;border-radius:1.8cqw;background:#8eb0bf}
+.look-bench b{position:absolute;inset:0}
+.look-bench b::before{content:"";position:absolute;left:50%;top:.5cqw;width:5.4cqw;height:5.4cqw;margin-left:-2.7cqw;border-radius:50%;background:#f3d2b3}
+.look-bench b::after{content:"";position:absolute;left:1cqw;right:1cqw;bottom:0;height:6cqw;border-radius:4cqw 4cqw 1cqw 1cqw;background:var(--c)}
+.look-cue{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);white-space:nowrap;padding:2cqw 5cqw;border-radius:999px;background:#17895f;box-shadow:0 1.2cqw 0 #0d6443;font-size:8cqw;font-weight:900;letter-spacing:.05em}
+.look-cue:empty{display:none}
+.game .exercise.look .equation{padding-top:4px;padding-bottom:4px}
+@media(max-width:600px) and (orientation:portrait){.game.quiz .look-stage{width:clamp(150px,3.9em,220px)}}
+.game .exercise.look-big output,.game .exercise.look-big .keypad{display:none}
+.game .exercise.look-big .equation{width:100%;padding:8px}
+.game .exercise.look-big #question{display:flex;justify-content:center;width:100%}
+.game .exercise.look-big .look-stage{width:min(100%,640px,calc((100dvh - 230px) * 1.6));aspect-ratio:1.6}
+.game .exercise.look-big .look-train{top:8cqw}
+.game .exercise.look-big .look-stage.open .look-cue{top:auto;bottom:1.5cqw;transform:translateX(-50%);padding:1.5cqw 6cqw;font-size:6cqw}

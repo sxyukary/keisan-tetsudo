@@ -19,7 +19,11 @@ const TRAINS=[
  {id:'kiha47',name:'キハ47',reading:'しゅいろ',kind:'ふつう',cars:2,front:'flat',body:'#e0572b',roof:'#8a7d72',win:'#343b40',doors:2,doorColor:'#d8502a',diesel:true},
  {id:'115',name:'115けい',reading:'3000ばんだい',kind:'ふつう',cars:3,front:'flat',body:'#f2b400',roof:'#9c8a55',win:'#343b40',doors:2,doorColor:'#e9ac00',panto:[1],motor:'old'},
  {id:'ginga',name:'銀河',reading:'ぎんが',kind:'かんこう',cars:3,front:'flat',body:'#1f2d52',roof:'#3a4460',stripe:{t:.7,h:.02,c:'#c9a24a'},win:'#141c2e',bigWin:true,doors:1,doorsAtEnds:true,doorColor:'#1f2d52',emblem:true,panto:[1],motor:'old'},
- {id:'kizashi',name:'Kizashi',reading:'227けい',kind:'ふつう',cars:3,front:'slant',body:'#c9cdd0',stripe:{t:.53,h:.06,c:'#6f5c46'},roof:'#8e959a',win:'#2d3539',doors:3,doorColor:'#bfc4c7',frame:'#6f5c46',accent:'#1f1f22',accent2:'#c9a24a',panto:[1],motor:'vvvf'}
+ {id:'kizashi',name:'Kizashi',reading:'227けい',kind:'ふつう',cars:3,front:'slant',body:'#c9cdd0',stripe:{t:.53,h:.06,c:'#6f5c46'},roof:'#8e959a',win:'#2d3539',doors:3,doorColor:'#bfc4c7',frame:'#6f5c46',accent:'#1f1f22',accent2:'#c9a24a',panto:[1],motor:'vvvf'},
+ {id:'nt3001',name:'せせらぎ',reading:'NT3000がた',kind:'ふつう',cars:1,front:'nt',body:'#3f86c8',roof:'#8e959a',win:'#2d3539',doors:2,doorsAtEnds:true,doorColor:'#3778b4',diesel:true,tint:'#6fa9dc',deep:'#2f6fae',wrap:'seseragi'},
+ {id:'nt3002',name:'ひだまり',reading:'NT3000がた',kind:'ふつう',cars:1,front:'nt',body:'#d8468c',roof:'#8e959a',win:'#2d3539',doors:2,doorsAtEnds:true,doorColor:'#c63d7e',diesel:true,tint:'#e77aad',deep:'#b93674',wrap:'hidamari'},
+ {id:'nt3003',name:'こもれび',reading:'NT3000がた',kind:'ふつう',cars:1,front:'nt',body:'#8cc63f',roof:'#8e959a',win:'#2d3539',doors:2,doorsAtEnds:true,doorColor:'#7db536',diesel:true,tint:'#b2dc6e',deep:'#6fa52c',wrap:'komorebi'},
+ {id:'nt3004',name:'きらめき',reading:'NT3000がた',kind:'ふつう',cars:1,front:'nt',body:'#e3c23f',roof:'#8e959a',win:'#2d3539',doors:2,doorsAtEnds:true,doorColor:'#d2b135',diesel:true,tint:'#f0d970',deep:'#c9a82a',wrap:'kirameki'}
 ];
 /* 新幹線・広電の車両は、その線路ができたら TRAINS と cards.js に戻す（2026-09-27 にいったん図鑑から外した） */
 const WAITING_TRAINS=[
@@ -32,7 +36,8 @@ const rideable=t=>t&&!t.track; // 新幹線・広電は、その線路ができ�
 /* ---------- 車両の絵 ---------- */
 function carShape(c,x,y,L,h,isFront,front){
   const r=h*.14;c.beginPath();c.moveTo(x+r*.6,y);
-  if(isFront&&front==='slant'){c.lineTo(x+L-h*.26,y);c.quadraticCurveTo(x+L-h*.04,y+h*.02,x+L,y+h*.38);c.lineTo(x+L,y+h);}
+  if(isFront&&front==='nt'){c.lineTo(x+L-h*.18,y);c.quadraticCurveTo(x+L,y,x+L,y+h*.2);c.lineTo(x+L,y+h);}
+  else if(isFront&&front==='slant'){c.lineTo(x+L-h*.26,y);c.quadraticCurveTo(x+L-h*.04,y+h*.02,x+L,y+h*.38);c.lineTo(x+L,y+h);}
   else if(isFront&&front==='round'){c.lineTo(x+L-h*.7,y);c.quadraticCurveTo(x+L,y,x+L,y+h*.7);c.lineTo(x+L,y+h);}
   else if(isFront&&front==='nose'){c.lineTo(x+L-h*2.6,y);c.bezierCurveTo(x+L-h*.8,y+h*.02,x+L,y+h*.55,x+L,y+h);}
   else{c.lineTo(x+L-r*.6,y);c.quadraticCurveTo(x+L,y,x+L,y+r*.6);c.lineTo(x+L,y+h);}
@@ -52,6 +57,15 @@ function panto(c,x,roofY,h,wireY){
   c.beginPath();c.moveTo(x-h*.2,roofY-h*.05);c.lineTo(x+h*.12,(roofY+top)/2);c.lineTo(x-h*.05,top+2);c.stroke();
   c.beginPath();c.moveTo(x-h*.3,top+2);c.lineTo(x+h*.2,top+2);c.lineWidth=Math.max(2,h*.04);c.stroke();
 }
+/* NT3000形の「川面」：車体の まんなかに、少し明るい 波の 帯 */
+function river(c,x,y,w,h,t){
+  c.fillStyle=t.tint;c.beginPath();c.moveTo(x,y+h*.6);
+  for(let k=0;k<=24;k++)c.lineTo(x+w*k/24,y+h*(.6+Math.sin(k*.9)*.03));
+  for(let k=24;k>=0;k--)c.lineTo(x+w*k/24,y+h*(.84+Math.sin(k*.9+1.3)*.03));
+  c.closePath();c.fill();
+  c.strokeStyle='#ffffff99';c.lineWidth=Math.max(1,h*.018);
+  for(const [yy,ph] of [[.67,0],[.76,1.7]]){c.beginPath();for(let k=0;k<=30;k++){const px=x+w*k/30,py=y+h*(yy+Math.sin(k*1.1+ph)*.02);k?c.lineTo(px,py):c.moveTo(px,py);}c.stroke();}
+}
 /* ラッピングの 模様。w は 顔を のぞいた 横の 長さ */
 const WRAP={
   carp(c,i,x,y,w,h){ // 赤い 車体に ほのおと 野球の ボール（ロゴや 選手の 絵は 描かない）
@@ -69,6 +83,38 @@ const WRAP={
     const flower=(fx,fy,r,col)=>{for(let k=0;k<3;k++){c.fillStyle=k%2?'#f6a0b8':col;c.beginPath();c.arc(fx,fy,r*(1-k*.3),0,Math.PI*2);c.fill();}c.fillStyle='#4f9a4a';c.beginPath();c.ellipse(fx-r*1.1,fy+r*.6,r*.55,r*.25,-.4,0,Math.PI*2);c.fill();};
     [[.18,.7,.2,'#e0457b'],[.5,.62,.26,'#d23a6a'],[.8,.72,.18,'#f07a3a'],[.35,.35,.12,'#e0457b'],[.66,.3,.1,'#f07a3a']].forEach(([a,b,r,col])=>flower(x+w*((a+i*.091)%1),y+h*b,h*r,col));
     c.fillStyle='#f7a3b0';for(let k=0;k<8;k++){c.beginPath();c.ellipse(x+w*((k*.137+i*.21)%1),y+h*(.25+(k*.29)%.6),h*.05,h*.025,k,0,Math.PI*2);c.fill();}
+  },
+  // 錦川鉄道 NT3000形 (2026-09-30): the 「川面」 band every car has, and each car's pictures made simple (t.tint is the lighter body color)
+  seseragi(c,i,x,y,w,h,f,t){ // あゆと 葉っぱ
+    river(c,x,y,w,h,t);
+    const fish=(fx,fy,s,dir)=>{c.save();c.translate(fx,fy);c.scale(dir,1);c.fillStyle='#d9e7c9';c.beginPath();c.ellipse(0,0,h*.16*s,h*.05*s,0,0,Math.PI*2);c.fill();c.beginPath();c.moveTo(-h*.14*s,0);c.lineTo(-h*.24*s,-h*.05*s);c.lineTo(-h*.24*s,h*.05*s);c.closePath();c.fill();c.fillStyle='#5b6b4a';c.fillRect(-h*.06*s,-h*.045*s,h*.12*s,h*.012*s);c.fillStyle='#1d2427';c.beginPath();c.arc(h*.1*s,-h*.01*s,h*.012*s,0,Math.PI*2);c.fill();c.restore();};
+    fish(x+w*.2,y+h*.72,1,1);fish(x+w*.55,y+h*.8,.8,-1);fish(x+w*.82,y+h*.7,1,1);
+    const leaf=(lx,ly,r,a)=>{c.save();c.translate(lx,ly);c.rotate(a);c.fillStyle='#f0d64a';for(let k=0;k<5;k++){c.rotate(Math.PI*2/5);c.beginPath();c.ellipse(0,-r*.6,r*.22,r*.6,0,0,Math.PI*2);c.fill();}c.restore();};
+    leaf(x+w*.1,y+h*.3,h*.1,.3);leaf(x+w*.42,y+h*.52,h*.08,1);leaf(x+w*.9,y+h*.35,h*.09,-.4);
+  },
+  hidamari(c,i,x,y,w,h,f,t){ // 白い さくら
+    river(c,x,y,w,h,t);
+    const flower=(fx,fy,r)=>{c.fillStyle='#fff6fa';for(let k=0;k<5;k++){const a=k*Math.PI*2/5-Math.PI/2;c.beginPath();c.ellipse(fx+Math.cos(a)*r*.55,fy+Math.sin(a)*r*.55,r*.42,r*.3,a,0,Math.PI*2);c.fill();}c.fillStyle='#f3c63c';c.beginPath();c.arc(fx,fy,r*.16,0,Math.PI*2);c.fill();};
+    [[.14,.62,.2],[.45,.7,.24],[.78,.6,.22],[.3,.35,.12],[.63,.32,.1]].forEach(([a,b,r])=>flower(x+w*a,y+h*b,h*r));
+    c.fillStyle='#ffffffcc';for(let k=0;k<9;k++){c.beginPath();c.ellipse(x+w*((k*.113+.05)%1),y+h*(.28+(k*.37)%.55),h*.035,h*.018,k,0,Math.PI*2);c.fill();}
+  },
+  komorebi(c,i,x,y,w,h,f,t){ // はっぱと カワセミ
+    river(c,x,y,w,h,t);
+    const leaf=(lx,ly,r,a)=>{c.save();c.translate(lx,ly);c.rotate(a);c.fillStyle='#3f8f3a';c.beginPath();c.ellipse(0,0,r,r*.42,0,0,Math.PI*2);c.fill();c.strokeStyle='#2c6d2a';c.lineWidth=Math.max(1,r*.08);c.beginPath();c.moveTo(-r,0);c.lineTo(r,0);c.stroke();c.restore();};
+    [[.1,.4,.1,.5],[.18,.62,.12,-.4],[.5,.38,.09,.9],[.62,.6,.11,.2],[.88,.45,.1,-.7],[.93,.7,.08,.4]].forEach(([a,b,r,g])=>leaf(x+w*a,y+h*b,h*r,g));
+    const bx=x+w*.33,by=y+h*.62,s=h*.14;
+    c.fillStyle='#e9893a';c.beginPath();c.ellipse(bx,by+s*.25,s*.7,s*.55,0,0,Math.PI*2);c.fill();
+    c.fillStyle='#2f7fd0';c.beginPath();c.ellipse(bx-s*.1,by-s*.1,s*.75,s*.5,-.2,0,Math.PI*2);c.fill();c.beginPath();c.arc(bx+s*.55,by-s*.45,s*.42,0,Math.PI*2);c.fill();
+    c.fillStyle='#1d2427';c.beginPath();c.moveTo(bx+s*.9,by-s*.5);c.lineTo(bx+s*1.7,by-s*.35);c.lineTo(bx+s*.9,by-s*.3);c.closePath();c.fill();
+    c.fillStyle='#fff';c.beginPath();c.arc(bx+s*.62,by-s*.52,s*.1,0,Math.PI*2);c.fill();c.fillStyle='#1d2427';c.beginPath();c.arc(bx+s*.64,by-s*.52,s*.05,0,Math.PI*2);c.fill();
+    c.strokeStyle='#6b4a2a';c.lineWidth=Math.max(1,s*.12);c.beginPath();c.moveTo(bx-s*1.6,by+s*.85);c.lineTo(bx+s*1.4,by+s*.75);c.stroke();
+  },
+  kirameki(c,i,x,y,w,h,f,t){ // 草と ほたる
+    river(c,x,y,w,h,t);
+    c.strokeStyle='#3f8f3a';c.lineCap='round';
+    for(let k=0;k<9;k++){const gx=x+w*(.06+k*.11),gy=y+h*.96;c.lineWidth=Math.max(1,h*.03);c.beginPath();c.moveTo(gx,gy);c.quadraticCurveTo(gx+h*(k%2?.2:-.15),gy-h*.35,gx+h*(k%2?.35:-.3),gy-h*(.55+(k%3)*.08));c.stroke();}
+    c.lineCap='butt';
+    for(const [a,b] of [[.16,.34],[.3,.5],[.52,.3],[.7,.46],[.86,.3],[.42,.62]]){const fx=x+w*a,fy=y+h*b,g=c.createRadialGradient(fx,fy,0,fx,fy,h*.1);g.addColorStop(0,'#fbffcfee');g.addColorStop(1,'#d6ff6a00');c.fillStyle=g;c.beginPath();c.arc(fx,fy,h*.1,0,Math.PI*2);c.fill();c.fillStyle='#2b2a22';c.beginPath();c.ellipse(fx-h*.02,fy,h*.025,h*.012,0,0,Math.PI*2);c.fill();}
   },
   hana(c,i,x,y,w,h){ // こげ茶の 車体に 金色の つる草と 花
     c.strokeStyle='#d4ad3c';c.fillStyle='#d4ad3c';c.lineWidth=Math.max(1,h*.025);
@@ -88,7 +134,8 @@ function drawCar(c,t,i,x,yRail,h,L,o){
   c.save();carShape(c,x,y,L,bodyH,isFront,t.front);c.fillStyle=t.body;c.fill();c.clip();
   if(t.skirt){c.fillStyle=t.skirt;c.fillRect(x,y+bodyH*t.skirtFrom,L,bodyH);}
   if(t.stripe){c.fillStyle=t.stripe.c;c.fillRect(x,y+bodyH*t.stripe.t,L,bodyH*t.stripe.h);}
-  if(t.wrap)WRAP[t.wrap](c,i,x,y,isFront?L-bodyH*.75:L,bodyH,isFront);
+  if(t.wrap)WRAP[t.wrap](c,i,x,y,isFront?L-bodyH*.75:L,bodyH,isFront,t);
+  if(t.front==='nt'){c.fillStyle='#b9bec1';c.fillRect(x,y+bodyH*.93,L,bodyH*.07);} // NT3000形の グレーの 床下
   c.fillStyle=t.roof;c.fillRect(x,y,L,bodyH*.07);
   const doors=[],dw=bodyH*.3;
   if(!isLoco&&t.doors){
@@ -118,7 +165,14 @@ function drawCar(c,t,i,x,yRail,h,L,o){
     c.strokeStyle='#ffffff99';c.lineWidth=2;for(let k=0;k<5;k++){c.beginPath();c.moveTo(x+L*.12+k*6,y+bodyH*.62);c.lineTo(x+L*.12+k*6,y+bodyH*.78);c.stroke();}
   }
   if(isFront){
-    if(t.front==='nose'){c.fillStyle=t.win;c.beginPath();c.moveTo(x+L-bodyH*2.1,y+bodyH*.12);c.quadraticCurveTo(x+L-bodyH*1.2,y+bodyH*.14,x+L-bodyH*.9,y+bodyH*.36);c.lineTo(x+L-bodyH*1.9,y+bodyH*.38);c.closePath();c.fill();}
+    if(t.front==='nt'){ // NT3000形：角まで回りこむ 大きい 前面窓、運転席の 窓、まんなかの 扉の へり、低い ライト
+      c.fillStyle=t.win;c.fillRect(x+L-bodyH*.58,y+bodyH*.16,bodyH*.26,bodyH*.34);
+      c.fillStyle='#1d2427';c.beginPath();c.moveTo(x+L-bodyH*.22,y+bodyH*.12);c.lineTo(x+L,y+bodyH*.16);c.lineTo(x+L,y+bodyH*.54);c.lineTo(x+L-bodyH*.22,y+bodyH*.54);c.closePath();c.fill();
+      c.fillStyle='#ffffff30';c.fillRect(x+L-bodyH*.2,y+bodyH*.16,bodyH*.18,bodyH*.08);
+      c.fillStyle=t.deep;c.fillRect(x+L-bodyH*.07,y+bodyH*.56,bodyH*.07,bodyH*.36);
+      c.fillStyle=o.light?'#fff6c8':'#f1edd6';c.beginPath();c.arc(x+L-bodyH*.13,y+bodyH*.78,bodyH*.05,0,Math.PI*2);c.fill();c.fillStyle='#d23a3a';c.beginPath();c.arc(x+L-bodyH*.13,y+bodyH*.66,bodyH*.03,0,Math.PI*2);c.fill();
+    }
+    else if(t.front==='nose'){c.fillStyle=t.win;c.beginPath();c.moveTo(x+L-bodyH*2.1,y+bodyH*.12);c.quadraticCurveTo(x+L-bodyH*1.2,y+bodyH*.14,x+L-bodyH*.9,y+bodyH*.36);c.lineTo(x+L-bodyH*1.9,y+bodyH*.38);c.closePath();c.fill();}
     else{
       if(t.accent){c.fillStyle=t.accent;c.fillRect(x+L-bodyH*.62,y+bodyH*.5,bodyH*.62,bodyH*.16);if(t.accent2){c.fillStyle=t.accent2;c.fillRect(x+L-bodyH*.62,y+bodyH*.66,bodyH*.62,bodyH*.03);}}
       c.fillStyle=t.front==='slant'?'#1d2427':t.win;c.fillRect(x+L-bodyH*.26,y+bodyH*.14,bodyH*.26,bodyH*.34);
@@ -191,8 +245,9 @@ function hiss(dur,vol,when,f0,f1){
 }
 /* 効果音ファイル（OtoLogic、CC BY 4.0。クレジットは sources.html）。どれも 頭に 約0.1びょうの 無音がある。
    キラーンは iPadで 聞きくらべて 低い音に きめた（2026-09-26 ゆかりさん）
-   けいさんの 正解の音は iPadで 聞きくらべて 2に きめた（2026-09-26 ゆかりさん） */
-const SFX={press:'assets/sound/stamp-press.mp3',kira:'assets/sound/stamp-kira-low.mp3',seikai:'assets/sound/correct-2.mp3',retry:'assets/sound/retry.mp3'},sfx={};
+   けいさんの 正解の音は iPadで 聞きくらべて 2に きめた（2026-09-26 ゆかりさん）
+   車両カードの キラーン（高い音）と ジャジャーンは もじ鉄図鑑と おなじ（2026-10-01 ゆかりさん） */
+const SFX={press:'assets/sound/stamp-press.mp3',kira:'assets/sound/stamp-kira-low.mp3',seikai:'assets/sound/correct-2.mp3',retry:'assets/sound/retry.mp3',cardKira:'assets/sound/card-kira.mp3',jajaan:'assets/sound/card-jajaan.mp3'},sfx={};
 function loadSfx(){const a=audio();if(!a)return;for(const [k,u] of Object.entries(SFX))if(!sfx[k])sfx[k]=fetch(u).then(r=>{if(!r.ok)throw r.status;return r.arrayBuffer();}).then(b=>new Promise((ok,ng)=>a.decodeAudioData(b,ok,ng))).then(b=>sfx[k]=b,()=>{delete sfx[k];});}
 function play(k,when,vol=1){
   const a=ac,b=sfx[k];if(!(b instanceof AudioBuffer))return false;if(!a||!soundOn)return true;
@@ -206,6 +261,7 @@ function pon(reading){
 }
 /* 起動して さいしょの 正解は、音ファイルが まだ 読みこみ中の ことがある。0.6びょうまでは 読みこみを まって ファイルの音を 鳴らし、まにあわなければ 合成音 */
 function seikai(){if(!audio())return;loadSfx();const b=sfx.seikai;if(play('seikai',0))return;const beeps=()=>{beep(1047,.3,'triangle',.08);beep(1568,.5,'triangle',.08,.12);};if(!b)return beeps();let done=false;const t=setTimeout(()=>{done=true;beeps();},600);b.then(()=>{if(done)return;clearTimeout(t);if(!play('seikai',0))beeps();});} // けいさん 正解
+function cardGet(){if(!audio())return;loadSfx();if(!play('cardKira',0))[1047,1319,1568,2093].forEach((f,i)=>beep(f,.4,'triangle',.05,i*.07));play('jajaan',.9,.6);} // 車両カード ゲット（キラーンの 0.9びょう あとに ジャジャーン。もじ鉄図鑑と おなじ）
 function retry(){if(!audio())return;loadSfx();if(!play('retry',0))beep(523,.3,'sine',.08),beep(392,.45,'sine',.08,.2);} // もう一回（やさしく）
 function chime(){beep(784,.5,'sine',.14);beep(659,.8,'sine',.14,.32);}
 /* けいてき：おしている あいだ鳴る。2つの音を重ね、息の立ち上がりと ひずみ・山びこで空気笛らしくする */
@@ -314,9 +370,9 @@ function tick(now){
 /* ---------- けしき（東へ すすむと 左。線路の山がわから見る）。広島の街なか、内陸の山あい、それ以外は瀬戸内の海ぞい ---------- */
 const TOWN=new Set(['新井口','西広島','横川','新白島','広島','天神川','向洋','海田市','三滝','安芸長束','下祇園','矢賀']);
 const INLAND=new Set(['安芸中野','中野東','瀬野','八本松','寺家','西条','西高屋','白市','入野','河内','本郷']);
-function sceneFor(from,to,line){if(TOWN.has(from.id)&&TOWN.has(to.id))return 'town';if(['kabe','geibi','gantoku'].includes(line.id)||INLAND.has(from.id)||INLAND.has(to.id))return 'hills';return 'sea';}
+function sceneFor(from,to,line){if(TOWN.has(from.id)&&TOWN.has(to.id))return 'town';if(['kabe','geibi','gantoku','seiryu'].includes(line.id)||INLAND.has(from.id)||INLAND.has(to.id))return 'hills';return 'sea';}
 /* えきスタンプの模様。lines はその駅を通る路線の id */
-function stationScene(id,lines){if(TOWN.has(id))return 'town';if(INLAND.has(id)||lines.every(l=>['kabe','geibi','gantoku'].includes(l)))return 'hills';return 'sea';}
+function stationScene(id,lines){if(TOWN.has(id))return 'town';if(INLAND.has(id)||lines.every(l=>['kabe','geibi','gantoku','seiryu'].includes(l)))return 'hills';return 'sea';}
 const rnd=k=>{const x=Math.sin(k*127.1+311.7)*43758.5453;return x-Math.floor(x);};
 const loop=(k,gap,p,sc)=>((k*gap+s*sc*p)%(W+gap)+W+gap)%(W+gap)-gap/2;
 function draw(){
@@ -324,7 +380,7 @@ function draw(){
   let g=c.createLinearGradient(0,0,0,H*.55);g.addColorStop(0,'#8ec5e6');g.addColorStop(1,'#d9edf5');c.fillStyle=g;c.fillRect(0,0,W,H);
   c.fillStyle='#ffffffcc';for(let k=0;k<6;k++){const px=((k*420+s*sc*.03)%(W+400))-200,py=H*(.08+(k%3)*.07);cloud(c,px,py,H*.05);}
   ({sea,hills,town})[trip.scene](c,sc);
-  const wireY=yRail-hC*1.22-hC*.42,electric=!['geibi','gantoku'].includes(trip.line.id); // 芸備線・岩徳線は非電化
+  const wireY=yRail-hC*1.22-hC*.42,electric=!['geibi','gantoku','seiryu'].includes(trip.line.id); // 芸備線・岩徳線・錦川清流線は非電化
   if(electric){c.strokeStyle='#5e6a6e';c.lineWidth=Math.max(2,hC*.05);const p0=Math.floor((s-40)/50)*50;
     for(let m=p0-100;m<s+W/sc+100;m+=50){const x=wx(m);if(x<-20||x>W+20)continue;c.beginPath();c.moveTo(x,yRail-hC*.1);c.lineTo(x,wireY-hC*.3);c.lineTo(x+hC*.5,wireY-hC*.3);c.stroke();}
     c.strokeStyle='#39424599';c.lineWidth=1.2;c.beginPath();c.moveTo(0,wireY);c.lineTo(W,wireY);c.moveTo(0,wireY-hC*.3);c.lineTo(W,wireY-hC*.3);c.stroke();}
@@ -430,5 +486,5 @@ function open(o){
 // のりかえ案内：チャイムのあとに読み上げ
 function norikae(text){if(!audio())return;chime();setTimeout(()=>say(text),900);}
 soundUI();
-root.RailDrive={open,pon,norikae,seikai,retry,toggleSound,soundTest,loadSfx,stationScene,TRAINS,STARTER};
+root.RailDrive={open,pon,norikae,seikai,cardGet,retry,say,toggleSound,soundTest,loadSfx,stationScene,TRAINS,STARTER};
 })(globalThis);
