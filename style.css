@@ -769,3 +769,7 @@ body.game::after{content:"";flex:0 0 14px;border-top:3px solid #fff;background:#
 .game .exercise.look-big .look-stage{width:min(100%,640px,calc((100dvh - 230px) * 1.6));aspect-ratio:1.6}
 .game .exercise.look-big .look-train{top:8cqw}
 .game .exercise.look-big .look-stage.open .look-cue{top:auto;bottom:1.5cqw;transform:translateX(-50%);padding:1.5cqw 6cqw;font-size:6cqw}
+/* A tall photo (ふくやまの Red Wing, 2026-10-03) leaves wide gaps beside it; the same photo, blurred and enlarged, fills them. The photo itself is shown as it is. */
+.card-photo{position:relative;overflow:hidden;background:#e8ece4}
+.card-photo::before{content:"";position:absolute;inset:-16px;background:var(--photo) center/cover;filter:blur(14px);opacity:.75}
+.card-photo img{position:relative;background:transparent}

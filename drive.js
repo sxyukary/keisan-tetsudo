@@ -23,7 +23,10 @@ const TRAINS=[
  {id:'nt3001',name:'せせらぎ',reading:'NT3000がた',kind:'ふつう',cars:1,front:'nt',body:'#3f86c8',roof:'#8e959a',win:'#2d3539',doors:2,doorsAtEnds:true,doorColor:'#3778b4',diesel:true,tint:'#6fa9dc',deep:'#2f6fae',wrap:'seseragi'},
  {id:'nt3002',name:'ひだまり',reading:'NT3000がた',kind:'ふつう',cars:1,front:'nt',body:'#d8468c',roof:'#8e959a',win:'#2d3539',doors:2,doorsAtEnds:true,doorColor:'#c63d7e',diesel:true,tint:'#e77aad',deep:'#b93674',wrap:'hidamari'},
  {id:'nt3003',name:'こもれび',reading:'NT3000がた',kind:'ふつう',cars:1,front:'nt',body:'#8cc63f',roof:'#8e959a',win:'#2d3539',doors:2,doorsAtEnds:true,doorColor:'#7db536',diesel:true,tint:'#b2dc6e',deep:'#6fa52c',wrap:'komorebi'},
- {id:'nt3004',name:'きらめき',reading:'NT3000がた',kind:'ふつう',cars:1,front:'nt',body:'#e3c23f',roof:'#8e959a',win:'#2d3539',doors:2,doorsAtEnds:true,doorColor:'#d2b135',diesel:true,tint:'#f0d970',deep:'#c9a82a',wrap:'kirameki'}
+ {id:'nt3004',name:'きらめき',reading:'NT3000がた',kind:'ふつう',cars:1,front:'nt',body:'#e3c23f',roof:'#8e959a',win:'#2d3539',doors:2,doorsAtEnds:true,doorColor:'#d2b135',diesel:true,tint:'#f0d970',deep:'#c9a82a',wrap:'kirameki'},
+ {id:'c57',name:'SLやまぐち',reading:'C57がた',kind:'かんこう',cars:4,steam:true,body:'#5a2e24',roof:'#3c3f41',win:'#2a2522',doors:2,doorsAtEnds:true,doorColor:'#52291f'},
+ {id:'lamalle',name:'ラ・マル しまなみ',reading:'213けい',kind:'かんこう',cars:2,front:'flat',body:'#f1f1ee',roof:'#9aa1a6',win:'#1b1f22',doors:2,doorColor:'#e9e9e5',accent:'#1b1f22',panto:[0],motor:'old',wrap:'malle'},
+ {id:'marineliner',name:'マリンライナー',reading:'5000けい',kind:'かいそく',cars:3,dd:true,front:'round',body:'#d3d8dc',roof:'#a3a9ae',win:'#1f3238',stripe:{t:.8,h:.06,c:'#22305a'},doors:2,doorColor:'#c9ced2',panto:[1],motor:'vvvf'}
 ];
 /* 新幹線・広電の車両は、その線路ができたら TRAINS と cards.js に戻す（2026-09-27 にいったん図鑑から外した） */
 const WAITING_TRAINS=[
@@ -68,6 +71,10 @@ function river(c,x,y,w,h,t){
 }
 /* ラッピングの 模様。w は 顔を のぞいた 横の 長さ */
 const WRAP={
+  malle(c,i,x,y,w,h){ // La Malle de Bois：白い 車体に、まどを かばんのように かこむ 黒い 太い 線と、ふだのような 黒い わく
+    c.fillStyle='#1b1f22';c.fillRect(x,y+h*.14,w,h*.05);c.fillRect(x,y+h*.52,w,h*.05);
+    c.strokeStyle='#1b1f22';c.lineWidth=h*.025;for(const k of [.12,.58])c.strokeRect(x+w*k,y+h*.64,w*.28,h*.13);
+  },
   carp(c,i,x,y,w,h){ // 赤い 車体に ほのおと 野球の ボール（ロゴや 選手の 絵は 描かない）
     c.fillStyle='#c8202a';c.fillRect(x,y+h*.1,w,h*.86);
     for(let k=0;k<4;k++){const fx=x+w*(.12+k*.24),fy=y+h*.55,g=c.createLinearGradient(fx,fy+h*.3,fx,fy-h*.4);g.addColorStop(0,'#ffcf3a');g.addColorStop(1,'#ff6a1a00');c.fillStyle=g;
@@ -122,7 +129,52 @@ const WRAP={
       for(const [dx,dy,r] of [[.05,-.52,.07],[-.1,-.22,.05],[.16,-.34,.05]]){c.beginPath();c.arc(bx+h*dx,by+h*dy,h*r,0,Math.PI*2);c.fill();}}
   }
 };
+/* SLやまぐち号 (2026-10-02): C57形1号機。うしろから 炭水車・運転室・ボイラー。動輪3つ（白い ふち）と 前後の 小さい車輪、うごく ロッド、煙よけの 板、赤い 前の はり */
+function steamLoco(c,x,yRail,h,L,o){
+  const y=yRail-h*1.22,X=f=>x+L*f,blk='#1c1f21',edge='#3a4044',round=(a,b,w,hh,r)=>{c.beginPath();if(c.roundRect)c.roundRect(a,b,w,hh,r);else c.rect(a,b,w,hh);c.fill();}; // 古い Safari には roundRect がない
+  c.fillStyle=blk;round(X(0),y+h*.26,L*.28,h*.66,h*.06); // 炭水車
+  c.fillStyle='#2a2d2f';for(let k=0;k<4;k++){c.beginPath();c.arc(X(.04+k*.065),y+h*.27,h*.07,Math.PI,0);c.fill();}
+  c.strokeStyle=edge;c.lineWidth=Math.max(1,h*.02);c.strokeRect(X(.02),y+h*.4,L*.24,h*.42);
+  c.fillStyle=blk;c.fillRect(X(.29),y+h*.06,L*.16,h*.86);c.fillRect(X(.28),y,L*.18,h*.07); // 運転室と 屋根
+  c.fillStyle='#e9dcb8';c.fillRect(X(.32),y+h*.16,L*.1,h*.26);c.fillStyle=blk;c.fillRect(X(.365),y+h*.16,L*.01,h*.26);
+  c.fillStyle='#1d1d1d';c.fillRect(X(.315),y+h*.52,L*.11,h*.13);c.save();c.translate(X(.37),y+h*.59);if(c.getTransform().a<0)c.scale(-1,1);c.fillStyle='#d6b45a';c.font=`900 ${h*.1}px system-ui`;c.textAlign='center';c.textBaseline='middle';c.fillText('C57 1',0,0);c.restore(); // 運転画面は 左右を ひっくりかえして 描くので、文字だけ もどす
+  c.fillStyle=blk;round(X(.45),y+h*.28,L*.45,h*.52,h*.2); // ボイラー
+  c.fillStyle=edge;c.fillRect(X(.46),y+h*.32,L*.42,h*.04);for(const f of [.55,.67,.79])c.fillRect(X(f),y+h*.29,L*.008,h*.5);
+  c.fillStyle=blk;round(X(.58),y+h*.17,L*.06,h*.14,h*.05);round(X(.68),y+h*.15,L*.07,h*.16,h*.06); // ドーム
+  c.fillRect(X(.835),y+h*.07,L*.05,h*.24);c.fillRect(X(.825),y+h*.05,L*.07,h*.04); // えんとつ
+  c.fillStyle='#232628';c.fillRect(X(.86),y+h*.22,L*.09,h*.5);c.strokeStyle=edge;c.strokeRect(X(.86),y+h*.22,L*.09,h*.5); // 煙よけの 板
+  c.fillStyle=blk;c.fillRect(X(.93),y+h*.3,L*.05,h*.5);
+  c.fillStyle=o.light?'#fff6c8':'#d8d2b4';c.beginPath();c.arc(X(.965),y+h*.22,h*.07,0,Math.PI*2);c.fill();c.fillStyle=blk;c.fillRect(X(.95),y+h*.26,L*.03,h*.05);
+  c.fillStyle='#e6e6e2';c.fillRect(X(.45),y+h*.82,L*.53,h*.025); // 白い へり
+  c.fillStyle='#b8312f';c.fillRect(X(.96),y+h*.8,L*.04,h*.2); // 赤い 前の はり
+  c.fillStyle='#2b2f31';c.fillRect(X(.83),yRail-h*.5,L*.1,h*.2); // シリンダー
+  const big=(cx,r)=>{c.fillStyle='#1d2224';c.beginPath();c.arc(cx,yRail-r,r,0,Math.PI*2);c.fill();c.strokeStyle='#eeeeea';c.lineWidth=Math.max(1.5,r*.12);c.beginPath();c.arc(cx,yRail-r,r*.92,0,Math.PI*2);c.stroke();
+    c.strokeStyle='#6b7479';c.lineWidth=Math.max(1,r*.07);c.beginPath();for(let k=0;k<6;k++){const a=o.ang*.35+k*Math.PI/6;c.moveTo(cx-Math.cos(a)*r*.8,yRail-r-Math.sin(a)*r*.8);c.lineTo(cx+Math.cos(a)*r*.8,yRail-r+Math.sin(a)*r*.8);}c.stroke();c.fillStyle='#6b7479';c.beginPath();c.arc(cx,yRail-r,r*.18,0,Math.PI*2);c.fill();};
+  const R=h*.29,drv=[.54,.66,.78].map(X);drv.forEach(cx=>big(cx,R));
+  for(const f of [.07,.16,.24,.37,.44,.88,.95])wheel(c,X(f),yRail-h*.12,h*.12,o.ang);
+  const a=o.ang*.35,pin=cx=>[cx+Math.cos(a)*R*.5,yRail-R+Math.sin(a)*R*.5];
+  c.strokeStyle='#a9afb2';c.lineCap='round';c.lineWidth=Math.max(2,h*.05);c.beginPath();c.moveTo(...pin(drv[0]));c.lineTo(...pin(drv[2]));c.stroke(); // 連結棒
+  c.lineWidth=Math.max(2,h*.06);c.beginPath();c.moveTo(...pin(drv[1]));c.lineTo(X(.87),yRail-h*.4);c.stroke();c.lineCap='butt'; // 主連棒
+}
+/* マリンライナー (2026-10-03): JR四国 5000系の 先頭は 2かいだて。上と 下に まどが ならび、下のほうに オレンジ・赤・むらさきの 帯。大きい 前の まどと こんの 帯 */
+function doubleDecker(c,t,x,yRail,h,L,o){
+  const H=h*1.5,y=yRail-h*.22-H,r=h*.14,shape=()=>{c.beginPath();c.moveTo(x+r,y);c.lineTo(x+L-h*1.2,y);c.quadraticCurveTo(x+L-h*.05,y+h*.04,x+L,y+H*.6);c.lineTo(x+L,y+H);c.lineTo(x,y+H);c.lineTo(x,y+r);c.quadraticCurveTo(x,y,x+r,y);c.closePath();};
+  c.save();shape();c.fillStyle=t.body;c.fill();c.clip();c.fillStyle=t.roof;c.fillRect(x,y,L,H*.05);
+  const a=x+h*.3,b=x+L-h*1.7;c.fillStyle=t.win;c.fillRect(a,y+H*.12,b-a,H*.24);c.fillStyle='#ffffff22';c.fillRect(a,y+H*.12,b-a,H*.06); // 2かいの まど
+  const n=5,gw=(b-a-h*.5)/n;for(let k=0;k<n;k++){c.fillStyle=t.win;c.fillRect(a+h*.5+k*gw+h*.04,y+H*.46,gw-h*.08,H*.17);} // 1かいの まど
+  [['#f2a33a',.7],['#e23b52',.75],['#6a4fb3',.8]].forEach(([col,f])=>{c.fillStyle=col;c.fillRect(x,y+H*f,b-x,H*.035);}); // 3色の 帯
+  const d=a+h*.05,dw=h*.3,open=o.door*dw*.5;c.fillStyle='#20282b';c.fillRect(d,y+H*.42,dw,H*.54);c.fillStyle=t.doorColor;c.fillRect(d-open,y+H*.42,dw/2,H*.54);c.fillRect(d+dw/2+open,y+H*.42,dw/2,H*.54);
+  if(o.door>0){c.fillStyle='#ffe9a8';c.globalAlpha=.35*o.door;c.fillRect(d+dw/2-open,y+H*.42,open*2,H*.54);c.globalAlpha=1;}
+  c.fillStyle='#22305a';c.fillRect(x+L-h*1.5,y+H*.56,h*1.5,H*.07);c.fillRect(x+L-h*1.5,y+H*.86,h*1.5,H*.05); // こんの 帯
+  c.fillStyle=t.win;c.beginPath();c.moveTo(x+L-h*1.2,y+H*.1);c.quadraticCurveTo(x+L-h*.25,y+H*.12,x+L-h*.04,y+H*.52);c.lineTo(x+L-h*1.2,y+H*.52);c.closePath();c.fill(); // 前の 大きい まど
+  c.fillStyle=o.light?'#fff6c8':'#d8d2b4';c.beginPath();c.arc(x+L-h*.14,y+H*.72,h*.05,0,Math.PI*2);c.fill();
+  c.restore();c.strokeStyle='#00000030';c.lineWidth=1.2;shape();c.stroke();
+  c.fillStyle='#394044';c.fillRect(x+L*.3,y+H,L*.4,h*.1);c.fillStyle='#2b3134';c.beginPath();c.moveTo(x+L-h*.35,y+H);c.lineTo(x+L,y+H);c.lineTo(x+L-h*.05,yRail-h*.08);c.lineTo(x+L-h*.35,yRail-h*.08);c.fill();
+  bogie(c,x+L*.17,yRail,h,o.ang);bogie(c,x+L*.83,yRail,h,o.ang);
+}
 function drawCar(c,t,i,x,yRail,h,L,o){
+  if(t.steam&&i===0)return steamLoco(c,x,yRail,h,L,o);
+  if(t.dd&&i===0)return doubleDecker(c,t,x,yRail,h,L,o);
   const isFront=i===0,y=yRail-h*1.22,bodyH=h,isLoco=t.loco&&i===0,isWagon=t.loco&&i>0;
   if(isWagon){ // コンテナ車
     const deckY=yRail-h*.36,cols=['#b8343f','#3d74b5','#5a9a57','#c58a2a','#b8343f','#7c8c96'],cw=(L-h*.4)/3;
@@ -209,7 +261,7 @@ function soundTest(){const a=audio();loadSfx();if(a&&soundOn&&!play('seikai',0))
 function soundUI(){const t=soundOn?'おと あり':'おと なし',i=soundOn?'🔊':'🔈',d=$('drive-sound'),h=$('sound-toggle');d.setAttribute('aria-pressed',String(soundOn));d.textContent=`${i} ${t}`;if(h){h.setAttribute('aria-pressed',String(soundOn));h.setAttribute('aria-label',t);h.innerHTML=`${i}<span class="wide-only"> ${t}</span>`;}}
 function toggleSound(){soundOn=!soundOn;try{localStorage.setItem(SOUND_KEY,soundOn?'on':'off');}catch(e){}soundUI();if(!soundOn){hornStop();try{speechSynthesis.cancel();}catch(e){}}else if(audio())beep(880,.18,'sine',.1);updateMotor(v,notch);}
 function makeMotor(t){
-  stopMotor();const a=audio();if(!a)return;
+  stopMotor();const a=audio();if(!a||t.steam)return; // SLは モーターの 音の かわりに シュッシュッ（tick）
   const g=a.createGain();g.gain.value=0;const f=a.createBiquadFilter();f.type='lowpass';
   const o1=a.createOscillator(),o2=a.createOscillator();
   if(t.diesel){o1.type='square';o2.type='sawtooth';f.frequency.value=260;}else{o1.type='sawtooth';o2.type='triangle';f.frequency.value=t.motor==='old'?500:1100;}
@@ -267,7 +319,7 @@ function chime(){beep(784,.5,'sine',.14);beep(659,.8,'sine',.14,.32);}
 /* けいてき：おしている あいだ鳴る。2つの音を重ね、息の立ち上がりと ひずみ・山びこで空気笛らしくする */
 function hornStart(){
   const a=audio();if(!a||!soundOn||hornNode)return;
-  const t=cur||{},notes=t.diesel?[262,330]:t.loco?[392,494]:[311,392],now=a.currentTime;
+  const t=cur||{};if(t.steam)return whistleStart(a);const notes=t.diesel?[262,330]:t.loco?[392,494]:[311,392],now=a.currentTime;
   if(!shapeCurve){shapeCurve=new Float32Array(1024);for(let i=0;i<1024;i++){const x=i/511.5-1;shapeCurve[i]=Math.tanh(3.5*x)/Math.tanh(3.5);}}
   const pre=a.createGain();pre.gain.value=.16;const sh=a.createWaveShaper();sh.curve=shapeCurve;
   const pk=a.createBiquadFilter();pk.type='peaking';pk.frequency.value=t.diesel?900:1500;pk.Q.value=1.1;pk.gain.value=7;
@@ -280,8 +332,19 @@ function hornStart(){
   for(const f of notes)for(const d of [-8,0,8]){const o=a.createOscillator();o.type='sawtooth';o.detune.value=d;o.frequency.setValueAtTime(f*.88,now);o.frequency.exponentialRampToValueAtTime(f,now+.14);lg.connect(o.frequency);o.connect(pre);o.start();o.base=f;oscs.push(o);}
   hornNode={oscs,out,lfo,t0:now};
 }
+/* SLの 汽笛（ポーッ）：やわらかい 3つの 音に、ふく 息の シューという 音を まぜる */
+function whistleStart(a){
+  const now=a.currentTime,out=a.createGain();out.gain.setValueAtTime(0,now);out.gain.linearRampToValueAtTime(.32,now+.12);
+  const lp=a.createBiquadFilter();lp.type='lowpass';lp.frequency.value=3200;const dly=a.createDelay(1),fb=a.createGain(),wet=a.createGain();dly.delayTime.value=.3;fb.gain.value=.22;wet.gain.value=.35;
+  out.connect(lp);lp.connect(a.destination);lp.connect(dly);dly.connect(fb);fb.connect(dly);dly.connect(wet);wet.connect(a.destination);
+  const lfo=a.createOscillator(),lg=a.createGain();lfo.frequency.value=4.2;lg.gain.value=3;lfo.connect(lg);lfo.start();
+  const oscs=[];for(const [f,type,vol] of [[392,'triangle',.5],[466,'sine',.4],[587,'triangle',.3],[784,'sine',.08]]){const o=a.createOscillator(),g=a.createGain();o.type=type;o.frequency.setValueAtTime(f*.86,now);o.frequency.exponentialRampToValueAtTime(f,now+.22);g.gain.value=vol;lg.connect(o.frequency);o.connect(g);g.connect(out);o.start();o.base=f;oscs.push(o);}
+  const n=a.sampleRate*2|0,buf=a.createBuffer(1,n,a.sampleRate),d=buf.getChannelData(0);for(let i=0;i<n;i++)d[i]=Math.random()*2-1;
+  const air=a.createBufferSource(),bp=a.createBiquadFilter(),ag=a.createGain();air.buffer=buf;air.loop=true;bp.type='bandpass';bp.frequency.value=1400;bp.Q.value=.8;ag.gain.value=.12;air.connect(bp);bp.connect(ag);ag.connect(out);air.start();
+  hornNode={oscs,out,lfo,air,t0:now};
+}
 function hornStop(){
-  if(!hornNode||!ac)return;const h=hornNode;hornNode=null;const end=Math.max(ac.currentTime,h.t0+.45);
+  if(!hornNode||!ac)return;const h=hornNode;hornNode=null;const end=Math.max(ac.currentTime,h.t0+.45);if(h.air)h.air.stop(end+.8);
   h.out.gain.setTargetAtTime(0,end,.08);h.oscs.forEach(o=>{o.frequency.setTargetAtTime(o.base*.95,end,.12);o.stop(end+.8);});h.lfo.stop(end+.8);
 }
 function pickVoice(){try{const vs=speechSynthesis.getVoices().filter(v=>/^ja/i.test(v.lang));jaVoice=vs.find(v=>/Kyoko|O-ren|Otoya|Siri/i.test(v.name))||vs[0]||null;}catch(e){}}
@@ -292,7 +355,7 @@ function say(text){if(!soundOn||!('speechSynthesis' in root))return;try{speechSy
 
 /* ---------- はしる ---------- */
 const END=220,VMAX=25,ACC=5,BRK=5,STOP_OK=6; // m, m/s, m/s²。停止位置の手前 STOP_OK m 以内で とうちゃく
-let cur=null,trip=null,phase='closed',s=0,v=0,notch=0,auto=false,doorT=1,doorTarget=1,lastJoint=0,near=false,smoke=[],raf=0,lastT=0,timers=[];
+let cur=null,trip=null,phase='closed',s=0,v=0,notch=0,auto=false,doorT=1,doorTarget=1,lastJoint=0,lastChuff=0,near=false,smoke=[],raf=0,lastT=0,timers=[];
 let cv,ctx,W=0,H=0;
 const later=(fn,ms)=>timers.push(setTimeout(fn,ms));
 function resize(){if(!cv)return;const dpr=Math.min(2,root.devicePixelRatio||1);W=cv.clientWidth;H=cv.clientHeight;cv.width=W*dpr;cv.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);}
@@ -305,7 +368,7 @@ function notchUI(enabled){
 function showScreen(name){$('drive-run').hidden=name!=='run';$('drive-choose').hidden=name!=='choose';}
 function resetRun(){
   timers.forEach(clearTimeout);timers=[];
-  phase='ready';s=0;v=0;notch=0;auto=false;doorT=1;doorTarget=1;lastJoint=0;near=false;smoke=[];
+  phase='ready';s=0;v=0;notch=0;auto=false;doorT=1;doorTarget=1;lastJoint=0;lastChuff=0;near=false;smoke=[];
   $('drive-console').hidden=false;$('drive-arrive').hidden=true;$('drive-door').hidden=false;$('drive-door').disabled=false;$('drive-change').hidden=false;$('drive-skip').hidden=false;
   notchUI(false);setMsg('ドアを しめて しゅっぱつ しよう！');$('drive-led').textContent=`${trip.to.reading} ゆき`;$('drive-kind').textContent=cur.kind;
   document.querySelector('#drive .n-brake').classList.remove('hint');
@@ -347,6 +410,7 @@ function tick(now){
     if(auto&&v===0)s=END;
     if(s-lastJoint>=25&&v>1){lastJoint=Math.floor(s/25)*25;const vol=Math.min(.5,v/40+.08);click(vol);later(()=>click(vol*.8),Math.max(40,Math.min(260,2600/v)));} // レールのつなぎめ
     if(cur.diesel&&notch===1&&Math.random()<dt*14)smoke.push({x:s-10,y:0,r:4,life:1});
+    if(cur.steam&&v>.5&&s-lastChuff>=2.2){lastChuff=s;hiss(.16,notch===1?.5:.18,0,1100,420);if(notch===1)smoke.push({x:s-2.9,y:0,r:H*.025,g:H*.07,life:1,dark:true});} // シュッシュッと 黒い けむり
     const r=END-s,hintBrake=!auto&&notch!==-1&&v>3&&need>=r-40;
     document.querySelector('#drive .n-brake').classList.toggle('hint',hintBrake);
     if(!near&&r<110){near=true;$('drive-led').textContent=`まもなく ${trip.to.reading}`;say(`まもなく、${spoken(trip.to)} です。`);}
@@ -360,16 +424,17 @@ function tick(now){
       else if(notch!==1)setMsg('「3」の ひょうしきまで もうすこし！「すすむ」で すすもう');
     }
   }
-  smoke.forEach(p=>{p.y+=dt*18;p.r+=dt*14;p.life-=dt*.8;});smoke=smoke.filter(p=>p.life>0);
+  if(cur.steam&&phase!=='closed'&&Math.random()<dt*2)smoke.push({x:s-2.9,y:0,r:H*.02,g:H*.05,life:.8}); // とまっていても すこし 白い ゆげ
+  smoke.forEach(p=>{p.y+=dt*18;p.r+=dt*(p.g||14);p.life-=dt*.8;});smoke=smoke.filter(p=>p.life>0);
   $('drive-speed').textContent=Math.round(v*3.6);
   $('drive-state').textContent=phase==='ready'?'とまっています':phase==='arrived'?'とうちゃく':notch===1?'すすむ':notch===-1?'ブレーキ':'そのまま';
   const pct=100-s/END*100;$('drive-me').style.left=pct+'%';$('drive-done-bar').style.width=(100-pct)+'%';
   updateMotor(v,phase==='run'?notch:0);draw();
 }
 
-/* ---------- けしき（東へ すすむと 左。線路の山がわから見る）。広島の街なか、内陸の山あい、それ以外は瀬戸内の海ぞい ---------- */
-const TOWN=new Set(['新井口','西広島','横川','新白島','広島','天神川','向洋','海田市','三滝','安芸長束','下祇園','矢賀']);
-const INLAND=new Set(['安芸中野','中野東','瀬野','八本松','寺家','西条','西高屋','白市','入野','河内','本郷']);
+/* ---------- けしき（東へ すすむと 左。線路の山がわから見る）。広島・防府〜新山口・福山・倉敷〜岡山〜備前西市の街なか、内陸と岡山〜児島の山あい（上の町〜児島は海ぞい）、それ以外は瀬戸内の海ぞい ---------- */
+const TOWN=new Set(['新井口','西広島','横川','新白島','広島','天神川','向洋','海田市','三滝','安芸長束','下祇園','矢賀','防府','大道','四辻','新山口','東福山','福山','倉敷','中庄','庭瀬','北長瀬','岡山','大元','備前西市']);
+const INLAND=new Set(['安芸中野','中野東','瀬野','八本松','寺家','西条','西高屋','白市','入野','河内','本郷','妹尾','備中箕島','早島','久々原','茶屋町','植松','木見']);
 function sceneFor(from,to,line){if(TOWN.has(from.id)&&TOWN.has(to.id))return 'town';if(['kabe','geibi','gantoku','seiryu'].includes(line.id)||INLAND.has(from.id)||INLAND.has(to.id))return 'hills';return 'sea';}
 /* えきスタンプの模様。lines はその駅を通る路線の id */
 function stationScene(id,lines){if(TOWN.has(id))return 'town';if(INLAND.has(id)||lines.every(l=>['kabe','geibi','gantoku','seiryu'].includes(l)))return 'hills';return 'sea';}
@@ -388,7 +453,7 @@ function draw(){
   c.fillStyle='#6d5a48';const sl=.65*sc,off=((s*sc)%sl+sl)%sl;for(let x=-sl+off;x<W+sl;x+=sl)c.fillRect(x,yRail+2,sl*.45,H*.03);
   c.fillStyle='#8c9296';c.fillRect(0,yRail-1,W,3);
   c.save();c.translate(frontX,0);c.scale(-1,1);drawTrain(c,cur,yRail,hC,{ang:-s/.43,door:doorT,light:true,wireY:electric?wireY:undefined});c.restore();
-  for(const p of smoke){c.fillStyle=`rgba(90,90,90,${.35*p.life})`;c.beginPath();c.arc(wx(p.x),yRail-hC*1.3-p.y,p.r,0,Math.PI*2);c.fill();}
+  for(const p of smoke){c.fillStyle=p.dark?`rgba(55,55,58,${.5*p.life})`:`rgba(${cur.steam?'235,235,235':'90,90,90'},${(cur.steam?.6:.35)*p.life})`;c.beginPath();c.arc(wx(p.x),yRail-hC*1.3-p.y,p.r,0,Math.PI*2);c.fill();}
   platform(c,wx,0,trip.from,trip.to,hC,yRail);platform(c,wx,END,trip.to,trip.next,hC,yRail);
 }
 function sea(c,sc){

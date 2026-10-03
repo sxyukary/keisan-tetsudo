@@ -38,7 +38,8 @@ const cardIds=()=>[...allCards().map(c=>c.id),...RETIRED_CARDS],knownMap=m=>m===
 function upgradeCards(s){if(s.cardMap===CARD_MAP)return false;const unlocked=opened(s),now=earned({...s,keep:[]}),had=Object.entries(OLD_CARD_MAPS[s.cardMap===2?2:1]).filter(([,st])=>unlocked.includes(st)).map(([id])=>id),keep=new Set([...(Array.isArray(s.keep)?s.keep:[]),...had.filter(id=>id!=='kiha40-gantoku')]);s.keep=cardIds().filter(id=>keep.has(id)&&!now.includes(id));s.cardMap=CARD_MAP;return true;}
 // Red Wing is rideable from the start; other trains become rideable with their cards. `train` remembers the last choice (optional).
 const STARTER_TRAIN='redwing';
-function rideable(s){return [...new Set([STARTER_TRAIN,...earned(s)])];}
+// A second card of the same train (`sameTrain`, e.g. ふくやまの Red Wing) is a card only: the train list keeps one of each train (2026-10-03).
+function rideable(s){const same=new Set(allCards().filter(c=>c.sameTrain).map(c=>c.id));return [...new Set([STARTER_TRAIN,...earned(s).filter(id=>!same.has(id))])];}
 function train(s){return typeof s.train==='string'&&rideable(s).includes(s.train)?s.train:STARTER_TRAIN;}
 // Station stamps: every opened station has one (worked out from the edges, so old saves get theirs). `stamps` (optional) keeps the day each new station's stamp was pressed; the child presses it after arriving, and `pending.stamped` stops a second press.
 const DAY=/^\d{4}-\d{2}-\d{2}$/;
