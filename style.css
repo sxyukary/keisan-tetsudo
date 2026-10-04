@@ -301,6 +301,13 @@ body.game{height:100dvh;max-height:100dvh;overflow:hidden;display:flex;flex-dire
 .update-section p{margin:8px 0 12px}
 .update-section button{border:1px solid #cbdcd0;background:#e4eee3;min-height:48px;width:100%;text-align:center}
 .update-section .update-version{font-size:11px;color:#728379;margin:12px 0 0}
+.try-section{margin:22px 0;padding:18px 0;border-top:1px solid #dae2d3}
+.try-section h3{font-size:16px;margin:0 0 8px}
+.try-section p{margin:8px 0 12px}
+.try-pick{display:grid;gap:8px;margin:0 0 12px}
+.try-pick label{display:flex;align-items:center;gap:8px}
+.try-pick select{flex:1;min-width:0;min-height:44px;font:inherit}
+.try-section button{border:1px solid #cbdcd0;background:#e4eee3;min-height:48px;width:100%;text-align:center;margin-top:8px}
 .reset-section{margin:0 0 22px;padding:0 0 18px;border-bottom:1px solid #dae2d3}
 .reset-section h3{font-size:16px;margin:0 0 8px}
 .reset-section p{margin:8px 0 12px}
