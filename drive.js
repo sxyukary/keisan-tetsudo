@@ -34,7 +34,12 @@ const TRAINS=[
  {id:'zero',name:'0けい',reading:'しんかんせん',kind:'しんかんせん',cars:3,front:'zero',body:'#f1f0eb',roof:'#d9d8d2',stripe:[{t:.22,h:.4,c:'#1d4f9a'},{t:.9,h:.07,c:'#1d4f9a'}],win:'#20262b',doors:1,doorsAtEnds:true,doorColor:'#ebe8df',panto:[1],motor:'old',track:'しんかんせん',vmax:210},
  {id:'doctoryellow',name:'ドクターイエロー',reading:'923がた',kind:'しんかんせん',cars:3,front:'duck',body:'#f3d21c',roof:'#e2c010',stripe:[{t:.56,h:.06,c:'#1f3f8f'},{t:.65,h:.02,c:'#1f3f8f'}],win:'#1b1f22',doors:1,doorsAtEnds:true,doorColor:'#ecc915',panto:[1],motor:'vvvf',track:'しんかんせん',vmax:270},
  {id:'n700s',name:'N700S',reading:'しんかんせん',kind:'しんかんせん',cars:3,front:'supreme',body:'#f7f8fa',roof:'#e3e7eb',stripe:[{t:.61,h:.07,c:'#1a3d9c'},{t:.725,h:.016,c:'#1a3d9c'},{t:.93,h:.07,c:'#c3c8cf'}],winY:.42,winH:.16,win:'#1d2329',doors:1,doorsAtEnds:true,doorColor:'#eef1f3',panto:[1],motor:'vvvf',track:'しんかんせん',vmax:300},
- {id:'e5',name:'はやぶさ',reading:'E5けい',kind:'しんかんせん',cars:3,front:'nose',body:'#f1f3f4',roof:'#0b9a74',stripe:[{t:0,h:.47,c:'#0b9a74'},{t:.47,h:.045,c:'#e5528c'}],win:'#1d2a2a',doors:1,doorsAtEnds:true,doorColor:'#e6e9ea',panto:[1],motor:'vvvf',track:'しんかんせん',vmax:320}
+ {id:'e5',name:'はやぶさ',reading:'E5けい',kind:'しんかんせん',cars:3,front:'nose',body:'#f1f3f4',roof:'#0b9a74',stripe:[{t:0,h:.47,c:'#0b9a74'},{t:.47,h:.045,c:'#e5528c'}],win:'#1d2a2a',doors:1,doorsAtEnds:true,doorColor:'#e6e9ea',panto:[1],motor:'vvvf',track:'しんかんせん',vmax:320},
+ {id:'813',name:'813けい',reading:'ふくおかの でんしゃ',kind:'ふつう',cars:3,front:'flat',body:'#c8c5bf',roof:'#9a9ea1',win:'#2a3034',doors:3,doorColor:'#d4262d',cab:'#d4262d',panto:[1],motor:'vvvf',vmax:120},
+ {id:'dencha',name:'DENCHA',reading:'BEC819けい',kind:'ふつう',cars:2,front:'flat',body:'#f3f4f2',roof:'#c3c7ca',win:'#1d2329',doors:3,doorColor:'#2b6cc4',mask:'#1d2023',panto:[1],battery:true,motor:'vvvf',wrap:'dencha',vmax:120},
+ {id:'821',name:'821けい',reading:'あたらしい ふつう でんしゃ',kind:'ふつう',cars:3,front:'flat',body:'#eceeef',roof:'#9a9ea1',win:'#1d2329',doors:3,doorColor:'#d4262d',face:'#1b1d20',panto:[1],motor:'vvvf',vmax:120},
+ {id:'ef510-300',name:'レッドサンダー',reading:'EF510がた 300ばんだい',kind:'かもつ',cars:5,loco:true,front:'flat',body:'#c3c7ca',skirt:'#20305e',skirtFrom:.78,stripe:{t:.76,h:.025,c:'#d4262d'},roof:'#8e9499',win:'#1f272c',louver:'#7d858b',mark:'thunder',panto:[0],motor:'loco',vmax:110},
+ {id:'883',name:'ソニック',reading:'883けい',kind:'とっきゅう',cars:3,front:'round',body:'#2a40a8',roof:'#1f3184',win:'#141b2c',doors:1,doorsAtEnds:true,doorColor:'#2a40a8',panto:[1],motor:'vvvf',vmax:130}
 ];
 /* 広電の車両は、その線路ができたら TRAINS と cards.js に戻す（2026-09-27 にいったん図鑑から外した。500系は 2026-10-04 に山陽新幹線と いっしょに戻した） */
 const WAITING_TRAINS=[
@@ -81,6 +86,11 @@ function river(c,x,y,w,h,t){
 }
 /* ラッピングの 模様。w は 顔を のぞいた 横の 長さ */
 const WRAP={
+  dencha(c,i,x,y,w,h){ // DENCHA：白い 車体の すそに 青い 四角の ならび、青い ひしがたの しるし
+    c.fillStyle='#2b6cc4';for(let k=0;k*h*.07<w;k+=2)c.fillRect(x+k*h*.07,y+h*.86,h*.05,h*.05);
+    const dx=x+w*.5,dy=y+h*.68,r=h*.1;c.beginPath();c.moveTo(dx,dy-r);c.lineTo(dx+r,dy);c.lineTo(dx,dy+r);c.lineTo(dx-r,dy);c.closePath();c.fill();
+    c.fillStyle='#ffffff';c.fillRect(dx-r*.35,dy-r*.12,r*.7,r*.24);
+  },
   malle(c,i,x,y,w,h){ // La Malle de Bois：白い 車体に、まどを かばんのように かこむ 黒い 太い 線と、ふだのような 黒い わく
     c.fillStyle='#1b1f22';c.fillRect(x,y+h*.14,w,h*.05);c.fillRect(x,y+h*.52,w,h*.05);
     c.strokeStyle='#1b1f22';c.lineWidth=h*.025;for(const k of [.12,.58])c.strokeRect(x+w*k,y+h*.64,w*.28,h*.13);
@@ -243,7 +253,7 @@ function drawCar(c,t,i,x,yRail,h,L,o){
     else for(let k=0;k<t.doors;k++)doors.push(x+L*(k+.5)/t.doors-(isFront?bodyH*.12:0));
   }
   const wy=y+bodyH*.2,wh=bodyH*(t.bigWin?.36:.3);
-  if(isLoco){for(let k=0;k<7;k++){c.fillStyle='#24476f';c.fillRect(x+L*.25+k*L*.065,y+bodyH*.22,L*.035,bodyH*.26);}}
+  if(isLoco){for(let k=0;k<7;k++){c.fillStyle=t.louver||'#24476f';c.fillRect(x+L*.25+k*L*.065,y+bodyH*.22,L*.035,bodyH*.26);}}
   else{
     const edges=[x+bodyH*.3,...doors.flatMap(d=>[d-dw/2-bodyH*.12,d+dw/2+bodyH*.12]),x+L-(isFront?bodyH*.7:bodyH*.3)].sort((a,b)=>a-b);
     for(let k=0;k+1<edges.length;k+=2){const a=edges[k],b=edges[k+1];if(b-a<bodyH*.3)continue;
@@ -259,7 +269,10 @@ function drawCar(c,t,i,x,yRail,h,L,o){
     if(o.door>0){c.fillStyle='#ffe9a8';c.globalAlpha=.35*o.door;c.fillRect(d-open,y+bodyH*.12,open*2,bodyH*.84);c.globalAlpha=1;}
   }
   if(t.emblem){const ex=x+L*.5,ey=y+bodyH*.72;c.fillStyle='#c9a24a';c.beginPath();c.arc(ex,ey,bodyH*.12,0,Math.PI*2);c.fill();c.strokeStyle='#1f3a70';c.lineWidth=bodyH*.02;c.stroke();}
-  if(isLoco){ // ももたろうの印
+  if(isLoco&&t.mark==='thunder'){ // レッドサンダーの印：赤い いなずま
+    const ex=x+L*.55,ey=y+bodyH*.36,r=bodyH*.16;c.fillStyle='#d4262d';c.beginPath();c.moveTo(ex+r*.3,ey-r);c.lineTo(ex-r*.5,ey+r*.1);c.lineTo(ex,ey+r*.1);c.lineTo(ex-r*.3,ey+r);c.lineTo(ex+r*.5,ey-r*.15);c.lineTo(ex,ey-r*.15);c.closePath();c.fill();
+  }
+  else if(isLoco){ // ももたろうの印
     const ex=x+L*.55,ey=y+bodyH*.36;c.fillStyle='#f6a7b0';c.beginPath();c.arc(ex,ey,bodyH*.13,0,Math.PI*2);c.fill();
     c.fillStyle='#5aa84a';c.beginPath();c.ellipse(ex-bodyH*.08,ey+bodyH*.1,bodyH*.07,bodyH*.035,-.5,0,Math.PI*2);c.fill();
     c.strokeStyle='#ffffff99';c.lineWidth=2;for(let k=0;k<5;k++){c.beginPath();c.moveTo(x+L*.12+k*6,y+bodyH*.62);c.lineTo(x+L*.12+k*6,y+bodyH*.78);c.stroke();}
@@ -275,6 +288,9 @@ function drawCar(c,t,i,x,yRail,h,L,o){
     else if(t.front==='aero'||t.front==='duck'){const k=t.front==='aero'?1:.92;c.fillStyle=t.win;c.beginPath();c.moveTo(x+L-bodyH*1.95*k,y+bodyH*.1);c.quadraticCurveTo(x+L-bodyH*1.15*k,y+bodyH*.12,x+L-bodyH*.85*k,y+bodyH*.34);c.lineTo(x+L-bodyH*1.75*k,y+bodyH*.36);c.closePath();c.fill();c.fillStyle=o.light?'#fff6c8':'#d8d2b4';c.beginPath();c.ellipse(x+L-bodyH*(t.front==='aero'?.42:.5),y+bodyH*.66,bodyH*.09,bodyH*.035,.35,0,Math.PI*2);c.fill();}
     else if(t.front==='nose'){c.fillStyle=o.light?'#fff6c8':'#d8d2b4';c.beginPath();c.ellipse(x+L-bodyH*.55,y+bodyH*.72,bodyH*.08,bodyH*.03,.3,0,Math.PI*2);c.fill();c.fillStyle=t.win;c.beginPath();c.moveTo(x+L-bodyH*2.1,y+bodyH*.12);c.quadraticCurveTo(x+L-bodyH*1.2,y+bodyH*.14,x+L-bodyH*.9,y+bodyH*.36);c.lineTo(x+L-bodyH*1.9,y+bodyH*.38);c.closePath();c.fill();}
     else{
+      if(t.cab){c.fillStyle=t.cab;c.fillRect(x+L-bodyH*.85,y,bodyH*.85,bodyH);} // 813系：ステンレスの 車体に 赤い 運転台
+      if(t.mask){c.fillStyle=t.mask;c.fillRect(x+L-bodyH*.3,y+bodyH*.1,bodyH*.3,bodyH*.62);} // DENCHA：黒い 前の 顔
+      if(t.face){const fx=x+L-bodyH*.62;c.fillStyle=t.face;c.fillRect(fx,y,bodyH*.62,bodyH);c.fillStyle='#f4f1e4';for(let k=0;k<9;k++){c.beginPath();c.arc(fx+bodyH*.035,y+bodyH*(.06+k*.105),bodyH*.018,0,Math.PI*2);c.fill();}for(let k=1;k<6;k++){c.beginPath();c.arc(fx+bodyH*.035+k*bodyH*.1,y+bodyH*.05,bodyH*.018,0,Math.PI*2);c.fill();}c.fillStyle='#2b8be0';c.fillRect(fx+bodyH*.12,y+bodyH*.56,bodyH*.14,bodyH*.11);c.fillStyle=o.light?'#fff6c8':'#e6efe9';c.beginPath();c.arc(fx+bodyH*.22,y+bodyH*.8,bodyH*.065,0,Math.PI*2);c.fill();c.strokeStyle='#3a9a7a';c.lineWidth=bodyH*.015;c.stroke();} // 821系：まっ黒な 顔、ふちの LED の 点、青い CT の しるし、まるい ライト
       if(t.accent){c.fillStyle=t.accent;c.fillRect(x+L-bodyH*.62,y+bodyH*.5,bodyH*.62,bodyH*.16);if(t.accent2){c.fillStyle=t.accent2;c.fillRect(x+L-bodyH*.62,y+bodyH*.66,bodyH*.62,bodyH*.03);}}
       c.fillStyle=t.front==='slant'?'#1d2427':t.win;c.fillRect(x+L-bodyH*.26,y+bodyH*.14,bodyH*.26,bodyH*.34);
       c.fillStyle=o.light?'#fff6c8':'#d8d2b4';c.beginPath();c.arc(x+L-bodyH*.08,y+bodyH*.8,bodyH*.045,0,Math.PI*2);c.fill();
@@ -285,7 +301,7 @@ function drawCar(c,t,i,x,yRail,h,L,o){
   c.fillStyle='#394044';c.fillRect(x+L*.3,y+bodyH,L*.4,h*.1);
   if(isFront){c.fillStyle='#2b3134';c.beginPath();c.moveTo(x+L-bodyH*.35,y+bodyH);c.lineTo(x+L,y+bodyH);c.lineTo(x+L-bodyH*.05,yRail-h*.08);c.lineTo(x+L-bodyH*.35,yRail-h*.08);c.fill();}
   bogie(c,x+L*.17,yRail,h,o.ang);bogie(c,x+L*.83,yRail,h,o.ang);if(isLoco)bogie(c,x+L*.5,yRail,h,o.ang);
-  if(t.panto&&t.panto.includes(i)){panto(c,x+L*(isLoco?.25:.5),y,h,o.wireY);if(isLoco)panto(c,x+L*.75,y,h,o.wireY);}
+  if(t.panto&&t.panto.includes(i)){panto(c,x+L*(isLoco?.25:.5),y,h,o.wireY??(t.battery?y-h*.12:undefined));if(isLoco)panto(c,x+L*.75,y,h,o.wireY);}  // DENCHA は 架線の ない ところでは パンタグラフを たたむ
   if(t.diesel){c.fillStyle='#3b3f41';c.fillRect(x+L*.45,y-bodyH*.06,bodyH*.12,bodyH*.07);}
 }
 /* 先頭の鼻先を x=0 として、うしろ（マイナス方向）へ車両をならべる */
@@ -481,9 +497,9 @@ function tick(now){
   updateMotor(v,phase==='run'?notch:0);draw();
 }
 
-/* ---------- けしき（東へ すすむと 左。線路の山がわから見る）。広島・防府〜新山口・福山・倉敷〜岡山〜備前西市の街なか、内陸と岡山〜児島の山あい（上の町〜児島は海ぞい）、それ以外は瀬戸内の海ぞい ---------- */
-const TOWN=new Set(['新井口','西広島','横川','新白島','広島','天神川','向洋','海田市','三滝','安芸長束','下祇園','矢賀','防府','大道','四辻','新山口','東福山','福山','倉敷','中庄','庭瀬','北長瀬','岡山','大元','備前西市']);
-const INLAND=new Set(['安芸中野','中野東','瀬野','八本松','寺家','西条','西高屋','白市','入野','河内','本郷','妹尾','備中箕島','早島','久々原','茶屋町','植松','木見']);
+/* ---------- けしき（東へ すすむと 左。線路の山がわから見る）。広島・防府〜新山口・福山・倉敷〜岡山〜備前西市・博多〜福間・水巻〜小倉の街なか、内陸と岡山〜児島・福間〜水巻の山あい（上の町〜児島は海ぞい）、それ以外は瀬戸内の海ぞい ---------- */
+const TOWN=new Set(['新井口','西広島','横川','新白島','広島','天神川','向洋','海田市','三滝','安芸長束','下祇園','矢賀','防府','大道','四辻','新山口','東福山','福山','倉敷','中庄','庭瀬','北長瀬','岡山','大元','備前西市','博多','吉塚','箱崎','千早','香椎','和白','九産大前','福工大前','新宮中央','ししぶ','古賀','千鳥','福間','水巻','折尾','陣原','黒崎','八幡','スペースワールド','枝光','戸畑','九州工大前','西小倉','小倉']);
+const INLAND=new Set(['安芸中野','中野東','瀬野','八本松','寺家','西条','西高屋','白市','入野','河内','本郷','妹尾','備中箕島','早島','久々原','茶屋町','植松','木見','東福間','東郷','赤間','教育大前','海老津','遠賀川']);
 /* 東海道新幹線の車窓（2026-10-05）：本物で富士山が見える 三島〜新富士・新横浜〜小田原は 富士山、浜名湖が見える 浜松〜豊橋は 湖。どちらも トンネルなし、かべは ひくい（JR東海ツアーズ 東海道新幹線の座席） */
 const FUJI=new Set(['三島|新富士','小田原|新横浜']),LAKE=new Set(['浜松|豊橋']),pair=(a,b)=>[a.id,b.id].sort().join('|');
 function sceneFor(from,to,line){if(line.track)return FUJI.has(pair(from,to))?'fuji':LAKE.has(pair(from,to))?'lake':'shin';if(TOWN.has(from.id)&&TOWN.has(to.id))return 'town';if(['kabe','geibi','gantoku','seiryu'].includes(line.id)||INLAND.has(from.id)||INLAND.has(to.id))return 'hills';return 'sea';}
@@ -496,7 +512,7 @@ function draw(){
   let g=c.createLinearGradient(0,0,0,H*.55);g.addColorStop(0,'#8ec5e6');g.addColorStop(1,'#d9edf5');c.fillStyle=g;c.fillRect(0,0,W,H);
   c.fillStyle='#ffffffcc';for(let k=0;k<6;k++){const px=((k*420+s*sc*.03)%(W+400))-200,py=H*(.08+(k%3)*.07);cloud(c,px,py,H*.05);}
   ({sea,hills,town,shin:hills,fuji,lake:sea})[trip.scene](c,sc);
-  const wireY=yRail-hC*1.22-hC*.42,electric=!['geibi','gantoku','seiryu'].includes(trip.line.id); // 芸備線・岩徳線・錦川清流線は非電化
+  const wireY=yRail-hC*1.22-hC*.42,electric=!['geibi','gantoku','seiryu','kashii'].includes(trip.line.id); // 芸備線・岩徳線・錦川清流線・香椎線は非電化
   if(electric){c.strokeStyle='#5e6a6e';c.lineWidth=Math.max(2,hC*.05);const p0=Math.floor((s-40)/50)*50;
     for(let m=p0-100;m<s+W/sc+100;m+=50){const x=wx(m);if(x<-20||x>W+20)continue;c.beginPath();c.moveTo(x,yRail-hC*.1);c.lineTo(x,wireY-hC*.3);c.lineTo(x+hC*.5,wireY-hC*.3);c.stroke();}
     c.strokeStyle='#39424599';c.lineWidth=1.2;c.beginPath();c.moveTo(0,wireY);c.lineTo(W,wireY);c.moveTo(0,wireY-hC*.3);c.lineTo(W,wireY-hC*.3);c.stroke();}
@@ -588,7 +604,7 @@ function choose(){
   for(const t of TRAINS){
     const have=trip.owned.includes(t.id),other=have&&!rideable(t),card=trip.cards.find(c=>c.id===t.id),b=document.createElement('button');
     b.className='drive-train '+(have?(other?'other-track':'ok'):'locked')+(t.id===cur.id?' current':'');b.disabled=!have||other;b.dataset.train=t.id;
-    b.innerHTML=`<canvas aria-hidden="true"></canvas><span class="drive-train-body"><small>${have?esc(t.reading):'？？？'}</small><b>${have?esc(t.name):'？？？？'}</b><span>${other?`${t.track||'ざいらいせん'}の せんろで はしれるよ`:have?(t.id===cur.id?'いま えらんでいる でんしゃ':'▶ これで はしる'):`${esc(card?card.station:'')}えきで のれるように なるよ`}</span></span>`;
+    b.innerHTML=`<canvas aria-hidden="true"></canvas><span class="drive-train-body"><small>${have?esc(t.reading):'？？？'}</small><b>${have?esc(t.name):'？？？？'}</b><span>${other?`${t.track||'ざいらいせん'}の せんろで はしれるよ`:have?(t.id===cur.id?'いま えらんでいる でんしゃ':'▶ これで はしる'):card&&card.first&&card.first!==true?`${esc(root.RailRoutes?.lines.find(l=>l.id===card.first)?.name||'')}を かいつうすると のれるよ`:`${esc(card?card.station:'')}えきで のれるように なるよ`}</span></span>`;
     b.onclick=()=>{trip.onTrain(t.id);start(t.id);};g.appendChild(b);requestAnimationFrame(()=>thumb(b.querySelector('canvas'),t,!have));
   }
 }
