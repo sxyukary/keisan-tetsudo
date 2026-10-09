@@ -33,6 +33,10 @@ main{max-width:1500px;padding:4px 24px 12px;display:flex;flex-direction:column;g
 .mode-tabs{width:max-content;max-width:100%;margin:4px auto 0;border-radius:999px;padding:3px}
 .mode-tabs button{flex:none;min-height:36px;padding:5px 17px;border-radius:999px;font-size:13px}
 .exercise{width:100%;display:flex;flex-direction:column;align-items:center}
+.exercise.special .equation{padding:2px 14px;box-shadow:0 0 0 4px #ffb23e;border-radius:16px}
+.exercise.special #feedback{color:#b35f00;font-weight:800}
+.game .exercise.called{animation:called .45s ease-in-out 3}
+@keyframes called{50%{box-shadow:0 0 0 6px #ffb23e,0 12px 28px #16323c0d}}
 .equation{font-size:clamp(44px,5.8vw,68px);margin:4px 0 0;gap:18px;line-height:1.2}
 output{min-width:95px;padding:3px 8px;border-radius:15px}
 #feedback{min-height:20px;margin:3px 0 8px;font-size:13px}
@@ -613,7 +617,9 @@ body.game::after{content:"";flex:0 0 14px;border-top:3px solid #fff;background:#
  .game .directions .direction-choice:only-child{grid-column:1/-1}
  .game #use-credit{grid-area:credit}
  .game .mode-tabs button{min-height:40px;font-size:14px}
- .game .quiz-start{display:block;width:100%;min-height:60px;margin:0;border-radius:16px;background:var(--go);color:#fff;font-size:21px;letter-spacing:.04em;box-shadow:0 4px 0 var(--go-deep)}
+ .game .quiz-start{display:block;width:100%;min-height:60px;margin:0;padding:6px 10px;border-radius:16px;background:var(--go);color:#fff;font-size:21px;line-height:1.25;letter-spacing:.04em;box-shadow:0 4px 0 var(--go-deep)}
+ .game .quiz-start small{display:block;font-size:14px;letter-spacing:.08em;opacity:.9}
+ .game .quiz-start.long{font-size:18px;letter-spacing:0}
  .game .quiz-start:active{transform:translateY(3px);box-shadow:0 1px 0 var(--go-deep)}
  .game:not(.quiz) .exercise{display:none}
  .game.quiz header,.game.quiz .world,.game.quiz .travel-panel{display:none}
@@ -716,7 +722,7 @@ body.game::after{content:"";flex:0 0 14px;border-top:3px solid #fff;background:#
 .people-section h4{margin:16px 0 4px;font-size:15px}
 .who-now{padding:2px 12px;border-radius:999px;border:2px solid var(--who)}
 .kind-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px}
-.kind-list fieldset{margin:0;padding:8px 12px;border:1px solid #dae2d3;border-radius:12px}
+.kind-list fieldset{min-width:0;margin:0;padding:8px 12px;border:1px solid #dae2d3;border-radius:12px}
 .kind-list legend{padding:0 4px;font-weight:800}
 .kind-list label{display:flex;align-items:center;gap:8px;min-height:40px}
 .kind-list input{width:22px;height:22px;flex:none}
@@ -730,7 +736,7 @@ body.game::after{content:"";flex:0 0 14px;border-top:3px solid #fff;background:#
 #guest-clear{margin-top:10px}
 .kind-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
 .game .mode-tabs.many button{padding-left:4px;padding-right:4px;white-space:nowrap}
-@media(max-width:600px){.game .mode-tabs.many button{font-size:12px;letter-spacing:0}}
+@media(max-width:600px){.game .mode-tabs.many{flex-wrap:wrap;border-radius:20px}.game .mode-tabs.many button{flex:1 1 auto;font-size:12px;letter-spacing:0}}
 /* きゅうけい: the note 5 minutes before, and the rest screen (a train sleeping in the depot, the time left as a bar). */
 .rest-note{margin:0;padding:6px 14px;border-radius:999px;background:#fff1d0;color:var(--ink,#193d47);font-size:15px;font-weight:800;text-align:center}
 .rest-note[hidden]{display:none}
@@ -772,6 +778,8 @@ body.game::after{content:"";flex:0 0 14px;border-top:3px solid #fff;background:#
 @media(max-width:600px) and (orientation:portrait){.game.quiz .look-stage{width:clamp(150px,3.9em,220px)}}
 .game .exercise.look-big output,.game .exercise.look-big .keypad{display:none}
 .game .exercise.look-big .equation{width:100%;padding:8px}
+/* みっつの けいさん: three numbers need the whole width */
+.game .exercise.three .equation{width:100%;padding-left:8px;padding-right:8px;gap:min(10px,1.2vw)}.game .exercise.three #question{font-size:.86em}
 .game .exercise.look-big #question{display:flex;justify-content:center;width:100%}
 .game .exercise.look-big .look-stage{width:min(100%,640px,calc((100dvh - 230px) * 1.6));aspect-ratio:1.6}
 .game .exercise.look-big .look-train{top:8cqw}

@@ -416,7 +416,9 @@ function pickVoice(){try{const vs=speechSynthesis.getVoices().filter(v=>/^ja/i.t
 if('speechSynthesis' in root){pickVoice();speechSynthesis.onvoiceschanged=pickVoice;}
 // 読み上げで読み方やアクセントが変わる駅は、routes.js の say（読み上げ用の表記）を使う
 const spoken=st=>st.say||st.reading;
-function say(text){if(!soundOn||!('speechSynthesis' in root))return;try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang='ja-JP';if(jaVoice)u.voice=jaVoice;u.rate=.92;u.pitch=1.05;speechSynthesis.speak(u);}catch(e){}}
+// `then` (optional) runs a moment after this reading ends; not if another reading has taken its place. Safari may miss onend, so a long timer is the fallback.
+let sayId=0;
+function say(text,then){const id=++sayId;if(!soundOn||!('speechSynthesis' in root)){then?.();return;}let done=false;const end=()=>{if(done||id!==sayId)return;done=true;then&&setTimeout(()=>{if(id===sayId)then();},700);};try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang='ja-JP';if(jaVoice)u.voice=jaVoice;u.rate=.92;u.pitch=1.05;u.onend=u.onerror=end;speechSynthesis.speak(u);if(then)setTimeout(end,6000);}catch(e){end();}}
 
 /* ---------- はしる ---------- */
 const END=220,VMAX=25,ACC=5,BRK=5,STOP_OK=6; // m, m/s, m/s²。停止位置の手前 STOP_OK m 以内で とうちゃく
