@@ -388,6 +388,28 @@ body.game{padding-top:56px}
 .game .forward .direction-detail{color:var(--amber);font-size:12px}
 .game .direction-choice.return{border:1px solid var(--rim);border-left:1px solid var(--rim);background:#f4f0e5;color:#55686d}
 .game .direction-choice.return .direction-name{font-size:18px}
+/* Plan B (2026-10-11): a section not opened yet is a large bright sign (あたらしい えき！, the reading large and the kanji small); opened ones are small below. */
+.game .directions .direction-choice.new{position:relative;min-height:84px;margin-top:9px;grid-template-columns:48px minmax(0,1fr) auto;border:3px solid var(--route-color);background:#fffdf4;color:var(--ink);box-shadow:0 4px 0 color-mix(in srgb,var(--route-color) 55%,#000)}
+.game .directions .direction-choice.new:active{transform:translateY(3px);box-shadow:0 1px 0 color-mix(in srgb,var(--route-color) 55%,#000)}
+.game .directions .direction-choice.new.active{background:#fff4dd;box-shadow:0 0 0 4px var(--amber),0 4px 0 color-mix(in srgb,var(--route-color) 55%,#000)}
+.game .direction-ribbon{position:absolute;top:-12px;left:12px;padding:2px 10px;border-radius:999px;background:var(--amber);color:#3a2600;font-size:12px;font-weight:900;letter-spacing:.04em;box-shadow:0 2px 0 #c47f0c}
+.game .new .direction-arrow,.game .direction-mini .direction-arrow{background:var(--route-color);color:#fff;border-radius:50%}
+.game .new .direction-arrow{width:44px;height:44px;font-size:30px}
+.game .new .direction-name{font-size:26px;white-space:normal}
+.game .direction-kanji{margin-left:6px;font-size:13px;font-weight:700;letter-spacing:0;opacity:.75}
+.game .new .direction-name small{color:#45585c;font-size:13px}
+.game .new .direction-detail{color:#c0451a;font-size:14px;font-weight:800}
+.game .direction-small{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.game .direction-small p{width:100%;margin:2px 0 0;color:#687973;font-size:13px;font-weight:700}
+.game .directions .direction-mini{flex:0 1 auto;width:auto;min-width:0;display:flex;align-items:center;gap:6px;min-height:46px;padding:5px 12px 5px 6px;border:2px solid var(--rim);border-radius:999px;background:#f4f0e5;color:#2f4744;text-align:left;line-height:1.15}
+.game .directions .direction-mini:active{transform:translateY(2px)}
+.game .directions .direction-mini.active{border-color:var(--amber);background:#fff4dd}
+.game .directions .direction-mini .direction-arrow{width:30px;height:30px;font-size:19px}
+.game .directions .direction-mini .direction-name{font-size:16px;letter-spacing:0;white-space:normal}
+.game .directions .direction-mini .direction-kanji{font-size:11px}
+.game .directions .direction-mini.hint{border-color:var(--route-color);background:#fff}
+.game .directions .direction-mini em{display:block;font-style:normal;font-size:12px;font-weight:800;color:#c0451a}
+@media(max-width:600px) and (orientation:portrait){.game .directions .direction-choice.new,.game .direction-small{grid-column:1/-1}.game .directions .direction-choice.new{min-height:70px;grid-template-columns:40px minmax(0,1fr) auto}.game .new .direction-arrow{width:38px;height:38px;font-size:26px}.game .new .direction-name{font-size:22px}.game .new .direction-detail{grid-column:3;grid-row:1;justify-self:end;font-size:13px}.game .directions .direction-choice.new{padding-top:12px}}
 
 /* Five answers move the train along the track to the next station. */
 .game .journey-progress{flex-direction:column;align-items:stretch;gap:2px;padding:8px 14px 6px;border-radius:14px;background:#f4f0e5;font-size:16px}
@@ -549,6 +571,18 @@ body.game::after{content:"";flex:0 0 14px;border-top:3px solid #fff;background:#
 .drive-stage{position:relative;border-radius:16px;overflow:hidden;background:#cfe4ef;border:1px solid var(--rim)}
 .drive-stage canvas{display:block;width:100%;height:clamp(190px,38dvh,420px)}
 .drive-led{position:absolute;left:10px;top:10px;display:flex;align-items:center;gap:9px;max-width:calc(100% - 20px);padding:6px 11px;border-radius:8px;background:#121719;color:var(--amber);font-weight:900;font-size:clamp(14px,1.9vw,18px);letter-spacing:.12em;box-shadow:inset 0 0 0 2px #2b3336}
+.drive-battery{position:absolute;right:10px;top:10px;display:grid;justify-items:center;gap:2px;padding:6px 10px;border-radius:10px;background:#f4f7f2ee;border:2px solid #cfd8cc;color:#1f3a2a;font-weight:800;font-size:13px;box-shadow:0 2px 6px #16323c22}
+.drive-battery[hidden]{display:none}
+.bat-row{display:flex;align-items:center;gap:6px;min-height:34px}
+.bat-arrow{font-style:normal;color:#5cc93a;font-weight:900;letter-spacing:-.05em;font-size:18px}
+.bat-arrow.in,.bat-arrow.out{animation:bat-flow .8s linear infinite}
+@keyframes bat-flow{0%{opacity:.35}50%{opacity:1}100%{opacity:.35}}
+.bat-cell{position:relative;display:block;width:22px;height:32px;border:2px solid #2f4a36;border-radius:4px;background:#fff;overflow:hidden}
+.bat-cell::before{content:'';position:absolute;left:5px;right:5px;top:-5px;height:4px;background:#2f4a36;border-radius:2px 2px 0 0}
+.bat-cell i{position:absolute;left:0;right:0;bottom:0;background:#5cc93a;transition:height .3s}
+.bat-cell b{position:absolute;inset:0;display:grid;place-items:center;font-size:15px;color:#fff;text-shadow:0 0 2px #2f4a36}
+.drive-battery p{margin:0;font-size:12px;white-space:nowrap}
+.drive-battery.charging{border-color:#5cc93a}
 .drive-led span{font-size:11px;color:#8fd48f;letter-spacing:.06em;border:1px solid #8fd48f66;padding:2px 6px;border-radius:4px;white-space:nowrap}
 .drive-led b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .drive-console{display:grid;grid-template-columns:minmax(130px,180px) minmax(0,1fr) minmax(190px,250px);gap:10px}
@@ -664,6 +698,8 @@ body.game::after{content:"";flex:0 0 14px;border-top:3px solid #fff;background:#
  .drive-stage{flex:1;min-height:110px}
  .drive-stage canvas{position:absolute;inset:0;height:100%}
  .drive-led{left:6px;top:6px;padding:4px 8px;font-size:13px;gap:6px}
+ .drive-battery{right:6px;top:6px;padding:3px 7px;font-size:11px}
+ .drive-battery p{font-size:10px}
  .drive-console{flex:none;gap:6px}
  .drive-mid{padding:6px 8px;gap:4px}
  .drive-track{height:44px;margin:0 32px}
@@ -794,3 +830,4 @@ body.game::after{content:"";flex:0 0 14px;border-top:3px solid #fff;background:#
 @keyframes fill-sit{from{opacity:0;transform:translateY(-6cqw)}to{opacity:1;transform:none}}
 @media(prefers-reduced-motion:reduce){.look-bench b.fill-new{animation:none}}
 .exercise.look #feedback{word-break:keep-all}
+.drive-stage:has(.drive-battery:not([hidden])) .drive-led{max-width:calc(100% - 160px)}
