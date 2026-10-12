@@ -421,7 +421,9 @@ let sayId=0;
 function say(text,then){const id=++sayId;if(!soundOn||!('speechSynthesis' in root)){then?.();return;}let done=false;const end=()=>{if(done||id!==sayId)return;done=true;then&&setTimeout(()=>{if(id===sayId)then();},700);};try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang='ja-JP';if(jaVoice)u.voice=jaVoice;u.rate=.92;u.pitch=1.05;u.onend=u.onerror=end;speechSynthesis.speak(u);if(then)setTimeout(end,6000);}catch(e){end();}}
 
 /* ---------- はしる ---------- */
-const END=220,VMAX=25,ACC=5,BRK=5,STOP_OK=6; // m, m/s, m/s²。停止位置の手前 STOP_OK m 以内で とうちゃく
+const BASE=220,PASS_GAP=45,VMAX=25,ACC=5,BRK=5,STOP_OK=6; // m, m/s, m/s²。停止位置の手前 STOP_OK m 以内で とうちゃく
+/* のぞみ（2026-10-12）：とばす駅 1つにつき PASS_GAP m 長く走り（9駅とばす 名古屋→新横浜で 約30秒）、とちゅうの駅は 短いホームを「つうか」する */
+let END=BASE;const passAt=i=>43+(END-128)*(i+.5)/trip.nozomi.length;
 let cur=null,trip=null,phase='closed',s=0,v=0,notch=0,auto=false,doorT=1,doorTarget=1,up=0,bat=75,batWay='',lastJoint=0,lastChuff=0,near=false,smoke=[],raf=0,lastT=0,timers=[];
 let cv,ctx,W=0,H=0;
 const later=(fn,ms)=>timers.push(setTimeout(fn,ms));
@@ -451,12 +453,12 @@ function resetRun(){
   up=chargeAt()===0&&cur.battery?1:0;bat=chargeAt()===0?90:75;batWay=null;$('drive-battery').hidden=!cur.battery;
   phase='ready';s=0;v=0;notch=0;auto=false;doorT=1;doorTarget=1;lastJoint=0;lastChuff=0;near=false;smoke=[];
   $('drive-console').hidden=false;$('drive-arrive').hidden=true;$('drive-door').hidden=false;$('drive-door').disabled=false;$('drive-change').hidden=false;$('drive-skip').hidden=false;
-  notchUI(false);setMsg('ドアを しめて しゅっぱつ しよう！');$('drive-led').textContent=`${trip.to.reading} ゆき`;$('drive-kind').textContent=cur.kind;
+  notchUI(false);setMsg('ドアを しめて しゅっぱつ しよう！');$('drive-led').textContent=`${trip.nozomi?'のぞみ ':''}${trip.to.reading} ゆき`;$('drive-kind').textContent=cur.kind;
   document.querySelector('#drive .n-brake').classList.remove('hint');
 }
 function start(id){
   cur=rideable(byId[id])?byId[id]:byId[STARTERS[track()]||STARTER];showScreen('run');resize();resetRun();makeMotor(cur);
-  say(`この でんしゃは、${spoken(trip.to)} ゆき です。`);
+  say(trip.nozomi?`この でんしゃは、のぞみごう、${spoken(trip.to)} ゆき です。${trip.nozomi.length?'とちゅうの えきには とまりません。':''}`:`この でんしゃは、${spoken(trip.to)} ゆき です。`); // のぞみは 本物どおり「のぞみ号」と 区切る（「のぞみ こくら」が 駅名に 聞こえないように。2026-10-12 ゆかりさん）
   if(!raf){lastT=performance.now();raf=requestAnimationFrame(tick);}
 }
 function arrive(kind){
@@ -494,6 +496,7 @@ function tick(now){
     if(cur.steam&&v>.5&&s-lastChuff>=2.2){lastChuff=s;hiss(.16,notch===1?.5:.18,0,1100,420);if(notch===1)smoke.push({x:s-2.9,y:0,r:H*.025,g:H*.07,life:1,dark:true});} // シュッシュッと 黒い けむり
     const r=END-s,hintBrake=!auto&&notch!==-1&&v>3&&need>=r-40;
     document.querySelector('#drive .n-brake').classList.toggle('hint',hintBrake);
+    if(trip.nozomi&&!near){const i=trip.nozomi.findIndex((st,k)=>Math.abs(s-passAt(k))<30),led=i<0?`のぞみ ${trip.to.reading} ゆき`:`${trip.nozomi[i].reading} つうか`;if($('drive-led').textContent!==led)$('drive-led').textContent=led;}
     if(!near&&r<110){near=true;$('drive-led').textContent=`まもなく ${trip.to.reading}`;say(`まもなく、${spoken(trip.to)} です。`);}
     if(auto)setMsg('じどうブレーキが はたらいているよ');
     else if(hintBrake)setMsg('そろそろ ブレーキ！');
@@ -539,13 +542,13 @@ function draw(){
   if(trip.line.track)shinkansen(c,wx,hC,yRail,trip.scene);
   c.save();c.translate(frontX,0);c.scale(-1,1);drawTrain(c,cur,yRail,hC,{ang:-s/.43,door:doorT,light:true,wireY:electric?wireY:undefined,chargeY:wireY,up});c.restore();
   for(const p of smoke){c.fillStyle=p.dark?`rgba(55,55,58,${.5*p.life})`:`rgba(${cur.steam?'235,235,235':'90,90,90'},${(cur.steam?.6:.35)*p.life})`;c.beginPath();c.arc(wx(p.x),yRail-hC*1.3-p.y,p.r,0,Math.PI*2);c.fill();}
-  platform(c,wx,0,trip.from,trip.to,hC,yRail);platform(c,wx,END,trip.to,trip.next,hC,yRail);
+  platform(c,wx,0,trip.from,trip.to,hC,yRail);platform(c,wx,END,trip.to,trip.next,hC,yRail);(trip.nozomi||[]).forEach((st,i)=>platform(c,wx,passAt(i),st,null,hC,yRail,true));
 }
 /* 新幹線（2026-10-04）：むこうがわの防音壁と、トンネル（区間のまんなかあたり）。トンネルの中は暗く、入口は コンクリートの坑口 */
 function shinkansen(c,wx,hC,yRail,scene){
   const view=scene!=='shin',wallTop=yRail-hC*(view?.16:.5);c.fillStyle='#c9cdcf';c.fillRect(0,wallTop,W,yRail-wallTop);c.fillStyle='#b3b8bb';c.fillRect(0,wallTop,W,hC*.06);
   c.strokeStyle='#a9aeb1';c.lineWidth=1;const step=hC*.9,off=((s*(hC*5/20))%step+step)%step;for(let x=off-step;x<W+step;x+=step){c.beginPath();c.moveTo(x,wallTop+hC*.06);c.lineTo(x,yRail);c.stroke();}
-  for(const [m0,m1] of view?[]:[[70,135]]){const x0=wx(m1),x1=wx(m0);if(x1<-50||x0>W+50)continue;
+  for(const [m0,m1] of view||trip.nozomi?.length?[]:[[70,135]]){const x0=wx(m1),x1=wx(m0);if(x1<-50||x0>W+50)continue;
     c.fillStyle='#2a2f33';c.fillRect(x0,0,x1-x0,yRail);c.fillStyle='#f3d27a55';for(let m=m0+8;m<m1;m+=16){const x=wx(m);c.fillRect(x-3,H*.25,6,3);}
     for(const x of [x0,x1]){c.fillStyle='#9ea4a7';c.fillRect(x-hC*.18,0,hC*.36,yRail);c.fillStyle='#878d90';c.fillRect(x-hC*.18,yRail-hC*1.9,hC*.36,hC*.12);}}
 }
@@ -592,18 +595,18 @@ function town(c,sc){
   for(let k=0;k<9;k++){const px=loop(k,230,.45,sc);c.fillStyle='#5f8c55';c.beginPath();c.arc(px,H*.7,H*.035,0,Math.PI*2);c.fill();}
 }
 function cloud(c,x,y,r){c.beginPath();c.arc(x,y,r,0,Math.PI*2);c.arc(x+r*1.1,y-r*.4,r*1.2,0,Math.PI*2);c.arc(x+r*2.3,y,r*.9,0,Math.PI*2);c.fill();}
-function platform(c,wx,stop,st,next,hC,yRail){
-  const a=wx(stop+18),b=wx(stop-70);if(Math.max(a,b)<-400||Math.min(a,b)>W+400)return;
+function platform(c,wx,stop,st,next,hC,yRail,pass=false){
+  const a=wx(stop+(pass?15:18)),b=wx(stop-(pass?25:70));if(Math.max(a,b)<-400||Math.min(a,b)>W+400)return;
   const x0=Math.min(a,b),x1=Math.max(a,b),top=yRail-hC*.3,font='-apple-system,"Hiragino Sans",sans-serif';
   c.fillStyle='#d8d4ca';c.fillRect(x0,top,x1-x0,yRail-top+H);c.fillStyle='#f2c230';c.fillRect(x0,top+hC*.06,x1-x0,hC*.06);c.fillStyle='#b9b3a6';c.fillRect(x0,top,x1-x0,hC*.04);
-  const sx=wx(stop);c.fillStyle='#2b3336';c.fillRect(sx-1.5,top-hC*.55,3,hC*.55); // 停止位置目標
+  const sx=wx(stop);if(!pass){c.fillStyle='#2b3336';c.fillRect(sx-1.5,top-hC*.55,3,hC*.55); // 停止位置目標
   c.fillStyle='#fff';c.strokeStyle='#e0572e';c.lineWidth=2.5;c.beginPath();c.rect(sx-hC*.17,top-hC*.85,hC*.34,hC*.32);c.fill();c.stroke();
-  c.fillStyle='#e0572e';c.font=`900 ${hC*.22}px system-ui`;c.textAlign='center';c.textBaseline='middle';c.fillText('3',sx,top-hC*.69);
+  c.fillStyle='#e0572e';c.font=`900 ${hC*.22}px system-ui`;c.textAlign='center';c.textBaseline='middle';c.fillText('3',sx,top-hC*.69);}
   const bw=Math.min(hC*2.6,W*.3),bh=hC*.95,by=top-hC*1.35,nx=wx(stop+Math.min(9,(W*.37-bw/2-8)/(wx(stop)-wx(stop+1)))); // 駅名標（縦長の画面では小さくして、画面の左からはみ出さない位置へ寄せる）
   c.fillStyle='#2b3336';c.fillRect(nx-bw*.35,by+bh,4,top-by-bh);c.fillRect(nx+bw*.35,by+bh,4,top-by-bh);
   c.fillStyle='#fff';c.fillRect(nx-bw/2,by,bw,bh);c.strokeStyle='#9aa4a6';c.lineWidth=1;c.strokeRect(nx-bw/2,by,bw,bh);
   c.fillStyle=trip.line.color;c.fillRect(nx-bw/2,by+bh*.62,bw,bh*.14);
-  c.fillStyle='#193d47';c.textBaseline='alphabetic';c.font=`800 ${Math.min(bh*.36,bw*.9/Math.max(3,st.reading.length))}px ${font}`;c.fillText(st.reading,nx,by+bh*.45);
+  c.fillStyle='#193d47';c.textAlign='center';c.textBaseline='alphabetic';c.font=`800 ${Math.min(bh*.36,bw*.9/Math.max(3,st.reading.length))}px ${font}`;c.fillText(st.reading,nx,by+bh*.45);
   c.font=`700 ${bh*.14}px ${font}`;c.fillText(st.name,nx,by+bh*.58);
   if(next){c.textAlign='left';c.fillText('← '+next.reading,nx-bw*.47,by+bh*.93);}
 }
@@ -646,7 +649,7 @@ function wire(){
 }
 /* 開通した区間を走る。from→to、next は to の先の駅（駅名標の矢印用）。owned は乗れる車両の id */
 function open(o){
-  wire();loadSfx();$('drive-heading').textContent=o.trial?'おためし うんてん':o.ride?'しゅっぱつ！':'かいつう！';trip={...o,scene:sceneFor(o.from,o.to,o.line)};$('drive-title').innerHTML=`<ruby>${esc(o.from.name)}<rt>${esc(o.from.reading)}</rt></ruby><i style="background:${o.line.color}"></i><ruby>${esc(o.to.name)}<rt>${esc(o.to.reading)}</rt></ruby>`;
+  wire();loadSfx();$('drive-heading').textContent=o.trial?'おためし うんてん':o.nozomi?'のぞみで しゅっぱつ！':o.ride?'しゅっぱつ！':'かいつう！';const path=[o.from,...(o.nozomi||[]),o.to],scenes=path.slice(1).map((t,i)=>sceneFor(path[i],t,o.line));trip={...o,nozomi:o.nozomi||null,scene:['fuji','lake'].find(x=>scenes.includes(x))||scenes[0]};END=BASE+PASS_GAP*(trip.nozomi?.length||0);$('drive-title').innerHTML=`<ruby>${esc(o.from.name)}<rt>${esc(o.from.reading)}</rt></ruby><i style="background:${o.line.color}"></i><ruby>${esc(o.to.name)}<rt>${esc(o.to.reading)}</rt></ruby>`;
   $('drive-from').textContent=o.from.reading;$('drive-to').textContent=o.to.reading;$('drive-arrive-title').innerHTML=`<ruby>${esc(o.to.name)}<rt>${esc(o.to.reading)}</rt></ruby> に とうちゃく！`;
   if(!$('drive').open)$('drive').showModal();start(o.train);
 }

@@ -409,7 +409,12 @@ body.game{padding-top:56px}
 .game .directions .direction-mini .direction-kanji{font-size:11px}
 .game .directions .direction-mini.hint{border-color:var(--route-color);background:#fff}
 .game .directions .direction-mini em{display:block;font-style:normal;font-size:12px;font-weight:800;color:#c0451a}
+/* のぞみ（2026-10-12）：新幹線を ぜんぶ 開通したら出る、金色の札の 大きいボタン */
+.game .directions .direction-choice.nozomi{background:#f3f6ff}
+.game .directions .direction-choice.nozomi .direction-ribbon{background:#b8860b;color:#fff;box-shadow:0 2px 0 #7a5a07}
 @media(max-width:600px) and (orientation:portrait){.game .directions .direction-choice.new,.game .direction-small{grid-column:1/-1}.game .directions .direction-choice.new{min-height:70px;grid-template-columns:40px minmax(0,1fr) auto}.game .new .direction-arrow{width:38px;height:38px;font-size:26px}.game .new .direction-name{font-size:22px}.game .new .direction-detail{grid-column:3;grid-row:1;justify-self:end;font-size:13px}.game .directions .direction-choice.new{padding-top:12px}}
+/* スマホで ボタンが多い駅（広島など、2026-10-12 案A）：のぞみの ボタンは 2つ 横に ならべて 小さく（「あと ◯もん」は 進み具合の 欄に あるので 出さない）、開通済みの 小さい ボタンは 2列に */
+@media(max-width:600px) and (orientation:portrait){.game .directions .direction-choice.new.nozomi{grid-column:auto;grid-template-columns:30px minmax(0,1fr);column-gap:5px;min-height:62px;padding:12px 6px 6px}.game .new.nozomi .direction-arrow{width:30px;height:30px;font-size:20px}.game .new.nozomi .direction-name{font-size:18px}.game .new.nozomi .direction-kanji{font-size:11px}.game .new.nozomi .direction-name small{font-size:11px}.game .new.nozomi .direction-detail{display:none}.game .new.nozomi .direction-ribbon{left:6px;padding:1px 8px;font-size:11px}.game .direction-small{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.game .direction-small p{grid-column:1/-1}.game .directions .direction-mini{min-height:40px;padding:4px 8px 4px 4px;gap:4px}.game .directions .direction-mini .direction-arrow{width:26px;height:26px;font-size:16px;flex:none}.game .directions .direction-mini .direction-name{font-size:14px}.game .directions .direction-mini .direction-kanji{font-size:10px}}
 
 /* Five answers move the train along the track to the next station. */
 .game .journey-progress{flex-direction:column;align-items:stretch;gap:2px;padding:8px 14px 6px;border-radius:14px;background:#f4f0e5;font-size:16px}
@@ -545,6 +550,7 @@ body.game::after{content:"";flex:0 0 14px;border-top:3px solid #fff;background:#
 #stampbook .collection-lead{font-size:18px;font-weight:700;line-height:1.7;margin:10px 0 8px}
 .stamp-line h3{margin:22px 0 12px;padding-left:10px;border-left:8px solid var(--line);font-size:22px}
 .stamp-line h3 small{font-family:var(--num);font-size:15px;color:#5e7074}
+.stamp-note{margin:-6px 0 10px;font-size:14px;font-weight:700;color:#7a5a07}
 .stamp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(136px,1fr));gap:14px 12px}
 .stamp-slot{margin:0;text-align:center}
 .stamp-slot .stamp-inked{width:100%}
