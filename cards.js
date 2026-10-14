@@ -652,5 +652,43 @@
     "change": "Wikimedia提供の縮小画像（長辺1280px）を使用。トリミング・AI補正なし。",
     "photoDescription": "JR鹿児島本線枝光駅で撮影（2018-01-20）",
     "station": "小倉"
+  },
+  {
+    "id": "kuma800",
+    "name": "800系 くまモンアドベンチャー号",
+    "reading": "800けい くまモン アドベンチャーごう",
+    "category": "しんかんせん",
+    "image": "assets/kuma800.jpg",
+    "fact": "熊本の キャンペーンで、2026ねん7月18日から 10月12日まで はしった とくべつな 800けい。さきっぽの くろい ところは、くまモンの おはな なんだって。写真は 旅行で 博多駅で 会った U006編成。",
+    "factSource": "https://www.jrkyushu.co.jp/train/kumamoto-dc/special/adventure/",
+    "checked": "2026-10-13",
+    "credit": "家族撮影",
+    "sourceTitle": "家族撮影の くまモンアドベンチャー号.jpg",
+    "license": "家族提供写真",
+    "licenseUrl": "sources.html#family-photo",
+    "source": "sources.html#kuma800",
+    "change": "撮影者提供の写真を長辺1280pxへ縮小し、写っている人（乗務員・ほかのホームの人）にモザイク。撮影情報（位置情報など）を削除。トリミング・AI補正・描き換えなし。",
+    "photoDescription": "博多駅に停車中の800系U006編成「くまモンアドベンチャー号」の正面（2026年10月）",
+    "station": "熊本",
+    "track": "しんかんせん"
+  },
+  {
+    "id": "800",
+    "name": "800系 つばめ",
+    "reading": "800けい つばめ",
+    "category": "しんかんせん",
+    "image": "assets/800.jpg",
+    "fact": "九州新幹線だけを はしる 6両の しんかんせん。2004ねんに 新八代と 鹿児島中央の あいだで デビューしたよ。なかは 木の いすや のれんが ある わふうの つくり。写真は 熊本駅に 入る 鹿児島中央ゆきの つばめ（U001編成）。",
+    "factSource": "https://trafficnews.jp/post/89658",
+    "checked": "2026-10-13",
+    "credit": "MaedaAkihiko",
+    "sourceTitle": "Series800 U001.jpg",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "source": "https://commons.wikimedia.org/wiki/File:Series800_U001.jpg",
+    "change": "Wikimedia提供の縮小画像（長辺1280px）を使用。トリミング・AI補正なし。",
+    "photoDescription": "\"Tsubame\" No. 325 bound for Kagoshima Chuo by JR Kyushu 800 series U001 set entering Kumamoto station.",
+    "station": "鹿児島中央",
+    "track": "しんかんせん"
   }
 ];if(typeof module!=='undefined')module.exports=cards;else r.RailCards=cards;})(globalThis);
