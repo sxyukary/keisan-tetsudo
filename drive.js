@@ -35,6 +35,10 @@ const TRAINS=[
  {id:'doctoryellow',name:'ドクターイエロー',reading:'923がた',kind:'しんかんせん',cars:3,front:'duck',body:'#f3d21c',roof:'#e2c010',stripe:[{t:.56,h:.06,c:'#1f3f8f'},{t:.65,h:.02,c:'#1f3f8f'}],win:'#1b1f22',doors:1,doorsAtEnds:true,doorColor:'#ecc915',panto:[1],motor:'vvvf',track:'しんかんせん',vmax:270},
  {id:'n700s',name:'N700S',reading:'しんかんせん',kind:'しんかんせん',cars:3,front:'supreme',body:'#f7f8fa',roof:'#e3e7eb',stripe:[{t:.61,h:.07,c:'#1a3d9c'},{t:.725,h:.016,c:'#1a3d9c'},{t:.93,h:.07,c:'#c3c8cf'}],winY:.42,winH:.16,win:'#1d2329',doors:1,doorsAtEnds:true,doorColor:'#eef1f3',panto:[1],motor:'vvvf',track:'しんかんせん',vmax:300},
  {id:'e5',name:'はやぶさ',reading:'E5けい',kind:'しんかんせん',cars:3,front:'nose',body:'#f1f3f4',roof:'#0b9a74',stripe:[{t:0,h:.47,c:'#0b9a74'},{t:.47,h:.045,c:'#e5528c'}],win:'#1d2a2a',doors:1,doorsAtEnds:true,doorColor:'#e6e9ea',panto:[1],motor:'vvvf',track:'しんかんせん',vmax:320},
+ {id:'200',name:'200けい',reading:'しんかんせん',kind:'しんかんせん',cars:3,front:'zero',body:'#f1efe4',roof:'#dcd9cc',stripe:[{t:.22,h:.4,c:'#0e7a4c'},{t:.9,h:.07,c:'#0e7a4c'}],win:'#20262b',doors:1,doorsAtEnds:true,doorColor:'#ebe8dc',panto:[1],motor:'old',track:'しんかんせん',vmax:240},
+ {id:'e8',name:'つばさ',reading:'E8けい',kind:'しんかんせん',cars:3,front:'nose',body:'#f3f3f1',roof:'#4a3a8c',stripe:[{t:0,h:.44,c:'#4a3a8c'},{t:.44,h:.05,c:'#f0a02a'}],win:'#1d2230',doors:1,doorsAtEnds:true,doorColor:'#e8e8e6',panto:[1],motor:'vvvf',track:'しんかんせん',vmax:300},
+ {id:'e6',name:'こまち',reading:'E6けい',kind:'しんかんせん',cars:3,front:'nose',body:'#f2f3f4',roof:'#c8102e',stripe:[{t:0,h:.46,c:'#c8102e'},{t:.46,h:.035,c:'#9ea6ad'}],win:'#24191b',doors:1,doorsAtEnds:true,doorColor:'#e6e9ea',panto:[1],motor:'vvvf',track:'しんかんせん',vmax:320},
+ {id:'h5',name:'はやぶさ',reading:'H5けい',kind:'しんかんせん',cars:3,front:'nose',body:'#f1f3f4',roof:'#0b9a74',stripe:[{t:0,h:.47,c:'#0b9a74'},{t:.47,h:.045,c:'#8a5aa8'}],win:'#1d2a2a',doors:1,doorsAtEnds:true,doorColor:'#e6e9ea',panto:[1],motor:'vvvf',track:'しんかんせん',vmax:320},
  {id:'800',name:'つばめ',reading:'800けい',kind:'しんかんせん',cars:3,front:'aero',streak:true,body:'#f5f5f2',roof:'#7a1c28',stripe:[{t:0,h:.13,c:'#7a1c28'},{t:.8,h:.022,c:'#c4262e'}],swoop:'#c4262e',winY:.36,winH:.17,win:'#1f262c',doors:1,doorsAtEnds:true,doorColor:'#eeeeea',panto:[1],motor:'vvvf',track:'しんかんせん',vmax:260},
  {id:'kuma800',name:'くまモン',reading:'800けい',kind:'しんかんせん',cars:3,front:'aero',streak:true,nose:'#24272b',wrap:'kuma',body:'#f5f5f2',roof:'#7a1c28',stripe:[{t:0,h:.13,c:'#7a1c28'},{t:.8,h:.022,c:'#c4262e'}],swoop:'#c4262e',winY:.36,winH:.17,win:'#1f262c',doors:1,doorsAtEnds:true,doorColor:'#eeeeea',panto:[1],motor:'vvvf',track:'しんかんせん',vmax:260},
  {id:'813',name:'813けい',reading:'ふくおかの でんしゃ',kind:'ふつう',cars:3,front:'flat',body:'#c8c5bf',roof:'#9a9ea1',win:'#2a3034',doors:3,doorColor:'#d4262d',cab:'#d4262d',panto:[1],motor:'vvvf',vmax:120},
@@ -436,7 +440,7 @@ function say(text,then){const id=++sayId;if(!soundOn||!('speechSynthesis' in roo
 /* ---------- はしる ---------- */
 const BASE=220,PASS_GAP=45,VMAX=25,ACC=5,BRK=5,STOP_OK=6; // m, m/s, m/s²。停止位置の手前 STOP_OK m 以内で とうちゃく
 /* のぞみ（2026-10-12）・みずほ（九州新幹線、`express`、2026-10-14）：とばす駅 1つにつき PASS_GAP m 長く走り（9駅とばす 名古屋→新横浜で 約30秒）、とちゅうの駅は 短いホームを「つうか」する */
-let END=BASE;const passAt=i=>43+(END-128)*(i+.5)/trip.nozomi.length;
+let END=BASE;const passAt=i=>{const long=trip.seikanAt>=0?SEIKAN_LONG:0;return 43+(END-long-128)*(i+.5)/trip.nozomi.length+(long&&i>=trip.seikanAt?long:0);}; // 青函トンネルの区間だけ SEIKAN_LONG m 長い
 let cur=null,trip=null,phase='closed',s=0,v=0,notch=0,auto=false,doorT=1,doorTarget=1,up=0,bat=75,batWay='',lastJoint=0,lastChuff=0,near=false,smoke=[],raf=0,lastT=0,timers=[];
 let cv,ctx,W=0,H=0;
 const later=(fn,ms)=>timers.push(setTimeout(fn,ms));
@@ -530,20 +534,24 @@ function tick(now){
 }
 
 /* ---------- けしき（東へ すすむと 左。線路の山がわから見る）。広島・防府〜新山口・福山・倉敷〜岡山〜備前西市・博多〜福間・水巻〜小倉の街なか、内陸と岡山〜児島・福間〜水巻の山あい（上の町〜児島は海ぞい）、それ以外は瀬戸内の海ぞい ---------- */
-const TOWN=new Set(['新井口','西広島','横川','新白島','広島','天神川','向洋','海田市','三滝','安芸長束','下祇園','矢賀','防府','大道','四辻','新山口','東福山','福山','倉敷','中庄','庭瀬','北長瀬','岡山','大元','備前西市','博多','吉塚','箱崎','千早','香椎','和白','九産大前','福工大前','新宮中央','ししぶ','古賀','千鳥','福間','水巻','折尾','陣原','黒崎','八幡','スペースワールド','枝光','戸畑','九州工大前','西小倉','小倉']);
+const TOWN=new Set(['新井口','西広島','横川','新白島','広島','天神川','向洋','海田市','三滝','安芸長束','下祇園','矢賀','防府','大道','四辻','新山口','東福山','福山','倉敷','中庄','庭瀬','北長瀬','岡山','大元','備前西市','博多','吉塚','箱崎','千早','香椎','和白','九産大前','福工大前','新宮中央','ししぶ','古賀','千鳥','福間','水巻','折尾','陣原','黒崎','八幡','スペースワールド','枝光','戸畑','九州工大前','西小倉','小倉','上野','大宮']);
 const INLAND=new Set(['安芸中野','中野東','瀬野','八本松','寺家','西条','西高屋','白市','入野','河内','本郷','妹尾','備中箕島','早島','久々原','茶屋町','植松','木見','東福間','東郷','赤間','教育大前','海老津','遠賀川']);
 /* 東海道新幹線の車窓（2026-10-05）：本物で富士山が見える 三島〜新富士・新横浜〜小田原は 富士山、浜名湖が見える 浜松〜豊橋は 湖。どちらも トンネルなし、かべは ひくい（JR東海ツアーズ 東海道新幹線の座席） */
+/* 青函トンネル（2026-10-15）：奥津軽いまべつ〜木古内は、ほとんどトンネルの中。運転は SEIKAN_LONG m だけ長い。
+   はやぶさで駅をとばすときは、その2駅のあいだだけがトンネル（2026-10-16 ゆかりさん：通過する駅がトンネルの中にあるのは おかしい） */
+const SEIKAN=new Set(['奥津軽いまべつ|木古内']),SEIKAN_LONG=100;
+function seikanAt(){const P=[0,...(trip.nozomi||[]).map((_,i)=>passAt(i)),END],k=Math.max(0,trip.seikanAt);return [P[k]+40,P[k+1]-(k+2===P.length?90:40)];}
 const FUJI=new Set(['三島|新富士','小田原|新横浜']),LAKE=new Set(['浜松|豊橋']),pair=(a,b)=>[a.id,b.id].sort().join('|');
-function sceneFor(from,to,line){if(line.track)return FUJI.has(pair(from,to))?'fuji':LAKE.has(pair(from,to))?'lake':'shin';if(TOWN.has(from.id)&&TOWN.has(to.id))return 'town';if(['kabe','geibi','gantoku','seiryu'].includes(line.id)||INLAND.has(from.id)||INLAND.has(to.id))return 'hills';return 'sea';}
+function sceneFor(from,to,line){if(line.track)return SEIKAN.has(pair(from,to))?'seikan':FUJI.has(pair(from,to))?'fuji':LAKE.has(pair(from,to))?'lake':'shin';if(TOWN.has(from.id)&&TOWN.has(to.id))return 'town';if(['kabe','geibi','gantoku','seiryu'].includes(line.id)||INLAND.has(from.id)||INLAND.has(to.id))return 'hills';return 'sea';}
 /* えきスタンプの模様。lines はその駅を通る路線の id */
-function stationScene(id,lines){if(TOWN.has(id)||lines.every(l=>['shinkansen','tokaido','kyushu'].includes(l)))return 'town';if(INLAND.has(id)||lines.every(l=>['kabe','geibi','gantoku','seiryu'].includes(l)))return 'hills';return 'sea';}
+function stationScene(id,lines){if(TOWN.has(id)||lines.every(l=>['shinkansen','tokaido','kyushu'].includes(l)))return 'town';if(INLAND.has(id)||lines.every(l=>['kabe','geibi','gantoku','seiryu','tohoku','hokkaido'].includes(l)))return 'hills';return 'sea';}
 const rnd=k=>{const x=Math.sin(k*127.1+311.7)*43758.5453;return x-Math.floor(x);};
 const loop=(k,gap,p,sc)=>((k*gap+s*sc*p)%(W+gap)+W+gap)%(W+gap)-gap/2;
 function draw(){
   if(!W||!H)return;const c=ctx,hC=H*.2,L=hC*5,sc=L/20,yRail=H*.86,frontX=W*.37,wx=m=>frontX-(m-s)*sc;
   let g=c.createLinearGradient(0,0,0,H*.55);g.addColorStop(0,'#8ec5e6');g.addColorStop(1,'#d9edf5');c.fillStyle=g;c.fillRect(0,0,W,H);
   c.fillStyle='#ffffffcc';for(let k=0;k<6;k++){const px=((k*420+s*sc*.03)%(W+400))-200,py=H*(.08+(k%3)*.07);cloud(c,px,py,H*.05);}
-  ({sea,hills,town,shin:hills,fuji,lake:sea})[trip.scene](c,sc);
+  ({sea,hills,town,shin:hills,seikan:hills,fuji,lake:sea})[trip.scene](c,sc);
   const wireY=yRail-hC*1.22-hC*.42,electric=!['geibi','gantoku','seiryu','kashii'].includes(trip.line.id); // 芸備線・岩徳線・錦川清流線・香椎線は非電化
   const at=chargeAt();if(at!==null){c.strokeStyle='#5e6a6e';c.lineWidth=Math.max(2,hC*.05);for(const m of [at-62,at+12]){const x=wx(m);c.beginPath();c.moveTo(x,yRail-hC*.1);c.lineTo(x,wireY-hC*.3);c.lineTo(x-hC*.5,wireY-hC*.3);c.stroke();}c.strokeStyle='#394245aa';c.lineWidth=1.4;c.beginPath();c.moveTo(wx(at-66),wireY);c.lineTo(wx(at+16),wireY);c.moveTo(wx(at-66),wireY-hC*.3);c.lineTo(wx(at+16),wireY-hC*.3);c.stroke();} // 香椎駅の 構内だけに ある 充電用の 架線
   if(electric){c.strokeStyle='#5e6a6e';c.lineWidth=Math.max(2,hC*.05);const p0=Math.floor((s-40)/50)*50;
@@ -559,11 +567,12 @@ function draw(){
 }
 /* 新幹線（2026-10-04）：むこうがわの防音壁と、トンネル（区間のまんなかあたり）。トンネルの中は暗く、入口は コンクリートの坑口 */
 function shinkansen(c,wx,hC,yRail,scene){
-  const view=scene!=='shin',wallTop=yRail-hC*(view?.16:.5);c.fillStyle='#c9cdcf';c.fillRect(0,wallTop,W,yRail-wallTop);c.fillStyle='#b3b8bb';c.fillRect(0,wallTop,W,hC*.06);
+  const view=!['shin','seikan'].includes(scene),wallTop=yRail-hC*(view?.16:.5);c.fillStyle='#c9cdcf';c.fillRect(0,wallTop,W,yRail-wallTop);c.fillStyle='#b3b8bb';c.fillRect(0,wallTop,W,hC*.06);
   c.strokeStyle='#a9aeb1';c.lineWidth=1;const step=hC*.9,off=((s*(hC*5/20))%step+step)%step;for(let x=off-step;x<W+step;x+=step){c.beginPath();c.moveTo(x,wallTop+hC*.06);c.lineTo(x,yRail);c.stroke();}
-  for(const [m0,m1] of view||trip.nozomi?.length?[]:[[70,135]]){const x0=wx(m1),x1=wx(m0);if(x1<-50||x0>W+50)continue;
+  for(const [m0,m1] of scene==='seikan'?[seikanAt()]:view||trip.nozomi?.length?[]:[[70,135]]){const x0=wx(m1),x1=wx(m0);if(x1<-50||x0>W+50)continue;
     c.fillStyle='#2a2f33';c.fillRect(x0,0,x1-x0,yRail);c.fillStyle='#f3d27a55';for(let m=m0+8;m<m1;m+=16){const x=wx(m);c.fillRect(x-3,H*.25,6,3);}
-    for(const x of [x0,x1]){c.fillStyle='#9ea4a7';c.fillRect(x-hC*.18,0,hC*.36,yRail);c.fillStyle='#878d90';c.fillRect(x-hC*.18,yRail-hC*1.9,hC*.36,hC*.12);}}
+    for(const x of [x0,x1]){c.fillStyle='#9ea4a7';c.fillRect(x-hC*.18,0,hC*.36,yRail);c.fillStyle='#878d90';c.fillRect(x-hC*.18,yRail-hC*1.9,hC*.36,hC*.12);}
+    if(scene==='seikan'){c.fillStyle='#f3f1e8';c.font=`bold ${Math.round(hC*.22)}px sans-serif`;c.textAlign='center';for(const x of [x0,x1])c.fillText('せいかん トンネル',x,yRail-hC*2.15);}}
 }
 // 富士山：遠くに大きく、ゆっくり うごく。頭は 平らで 雪をかぶる。手前は いつもの 山と たんぼ
 function fuji(c,sc){
@@ -662,7 +671,7 @@ function wire(){
 }
 /* 開通した区間を走る。from→to、next は to の先の駅（駅名標の矢印用）。owned は乗れる車両の id */
 function open(o){
-  wire();loadSfx();$('drive-heading').textContent=o.trial?'おためし うんてん':o.nozomi?`${o.line.express||'のぞみ'}で しゅっぱつ！`:o.ride?'しゅっぱつ！':'かいつう！';const path=[o.from,...(o.nozomi||[]),o.to],scenes=path.slice(1).map((t,i)=>sceneFor(path[i],t,o.line));trip={...o,line:{...o.line,express:o.line.express||'のぞみ'},nozomi:o.nozomi||null,scene:['fuji','lake'].find(x=>scenes.includes(x))||scenes[0]};END=BASE+PASS_GAP*(trip.nozomi?.length||0);$('drive-title').innerHTML=`<ruby>${esc(o.from.name)}<rt>${esc(o.from.reading)}</rt></ruby><i style="background:${o.line.color}"></i><ruby>${esc(o.to.name)}<rt>${esc(o.to.reading)}</rt></ruby>`;
+  wire();loadSfx();$('drive-heading').textContent=o.trial?'おためし うんてん':o.nozomi?`${o.line.express||'のぞみ'}で しゅっぱつ！`:o.ride?'しゅっぱつ！':'かいつう！';const path=[o.from,...(o.nozomi||[]),o.to],scenes=path.slice(1).map((t,i)=>sceneFor(path[i],t,o.line));trip={...o,line:{...o.line,express:o.line.express||'のぞみ'},nozomi:o.nozomi||null,scene:['seikan','fuji','lake'].find(x=>scenes.includes(x))||scenes[0],seikanAt:scenes.indexOf('seikan')};END=BASE+PASS_GAP*(trip.nozomi?.length||0)+(trip.scene==='seikan'?SEIKAN_LONG:0);$('drive-title').innerHTML=`<ruby>${esc(o.from.name)}<rt>${esc(o.from.reading)}</rt></ruby><i style="background:${o.line.color}"></i><ruby>${esc(o.to.name)}<rt>${esc(o.to.reading)}</rt></ruby>`;
   $('drive-from').textContent=o.from.reading;$('drive-to').textContent=o.to.reading;$('drive-arrive-title').innerHTML=`<ruby>${esc(o.to.name)}<rt>${esc(o.to.reading)}</rt></ruby> に とうちゃく！`;
   if(!$('drive').open)$('drive').showModal();start(o.train);
 }
