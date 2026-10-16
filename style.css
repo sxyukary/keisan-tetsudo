@@ -840,3 +840,4 @@ body.game::after{content:"";flex:0 0 14px;border-top:3px solid #fff;background:#
 @media(prefers-reduced-motion:reduce){.look-bench b.fill-new{animation:none}}
 .exercise.look #feedback{word-break:keep-all}
 .drive-stage:has(.drive-battery:not([hidden])) .drive-led{max-width:calc(100% - 160px)}
+#reward-total{margin:10px 0 0;text-align:center;font-size:15px;font-weight:800;color:#5d6f66}#reward-total b{font-size:24px;color:#176654;font-variant-numeric:tabular-nums}
