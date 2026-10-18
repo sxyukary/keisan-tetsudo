@@ -45,7 +45,9 @@ const TRAINS=[
  {id:'dencha',name:'DENCHA',reading:'BEC819けい',kind:'ふつう',cars:2,front:'flat',body:'#f3f4f2',roof:'#c3c7ca',win:'#1d2329',doors:3,doorColor:'#2b6cc4',mask:'#1d2023',panto:[1],battery:true,motor:'vvvf',wrap:'dencha',vmax:120},
  {id:'821',name:'821けい',reading:'あたらしい ふつう でんしゃ',kind:'ふつう',cars:3,front:'flat',body:'#eceeef',roof:'#9a9ea1',win:'#1d2329',doors:3,doorColor:'#d4262d',face:'#1b1d20',panto:[1],motor:'vvvf',vmax:120},
  {id:'ef510-300',name:'レッドサンダー',reading:'EF510がた 300ばんだい',kind:'かもつ',cars:5,loco:true,front:'flat',body:'#c3c7ca',skirt:'#20305e',skirtFrom:.78,stripe:{t:.76,h:.025,c:'#d4262d'},roof:'#8e9499',win:'#1f272c',louver:'#7d858b',mark:'thunder',panto:[0],motor:'loco',vmax:110},
- {id:'883',name:'ソニック',reading:'883けい',kind:'とっきゅう',cars:3,front:'round',body:'#2a40a8',roof:'#1f3184',win:'#141b2c',doors:1,doorsAtEnds:true,doorColor:'#2a40a8',panto:[1],motor:'vvvf',vmax:130}
+ {id:'883',name:'ソニック',reading:'883けい',kind:'とっきゅう',cars:3,front:'round',body:'#2a40a8',roof:'#1f3184',win:'#141b2c',doors:1,doorsAtEnds:true,doorColor:'#2a40a8',panto:[1],motor:'vvvf',vmax:130},
+ {id:'7200',name:'7200けい',reading:'よさんせんの ふつう でんしゃ',kind:'ふつう',cars:2,front:'flat',body:'#c4c9cc',roof:'#9aa1a5',win:'#2a3236',stripe:[{t:.1,h:.04,c:'#d8282f'},{t:.62,h:.08,c:'#d8282f'},{t:.7,h:.025,c:'#5cb848'}],doors:2,doorColor:'#bcc1c4',mask:'#1d2023',panto:[1],motor:'vvvf',vmax:110}, // 121系を リニューアル（2016年〜）。銀の 車体に 赤と 緑の 帯、前は 黒い 顔（JR四国 7200系。最高速度は 公式では 未確認）
+ {id:'anpantorokko',name:'アンパンマントロッコ',reading:'せとおおはし',kind:'かんこう',cars:2,front:'flat',body:'#2f6fc9',roof:'#e9eef2',win:'#2c3d4a',bigWin:true,open:[0],doors:1,doorsAtEnds:true,doorColor:'#2a65b8',wrap:'torokko',diesel:true,vmax:95}, // 先頭は まどの ない トロッコ車両（キクハ32-502）、2両目は 座席の 車両（キロ185-26）。青い 車体に 虹（キャラクターの 絵は かかない。最高速度は 未確認）
 ];
 /* 広電の車両は、その線路ができたら TRAINS と cards.js に戻す（2026-09-27 にいったん図鑑から外した。500系は 2026-10-04 に山陽新幹線と いっしょに戻した） */
 const WAITING_TRAINS=[
@@ -92,6 +94,10 @@ function river(c,x,y,w,h,t){
 }
 /* ラッピングの 模様。w は 顔を のぞいた 横の 長さ */
 const WRAP={
+  torokko(c,i,x,y,w,h,isFront){ // 瀬戸大橋アンパンマントロッコ：先頭の 前の はしに 大きな 虹、車体に 白い くも（アンパンマンたちの 絵は かかない、2026-10-18）
+    if(isFront){const cx=x+w+h*.75,cy=y+h*1.1;['#e8423a','#f39a2b','#f6d43a','#5cb848','#3b8fd8','#7a5ab8'].forEach((col,k)=>{c.strokeStyle=col;c.lineWidth=h*.07;c.beginPath();c.arc(cx,cy,h*(1.05-k*.07),Math.PI,Math.PI*1.5);c.stroke();});}
+    c.fillStyle='#ffffffcc';for(const [u,v] of [[.2,.8],[.45,.86],[.7,.8]]){const px=x+w*u,py=y+h*v;c.beginPath();c.arc(px,py,h*.05,0,Math.PI*2);c.arc(px+h*.06,py-h*.03,h*.06,0,Math.PI*2);c.arc(px+h*.13,py,h*.045,0,Math.PI*2);c.fill();}
+  },
   kuma(c,i,x,y,w,h){ // くまモンアドベンチャー号（800系 U006）：1両目は 鼻の うしろから 緑に 赤い まるい ほっぺと 白い まるい 目、2両目は 黒に 赤と 緑の 帯、3両目は ふつうの 800系（ゆかりさんが見せてくれた写真、2026-10-13。くまモンの 絵は かかない）
     if(i===0){c.fillStyle='#5d6a2c';c.fillRect(x,y,w,h);c.fillStyle='#202326';c.beginPath();c.ellipse(x+w*.7,y+h*.18,w*.24,h*.42,0,0,Math.PI*2);c.fill();
       c.fillStyle='#d8262c';c.beginPath();c.arc(x+w*.86,y+h*.8,h*.36,0,Math.PI*2);c.fill();c.beginPath();c.moveTo(x+w*.06,y);c.lineTo(x+w*.13,y);c.lineTo(x+w*.07,y+h);c.lineTo(x,y+h);c.lineTo(x,y+h*.6);c.closePath();c.fill();
@@ -277,6 +283,7 @@ function drawCar(c,t,i,x,yRail,h,L,o){
       const n=Math.max(1,Math.round((b-a)/(bodyH*(t.bigWin?.9:.62)))),gw=(b-a)/n;
       for(let j=0;j<n;j++){c.fillStyle=t.win;c.fillRect(a+j*gw+bodyH*.04,wy,gw-bodyH*.08,wh);c.fillStyle='#ffffff22';c.fillRect(a+j*gw+bodyH*.04,wy,gw-bodyH*.08,wh*.25);}}
   }
+  if(t.open&&t.open.includes(i)){c.strokeStyle='#e9eef2';c.lineWidth=Math.max(1.5,bodyH*.03);for(const k of [.45,.78]){c.beginPath();c.moveTo(x+bodyH*.3,wy+wh*k);c.lineTo(x+L-(isFront?bodyH*.7:bodyH*.3),wy+wh*k);c.stroke();}} // トロッコ：まどの ない 車両の 手すり
   for(const d of doors){
     if(t.frame){c.fillStyle=t.frame;c.fillRect(d-dw/2-bodyH*.07,y+bodyH*.08,dw+bodyH*.14,bodyH*.9);}
     const open=o.door*dw*.5;
@@ -307,7 +314,7 @@ function drawCar(c,t,i,x,yRail,h,L,o){
     else{
       if(t.cab){c.fillStyle=t.cab;c.fillRect(x+L-bodyH*.85,y,bodyH*.85,bodyH);} // 813系：ステンレスの 車体に 赤い 運転台
       if(t.mask){c.fillStyle=t.mask;c.fillRect(x+L-bodyH*.3,y+bodyH*.1,bodyH*.3,bodyH*.62);} // DENCHA：黒い 前の 顔
-      if(t.face){const fx=x+L-bodyH*.32;c.fillStyle=t.win;c.fillRect(fx-bodyH*.3,y+bodyH*.2,bodyH*.2,bodyH*.3);c.fillStyle=t.face;c.fillRect(fx,y,bodyH*.32,bodyH);c.fillStyle='#f4f1e4';for(let k=0;k<9;k++){c.beginPath();c.arc(fx+bodyH*.035,y+bodyH*(.06+k*.105),bodyH*.018,0,Math.PI*2);c.fill();}c.beginPath();c.arc(fx+bodyH*.135,y+bodyH*.05,bodyH*.018,0,Math.PI*2);c.fill();} // 821系：横から 見た まっ黒な 顔の はしと ふちの LED の 点、運転席の 横の 窓。ライトは 下の 1つだけ（正面の 顔を 描くと ライトが 2つ 見えて「線路が 曲がってる」ように 見えた、2026-10-10 さっくん）
+      if(t.face){const fx=x+L-bodyH*.32;c.fillStyle=t.win;c.fillRect(fx-bodyH*.3,y+bodyH*.2,bodyH*.2,bodyH*.3);c.fillStyle=t.face;c.fillRect(fx,y,bodyH*.32,bodyH);c.fillStyle='#f4f1e4';for(let k=0;k<9;k++){c.beginPath();c.arc(fx+bodyH*.035,y+bodyH*(.06+k*.105),bodyH*.018,0,Math.PI*2);c.fill();}c.beginPath();c.arc(fx+bodyH*.135,y+bodyH*.05,bodyH*.018,0,Math.PI*2);c.fill();} // 821系：横から 見た まっ黒な 顔の はしと ふちの LED の 点、運転席の 横の 窓。ライトは 下の 1つだけ（正面の 顔を 描くと ライトが 2つ 見えて「線路が 曲がってる」ように 見えた、2026-10-10 子ども）
       if(t.accent){c.fillStyle=t.accent;c.fillRect(x+L-bodyH*.62,y+bodyH*.5,bodyH*.62,bodyH*.16);if(t.accent2){c.fillStyle=t.accent2;c.fillRect(x+L-bodyH*.62,y+bodyH*.66,bodyH*.62,bodyH*.03);}}
       c.fillStyle=t.front==='slant'?'#1d2427':t.win;c.fillRect(x+L-bodyH*.26,y+bodyH*.14,bodyH*.26,bodyH*.34);
       c.fillStyle=o.light?'#fff6c8':'#d8d2b4';c.beginPath();c.arc(x+L-bodyH*.08,y+bodyH*.8,bodyH*.045,0,Math.PI*2);c.fill();
@@ -452,7 +459,7 @@ function notchUI(enabled){
   const top={1:0,0:50,'-1':100}[notch];$('drive-knob').style.top=`calc(${top}% - ${top*.26}px)`;
 }
 function showScreen(name){$('drive-run').hidden=name!=='run';$('drive-choose').hidden=name!=='choose';}
-/* DENCHA（蓄電池電車、2026-10-10 さっくんが香椎線で見たもの）：香椎線は 架線が なく、香椎駅の 構内にだけ 充電用の 架線が ある。止まっているあいだ パンタグラフを 上げて 充電し、ブレーキの ときは モーターで 発電して 充電する（回生ブレーキ）。運転画面に、車内の 画面に にせた 電池の 表示を 出す */
+/* DENCHA（蓄電池電車、2026-10-10 子どもが香椎線で見たもの）：香椎線は 架線が なく、香椎駅の 構内にだけ 充電用の 架線が ある。止まっているあいだ パンタグラフを 上げて 充電し、ブレーキの ときは モーターで 発電して 充電する（回生ブレーキ）。運転画面に、車内の 画面に にせた 電池の 表示を 出す */
 const PANTO_BACK=30; // 2両目の まんなかの パンタグラフは、先頭から 約30 m うしろ
 function chargeAt(){return trip&&trip.line.id==='kashii'?(trip.from.id==='香椎'?0:trip.to.id==='香椎'?END:null):null;}
 function batteryTick(dt){
@@ -534,15 +541,17 @@ function tick(now){
 }
 
 /* ---------- けしき（東へ すすむと 左。線路の山がわから見る）。広島・防府〜新山口・福山・倉敷〜岡山〜備前西市・博多〜福間・水巻〜小倉の街なか、内陸と岡山〜児島・福間〜水巻の山あい（上の町〜児島は海ぞい）、それ以外は瀬戸内の海ぞい ---------- */
-const TOWN=new Set(['新井口','西広島','横川','新白島','広島','天神川','向洋','海田市','三滝','安芸長束','下祇園','矢賀','防府','大道','四辻','新山口','東福山','福山','倉敷','中庄','庭瀬','北長瀬','岡山','大元','備前西市','博多','吉塚','箱崎','千早','香椎','和白','九産大前','福工大前','新宮中央','ししぶ','古賀','千鳥','福間','水巻','折尾','陣原','黒崎','八幡','スペースワールド','枝光','戸畑','九州工大前','西小倉','小倉','上野','大宮']);
-const INLAND=new Set(['安芸中野','中野東','瀬野','八本松','寺家','西条','西高屋','白市','入野','河内','本郷','妹尾','備中箕島','早島','久々原','茶屋町','植松','木見','東福間','東郷','赤間','教育大前','海老津','遠賀川']);
+const TOWN=new Set(['新井口','西広島','横川','新白島','広島','天神川','向洋','海田市','三滝','安芸長束','下祇園','矢賀','防府','大道','四辻','新山口','東福山','福山','倉敷','中庄','庭瀬','北長瀬','岡山','大元','備前西市','博多','吉塚','箱崎','千早','香椎','和白','九産大前','福工大前','新宮中央','ししぶ','古賀','千鳥','福間','水巻','折尾','陣原','黒崎','八幡','スペースワールド','枝光','戸畑','九州工大前','西小倉','小倉','上野','大宮','香西','高松']);
+const INLAND=new Set(['安芸中野','中野東','瀬野','八本松','寺家','西条','西高屋','白市','入野','河内','本郷','妹尾','備中箕島','早島','久々原','茶屋町','植松','木見','東福間','東郷','赤間','教育大前','海老津','遠賀川','八十場','鴨川','讃岐府中','国分','端岡','鬼無']);
 /* 東海道新幹線の車窓（2026-10-05）：本物で富士山が見える 三島〜新富士・新横浜〜小田原は 富士山、浜名湖が見える 浜松〜豊橋は 湖。どちらも トンネルなし、かべは ひくい（JR東海ツアーズ 東海道新幹線の座席） */
 /* 青函トンネル（2026-10-15）：奥津軽いまべつ〜木古内は、ほとんどトンネルの中。運転は SEIKAN_LONG m だけ長い。
    はやぶさで駅をとばすときは、その2駅のあいだだけがトンネル（2026-10-16 ゆかりさん：通過する駅がトンネルの中にあるのは おかしい） */
 const SEIKAN=new Set(['奥津軽いまべつ|木古内']),SEIKAN_LONG=100;
 function seikanAt(){const P=[0,...(trip.nozomi||[]).map((_,i)=>passAt(i)),END],k=Math.max(0,trip.seikanAt);return [P[k]+40,P[k+1]-(k+2===P.length?90:40)];}
+/* 瀬戸大橋（2026-10-18）：児島〜坂出は、ほとんど橋の上（海の上の トラスと つり橋の塔）。運転は青函トンネルと同じ SEIKAN_LONG m だけ長い（ゆかりさん） */
+const SETO=new Set(['児島|坂出']);function bridgeAt(){return [40,END-90];}
 const FUJI=new Set(['三島|新富士','小田原|新横浜']),LAKE=new Set(['浜松|豊橋']),pair=(a,b)=>[a.id,b.id].sort().join('|');
-function sceneFor(from,to,line){if(line.track)return SEIKAN.has(pair(from,to))?'seikan':FUJI.has(pair(from,to))?'fuji':LAKE.has(pair(from,to))?'lake':'shin';if(TOWN.has(from.id)&&TOWN.has(to.id))return 'town';if(['kabe','geibi','gantoku','seiryu'].includes(line.id)||INLAND.has(from.id)||INLAND.has(to.id))return 'hills';return 'sea';}
+function sceneFor(from,to,line){if(SETO.has(pair(from,to)))return 'bridge';if(line.track)return SEIKAN.has(pair(from,to))?'seikan':FUJI.has(pair(from,to))?'fuji':LAKE.has(pair(from,to))?'lake':'shin';if(TOWN.has(from.id)&&TOWN.has(to.id))return 'town';if(['kabe','geibi','gantoku','seiryu'].includes(line.id)||INLAND.has(from.id)||INLAND.has(to.id))return 'hills';return 'sea';}
 /* えきスタンプの模様。lines はその駅を通る路線の id */
 function stationScene(id,lines){if(TOWN.has(id)||lines.every(l=>['shinkansen','tokaido','kyushu'].includes(l)))return 'town';if(INLAND.has(id)||lines.every(l=>['kabe','geibi','gantoku','seiryu','tohoku','hokkaido'].includes(l)))return 'hills';return 'sea';}
 const rnd=k=>{const x=Math.sin(k*127.1+311.7)*43758.5453;return x-Math.floor(x);};
@@ -551,7 +560,7 @@ function draw(){
   if(!W||!H)return;const c=ctx,hC=H*.2,L=hC*5,sc=L/20,yRail=H*.86,frontX=W*.37,wx=m=>frontX-(m-s)*sc;
   let g=c.createLinearGradient(0,0,0,H*.55);g.addColorStop(0,'#8ec5e6');g.addColorStop(1,'#d9edf5');c.fillStyle=g;c.fillRect(0,0,W,H);
   c.fillStyle='#ffffffcc';for(let k=0;k<6;k++){const px=((k*420+s*sc*.03)%(W+400))-200,py=H*(.08+(k%3)*.07);cloud(c,px,py,H*.05);}
-  ({sea,hills,town,shin:hills,seikan:hills,fuji,lake:sea})[trip.scene](c,sc);
+  ({sea,hills,town,shin:hills,seikan:hills,fuji,lake:sea,bridge:sea})[trip.scene](c,sc);if(trip.scene==='bridge')bridgeBack(c,wx,hC,yRail);
   const wireY=yRail-hC*1.22-hC*.42,electric=!['geibi','gantoku','seiryu','kashii'].includes(trip.line.id); // 芸備線・岩徳線・錦川清流線・香椎線は非電化
   const at=chargeAt();if(at!==null){c.strokeStyle='#5e6a6e';c.lineWidth=Math.max(2,hC*.05);for(const m of [at-62,at+12]){const x=wx(m);c.beginPath();c.moveTo(x,yRail-hC*.1);c.lineTo(x,wireY-hC*.3);c.lineTo(x-hC*.5,wireY-hC*.3);c.stroke();}c.strokeStyle='#394245aa';c.lineWidth=1.4;c.beginPath();c.moveTo(wx(at-66),wireY);c.lineTo(wx(at+16),wireY);c.moveTo(wx(at-66),wireY-hC*.3);c.lineTo(wx(at+16),wireY-hC*.3);c.stroke();} // 香椎駅の 構内だけに ある 充電用の 架線
   if(electric){c.strokeStyle='#5e6a6e';c.lineWidth=Math.max(2,hC*.05);const p0=Math.floor((s-40)/50)*50;
@@ -560,6 +569,7 @@ function draw(){
   c.fillStyle='#a79d8c';c.fillRect(0,yRail-2,W,H-yRail+2);
   c.fillStyle='#6d5a48';const sl=.65*sc,off=((s*sc)%sl+sl)%sl;for(let x=-sl+off;x<W+sl;x+=sl)c.fillRect(x,yRail+2,sl*.45,H*.03);
   c.fillStyle='#8c9296';c.fillRect(0,yRail-1,W,3);
+  if(trip.scene==='bridge')bridgeDeck(c,wx,hC,yRail);
   if(trip.line.track)shinkansen(c,wx,hC,yRail,trip.scene);
   c.save();c.translate(frontX,0);c.scale(-1,1);drawTrain(c,cur,yRail,hC,{ang:-s/.43,door:doorT,light:true,wireY:electric?wireY:undefined,chargeY:wireY,up});c.restore();
   for(const p of smoke){c.fillStyle=p.dark?`rgba(55,55,58,${.5*p.life})`:`rgba(${cur.steam?'235,235,235':'90,90,90'},${(cur.steam?.6:.35)*p.life})`;c.beginPath();c.arc(wx(p.x),yRail-hC*1.3-p.y,p.r,0,Math.PI*2);c.fill();}
@@ -573,6 +583,30 @@ function shinkansen(c,wx,hC,yRail,scene){
     c.fillStyle='#2a2f33';c.fillRect(x0,0,x1-x0,yRail);c.fillStyle='#f3d27a55';for(let m=m0+8;m<m1;m+=16){const x=wx(m);c.fillRect(x-3,H*.25,6,3);}
     for(const x of [x0,x1]){c.fillStyle='#9ea4a7';c.fillRect(x-hC*.18,0,hC*.36,yRail);c.fillStyle='#878d90';c.fillRect(x-hC*.18,yRail-hC*1.9,hC*.36,hC*.12);}
     if(scene==='seikan'){c.fillStyle='#f3f1e8';c.font=`bold ${Math.round(hC*.22)}px sans-serif`;c.textAlign='center';for(const x of [x0,x1])c.fillText('せいかん トンネル',x,yRail-hC*2.15);}}
+}
+// 瀬戸大橋：橋の下は海。つり橋の塔と ケーブル、線路のまわりの トラス（うしろ）、線路の下の けた（まえ）。橋の入口に「せとおおはし」
+function bridgeBack(c,wx,hC,yRail){
+  const [m0,m1]=bridgeAt(),x0=Math.max(-60,wx(m1)),x1=Math.min(W+60,wx(m0));if(x1<=x0)return;
+  const g=c.createLinearGradient(0,H*.5,0,H);g.addColorStop(0,'#4e8fb5');g.addColorStop(1,'#3f7fa6');c.fillStyle=g;c.fillRect(x0,H*.56,x1-x0,H*.44); // 岸の家は かくす
+  const col='#c5ced2',dark='#a3aeb3',chord=yRail-hC*1.85,top=yRail-hC*3.6;
+  const towers=[];for(let m=m0+25;m<=m1-15;m+=75)towers.push(m);
+  c.strokeStyle='#8e9ba1';c.lineWidth=Math.max(1.5,hC*.04);
+  for(let i=0;i+1<towers.length;i++){const a=wx(towers[i]),b=wx(towers[i+1]),mid=(a+b)/2;if(Math.max(a,b)<-80||Math.min(a,b)>W+80)continue;
+    c.beginPath();c.moveTo(a,top);c.quadraticCurveTo(mid,chord+hC*.9,b,top);c.stroke(); // ケーブル
+    c.lineWidth=1;for(let k=1;k<12;k++){const u=k/12,x=a+(b-a)*u,y=(1-u)*(1-u)*top+2*u*(1-u)*(chord+hC*.9)+u*u*top;c.beginPath();c.moveTo(x,y);c.lineTo(x,chord);c.stroke();}c.lineWidth=Math.max(1.5,hC*.04);}
+  for(const m of towers){const x=wx(m);if(x<-80||x>W+80)continue;c.fillStyle=col;c.fillRect(x-hC*.2,top-hC*.15,hC*.12,yRail-top+hC*.15);c.fillRect(x+hC*.08,top-hC*.15,hC*.12,yRail-top+hC*.15);
+    c.fillStyle=dark;for(const y of [top,top+hC*.9,chord-hC*.2])c.fillRect(x-hC*.2,y,hC*.4,hC*.1);}
+  c.strokeStyle=dark;c.lineWidth=Math.max(2,hC*.05);c.beginPath();c.moveTo(x0,chord);c.lineTo(x1,chord);c.stroke(); // トラス
+  c.lineWidth=Math.max(1.5,hC*.035);const step=hC*.9,off=((s*(hC*5/20))%step+step)%step;c.beginPath();
+  for(let x=off-step*2;x<W+step;x+=step){if(x<x0||x+step>x1)continue;c.moveTo(x,chord);c.lineTo(x+step/2,yRail-hC*.05);c.lineTo(x+step,chord);}c.stroke();
+  c.fillStyle='#f3f1e8';c.strokeStyle='#40525a';c.lineWidth=3;c.font=`bold ${Math.round(hC*.22)}px sans-serif`;c.textAlign='center';
+  for(const m of [m0,m1]){const x=wx(m);if(x<-100||x>W+100)continue;c.strokeText('せとおおはし',x,chord-hC*.35);c.fillText('せとおおはし',x,chord-hC*.35);}
+}
+function bridgeDeck(c,wx,hC,yRail){
+  const [m0,m1]=bridgeAt(),x0=Math.max(-60,wx(m1)),x1=Math.min(W+60,wx(m0));if(x1<=x0)return;
+  c.fillStyle='#3f7fa6';c.fillRect(x0,yRail+H*.075,x1-x0,H);c.strokeStyle='#ffffff55';c.lineWidth=1.5;
+  for(let k=0;k<8;k++){const px=((k*173+s*hC*5/20*.6)%(W+60))-30;if(px<x0||px>x1)continue;const py=yRail+H*(.09+(k%3)*.012);c.beginPath();c.moveTo(px,py);c.lineTo(px+14,py);c.stroke();}
+  c.fillStyle='#9aa6ab';c.fillRect(x0,yRail+H*.035,x1-x0,H*.04);c.fillStyle='#7d898e';c.fillRect(x0,yRail+H*.07,x1-x0,H*.008); // けた
 }
 // 富士山：遠くに大きく、ゆっくり うごく。頭は 平らで 雪をかぶる。手前は いつもの 山と たんぼ
 function fuji(c,sc){
@@ -643,10 +677,11 @@ function thumb(canvas,t,locked){
 }
 function choose(){
   stopMotor();phase='ready';showScreen('choose');const g=$('drive-grid');g.innerHTML='';
-  for(const t of TRAINS){
-    const have=trip.owned.includes(t.id),other=have&&!rideable(t),card=trip.cards.find(c=>c.id===t.id),b=document.createElement('button');
-    b.className='drive-train '+(have?(other?'other-track':'ok'):'locked')+(t.id===cur.id?' current':'');b.disabled=!have||other;b.dataset.train=t.id;
-    b.innerHTML=`<canvas aria-hidden="true"></canvas><span class="drive-train-body"><small>${have?esc(t.reading):'？？？'}</small><b>${have?esc(t.name):'？？？？'}</b><span>${other?`${t.track||'ざいらいせん'}の せんろで はしれるよ`:have?(t.id===cur.id?'いま えらんでいる でんしゃ':'▶ これで はしる'):card&&card.first&&card.first!==true?`${esc(root.RailRoutes?.lines.find(l=>l.id===card.first)?.name||'')}を かいつうすると のれるよ`:`${esc(card?card.station:'')}えきで のれるように なるよ`}</span></span>`;
+  // Only the trains for this track (2026-10-18, ゆかりさん's 1+3): the ones the child has first, then the ones still to come; the rest are in the card book.
+  for(const t of TRAINS.filter(rideable).sort((a,b)=>trip.owned.includes(b.id)-trip.owned.includes(a.id))){
+    const have=trip.owned.includes(t.id),card=trip.cards.find(c=>c.id===t.id),b=document.createElement('button');
+    b.className='drive-train '+(have?'ok':'locked')+(t.id===cur.id?' current':'');b.disabled=!have;b.dataset.train=t.id;
+    b.innerHTML=`<canvas aria-hidden="true"></canvas><span class="drive-train-body"><small>${have?esc(t.reading):'？？？'}</small><b>${have?esc(t.name):'？？？？'}</b><span>${have?(t.id===cur.id?'いま えらんでいる でんしゃ':'▶ これで はしる'):card&&card.first&&card.first!==true?`${esc(root.RailRoutes?.lines.find(l=>l.id===card.first)?.name||'')}を かいつうすると のれるよ`:`${esc(card?card.station:'')}えきで のれるように なるよ`}</span></span>`;
     b.onclick=()=>{trip.onTrain(t.id);start(t.id);};g.appendChild(b);requestAnimationFrame(()=>thumb(b.querySelector('canvas'),t,!have));
   }
 }
@@ -671,7 +706,7 @@ function wire(){
 }
 /* 開通した区間を走る。from→to、next は to の先の駅（駅名標の矢印用）。owned は乗れる車両の id */
 function open(o){
-  wire();loadSfx();$('drive-heading').textContent=o.trial?'おためし うんてん':o.nozomi?`${o.line.express||'のぞみ'}で しゅっぱつ！`:o.ride?'しゅっぱつ！':'かいつう！';const path=[o.from,...(o.nozomi||[]),o.to],scenes=path.slice(1).map((t,i)=>sceneFor(path[i],t,o.line));trip={...o,line:{...o.line,express:o.line.express||'のぞみ'},nozomi:o.nozomi||null,scene:['seikan','fuji','lake'].find(x=>scenes.includes(x))||scenes[0],seikanAt:scenes.indexOf('seikan')};END=BASE+PASS_GAP*(trip.nozomi?.length||0)+(trip.scene==='seikan'?SEIKAN_LONG:0);$('drive-title').innerHTML=`<ruby>${esc(o.from.name)}<rt>${esc(o.from.reading)}</rt></ruby><i style="background:${o.line.color}"></i><ruby>${esc(o.to.name)}<rt>${esc(o.to.reading)}</rt></ruby>`;
+  wire();loadSfx();$('drive-heading').textContent=o.trial?'おためし うんてん':o.nozomi?`${o.line.express||'のぞみ'}で しゅっぱつ！`:o.ride?'しゅっぱつ！':'かいつう！';const path=[o.from,...(o.nozomi||[]),o.to],scenes=path.slice(1).map((t,i)=>sceneFor(path[i],t,o.line));trip={...o,line:{...o.line,express:o.line.express||'のぞみ'},nozomi:o.nozomi||null,scene:['seikan','bridge','fuji','lake'].find(x=>scenes.includes(x))||scenes[0],seikanAt:scenes.indexOf('seikan')};END=BASE+PASS_GAP*(trip.nozomi?.length||0)+(['seikan','bridge'].includes(trip.scene)?SEIKAN_LONG:0);$('drive-title').innerHTML=`<ruby>${esc(o.from.name)}<rt>${esc(o.from.reading)}</rt></ruby><i style="background:${o.line.color}"></i><ruby>${esc(o.to.name)}<rt>${esc(o.to.reading)}</rt></ruby>`;
   $('drive-from').textContent=o.from.reading;$('drive-to').textContent=o.to.reading;$('drive-arrive-title').innerHTML=`<ruby>${esc(o.to.name)}<rt>${esc(o.to.reading)}</rt></ruby> に とうちゃく！`;
   if(!$('drive').open)$('drive').showModal();start(o.train);
 }

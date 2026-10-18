@@ -766,5 +766,41 @@
     "photoDescription": "\"Hayabusa\" No. 10 bound for Tokyo, led by the H5 series H1 formation, entering Omiya Station on the Tohoku Shinkansen.",
     "station": "新函館北斗",
     "track": "しんかんせん"
+  },
+  {
+    "id": "7200",
+    "name": "7200系",
+    "reading": "7200けい",
+    "category": "でんしゃ",
+    "image": "assets/7200.jpg",
+    "fact": "予讃線などを はしる JR四国の ふつう でんしゃ。むかしの 121系を おおきく リニューアルして、2016年から はしっているよ。7000系と つないで はしれるように、なまえを 7200系に かえたんだ。写真は 讃岐府中〜国分を はしる 7200系。",
+    "factSource": "https://www.jr-shikoku.co.jp/01_trainbus/syaryou/7200.shtm",
+    "checked": "2026-10-18",
+    "credit": "MaedaAkihiko",
+    "sourceTitle": "JR-Series7200-R10.jpg",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "source": "https://commons.wikimedia.org/wiki/File:JR-Series7200-R10.jpg",
+    "change": "Wikimedia提供の縮小画像（長辺1280px）を使用。トリミング・AI補正なし。",
+    "photoDescription": "予讃線の讃岐府中 - 国分間を走行するJR四国7200系（元・国鉄121系）R10編成",
+    "station": "坂出"
+  },
+  {
+    "id": "anpantorokko",
+    "name": "瀬戸大橋アンパンマントロッコ",
+    "reading": "せとおおはし アンパンマントロッコ",
+    "category": "かんこうれっしゃ",
+    "image": "assets/anpantorokko.jpg",
+    "fact": "高松と 岡山を むすぶ アンパンマンの かんこう れっしゃ。2りょうの うち 1りょうは まどの ない トロッコで、瀬戸大橋の うえを かぜを かんじながら はしるよ。ゆかには せんろが みえる まども あるんだ。写真は 宇多津駅の トロッコ車両（2015年）。",
+    "factSource": "https://www.jr-shikoku.co.jp/01_trainbus/event_train/anpanman.html",
+    "checked": "2026-10-18",
+    "credit": "Spaceaero2",
+    "sourceTitle": "Anpanman torokko kikuha32 502+kiro185-26 utadu.jpg",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "source": "https://commons.wikimedia.org/wiki/File:Anpanman_torokko_kikuha32_502%2Bkiro185-26_utadu.jpg",
+    "change": "Wikimedia提供の縮小画像（長辺1280px）を使用。トリミング・AI補正なし。",
+    "photoDescription": "アンパンマントロッコ キクハ32-502+キロ185-26 宇多津駅にて",
+    "station": "高松"
   }
 ];if(typeof module!=='undefined')module.exports=cards;else r.RailCards=cards;})(globalThis);
