@@ -886,3 +886,18 @@ body.game::after{content:"";flex:0 0 14px;border-top:3px solid #fff;background:#
 #parents .parent-sources{display:inline-block;margin:10px 4px 0;font-size:13px}
 /* Very narrow phones: the buttons go under the title rather than off the edge. */
 @media(max-width:360px){#collection .dialog-heading,#stampbook .dialog-heading{flex-wrap:wrap;justify-content:flex-end}}
+/* さくらんぼ (ROADMAP 15): the cherry hangs under the number added; the ball to fill now is lit, and the answer box waits dimmed until the last step. */
+.exercise.cherry .equation{align-items:flex-start}
+.game .exercise.cherry .equation{width:auto;min-width:min(100%,400px);max-width:100%;gap:.25em}.game .exercise.cherry #question{font-size:.9em}
+.cherry-q{display:inline-flex;align-items:flex-start;gap:.3em}
+.cherry-b{display:inline-flex;flex-direction:column;align-items:center}
+.cherry-fruit{display:flex;flex-direction:column;align-items:center}
+.cherry-fruit svg{display:block;width:1.5em;height:.5em}
+.cherry-balls{display:flex;gap:.3em}
+.cherry-ball{display:grid;place-items:center;width:1.55em;height:1.55em;font-size:.6em;line-height:1;border-radius:50%;border:3px solid #e0838b;background:#fff4f4;color:#c2414d;text-shadow:none}
+.cherry-ball.on{border-color:#ffb23e;box-shadow:0 0 0 4px #ffb23e55}
+.exercise.cherry-wait output{opacity:.4;animation:none!important}
+.game .cherry-ball{background:#0a1114;border-color:#a8505a;color:#ff9aa5}
+.game .cherry-ball.on{border-color:#ffb23e;animation:blink 1.6s steps(2,start) infinite}
+.exercise.cherry #feedback{color:#b35f00;font-weight:800;word-break:keep-all}
+@media(prefers-reduced-motion:reduce){.game .cherry-ball.on{animation:none}}
