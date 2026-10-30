@@ -498,7 +498,7 @@ function say(text,then){const id=++sayId;if(!soundOn||!('speechSynthesis' in roo
 
 /* ---------- はしる ---------- */
 const BASE=220,PASS_GAP=45,VMAX=25,ACC=5,BRK=5,STOP_OK=6; // m, m/s, m/s²。停止位置の手前 STOP_OK m 以内で とうちゃく
-/* のぞみ（2026-10-12）・みずほ（九州新幹線、`express`、2026-10-14）：とばす駅 1つにつき PASS_GAP m 長く走り（9駅とばす 名古屋→新横浜で 約30秒）、とちゅうの駅は 短いホームを「つうか」する */
+/* のぞみ（2026-10-12）・みずほ（九州新幹線、`express`、2026-10-14）・シティライナー（山陽本線、2026-10-31。新幹線でない線では「かいそく シティライナー」と読む）：とばす駅 1つにつき PASS_GAP m 長く走り（9駅とばす 名古屋→新横浜で 約30秒）、とちゅうの駅は 短いホームを「つうか」する */
 let END=BASE;const passAt=i=>{const long=trip.seikanAt>=0?SEIKAN_LONG:0;return 43+(END-long-128)*(i+.5)/trip.nozomi.length+(long&&i>=trip.seikanAt?long:0);}; // 青函トンネルの区間だけ SEIKAN_LONG m 長い
 let cur=null,trip=null,phase='closed',s=0,v=0,notch=0,auto=false,doorT=1,doorTarget=1,up=0,bat=75,batWay='',lastJoint=0,lastChuff=0,near=false,smoke=[],raf=0,lastT=0,timers=[];
 let cv,ctx,W=0,H=0;
@@ -529,12 +529,12 @@ function resetRun(){
   up=chargeAt()===0&&cur.battery?1:0;bat=chargeAt()===0?90:75;batWay=null;$('drive-battery').hidden=!cur.battery;
   phase='ready';s=0;v=0;notch=0;auto=false;doorT=1;doorTarget=1;lastJoint=0;lastChuff=0;near=false;smoke=[];
   $('drive-console').hidden=false;$('drive-arrive').hidden=true;$('drive-door').hidden=false;$('drive-door').disabled=false;$('drive-change').hidden=false;$('drive-skip').hidden=false;
-  notchUI(false);setMsg('ドアを しめて しゅっぱつ しよう！');$('drive-led').textContent=`${trip.nozomi?trip.line.express+' ':''}${trip.to.reading} ゆき`;$('drive-kind').textContent=cur.kind;
+  notchUI(false);setMsg('ドアを しめて しゅっぱつ しよう！');$('drive-led').textContent=`${trip.nozomi?trip.line.express+' ':''}${trip.to.reading} ゆき`;$('drive-kind').textContent=trip.nozomi&&!trip.line.track?'かいそく':cur.kind;
   document.querySelector('#drive .n-brake').classList.remove('hint');
 }
 function start(id){
   cur=rideable(byId[id])?byId[id]:byId[STARTERS[track()]||STARTER];showScreen('run');resize();resetRun();makeMotor(cur);rainStart();
-  say(trip.nozomi?`この でんしゃは、${trip.line.express}ごう、${spoken(trip.to)} ゆき です。${trip.nozomi.length?'とちゅうの えきには とまりません。':''}`:`この でんしゃは、${spoken(trip.to)} ゆき です。`,TENKI_SAY[trip.tenki]&&(()=>say(TENKI_SAY[trip.tenki]))); // のぞみは 本物どおり「のぞみ号」と 区切る（「のぞみ こくら」が 駅名に 聞こえないように。2026-10-12 ゆかりさん）
+  say(trip.nozomi?`この でんしゃは、${trip.line.track?trip.line.express+'ごう':'かいそく '+trip.line.express}、${spoken(trip.to)} ゆき です。${trip.nozomi.length?'とちゅうの えきには とまりません。':''}`:`この でんしゃは、${spoken(trip.to)} ゆき です。`,TENKI_SAY[trip.tenki]&&(()=>say(TENKI_SAY[trip.tenki]))); // のぞみは 本物どおり「のぞみ号」と 区切る（「のぞみ こくら」が 駅名に 聞こえないように。2026-10-12 ゆかりさん）
   if(!raf){lastT=performance.now();raf=requestAnimationFrame(tick);}
 }
 function arrive(kind){
