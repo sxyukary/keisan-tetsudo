@@ -749,6 +749,7 @@ body.game::after{content:"";flex:0 0 14px;border-top:3px solid #fff;background:#
 /* Long books (2026-10-18): the heading with とじる stays on top while scrolling; the stamp book starts with a もくじ of its lines; うえへ and とじる at the bottom. */
 #collection .dialog-heading,#stampbook .dialog-heading,#parents .dialog-heading{position:sticky;top:-25px;z-index:3;margin:-25px -25px 0;padding:16px 25px 12px;background:var(--card,#fffef8);box-shadow:0 10px 12px -12px #193d4740}
 .game .stamp-index{display:flex;flex-wrap:wrap;justify-content:flex-start;gap:8px;margin:4px 0 6px}
+.game .stamp-index button{max-width:100%;white-space:normal}
 .stamp-index button{min-height:44px;padding:6px 12px 6px 10px;border:1px solid #e3dccb;border-left:7px solid var(--line);border-radius:10px;background:#fff;font-size:15px;line-height:1.25;text-align:left}
 .stamp-index button small{margin-left:4px;font-family:var(--num);font-size:12px;color:#5e7074}
 .collection-filter{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px}
