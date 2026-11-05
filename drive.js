@@ -500,7 +500,7 @@ function say(text,then){const id=++sayId;if(!soundOn||!('speechSynthesis' in roo
 const BASE=220,PASS_GAP=45,VMAX=25,ACC=5,BRK=5,STOP_OK=6; // m, m/s, m/s²。停止位置の手前 STOP_OK m 以内で とうちゃく
 /* のぞみ（2026-10-12）・みずほ（九州新幹線、`express`、2026-10-14）・シティライナー（山陽本線、2026-10-31。新幹線でない線では「かいそく シティライナー」と読む）：とばす駅 1つにつき PASS_GAP m 長く走り（9駅とばす 名古屋→新横浜で 約30秒）、とちゅうの駅は 短いホームを「つうか」する */
 let END=BASE;const passAt=i=>{const long=trip.seikanAt>=0?SEIKAN_LONG:0;return 43+(END-long-128)*(i+.5)/trip.nozomi.length+(long&&i>=trip.seikanAt?long:0);}; // 青函トンネルの区間だけ SEIKAN_LONG m 長い
-let cur=null,trip=null,phase='closed',s=0,v=0,notch=0,auto=false,doorT=1,doorTarget=1,up=0,bat=75,batWay='',lastJoint=0,lastChuff=0,near=false,smoke=[],raf=0,lastT=0,timers=[];
+let cur=null,trip=null,phase='closed',s=0,v=0,notch=0,auto=false,doorT=1,doorTarget=1,up=0,bat=75,batWay='',lastJoint=0,lastChuff=0,near=false,tenkiTalk=false,smoke=[],raf=0,lastT=0,timers=[];
 let cv,ctx,W=0,H=0;
 const later=(fn,ms)=>timers.push(setTimeout(fn,ms));
 function resize(){if(!cv)return;const dpr=Math.min(2,root.devicePixelRatio||1);W=cv.clientWidth;H=cv.clientHeight;cv.width=W*dpr;cv.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);}
@@ -527,14 +527,14 @@ function batteryTick(dt){
 function resetRun(){
   timers.forEach(clearTimeout);timers=[];
   up=chargeAt()===0&&cur.battery?1:0;bat=chargeAt()===0?90:75;batWay=null;$('drive-battery').hidden=!cur.battery;
-  phase='ready';s=0;v=0;notch=0;auto=false;doorT=1;doorTarget=1;lastJoint=0;lastChuff=0;near=false;smoke=[];
+  phase='ready';s=0;v=0;notch=0;auto=false;doorT=1;doorTarget=1;lastJoint=0;lastChuff=0;near=false;tenkiTalk=false;smoke=[];
   $('drive-console').hidden=false;$('drive-arrive').hidden=true;$('drive-door').hidden=false;$('drive-door').disabled=false;$('drive-change').hidden=false;$('drive-skip').hidden=false;
   notchUI(false);setMsg('ドアを しめて しゅっぱつ しよう！');$('drive-led').textContent=`${trip.nozomi?trip.line.express+' ':''}${trip.to.reading} ゆき`;$('drive-kind').textContent=trip.nozomi&&!trip.line.track?'かいそく':cur.kind;
   document.querySelector('#drive .n-brake').classList.remove('hint');
 }
 function start(id){
   cur=rideable(byId[id])?byId[id]:byId[STARTERS[track()]||STARTER];showScreen('run');resize();resetRun();makeMotor(cur);rainStart();
-  say(trip.nozomi?`この でんしゃは、${trip.line.track?trip.line.express+'ごう':'かいそく '+trip.line.express}、${spoken(trip.to)} ゆき です。${trip.nozomi.length?'とちゅうの えきには とまりません。':''}`:`この でんしゃは、${spoken(trip.to)} ゆき です。`,TENKI_SAY[trip.tenki]&&(()=>say(TENKI_SAY[trip.tenki]))); // のぞみは 本物どおり「のぞみ号」と 区切る（「のぞみ こくら」が 駅名に 聞こえないように。2026-10-12 ゆかりさん）
+  say(trip.nozomi?`この でんしゃは、${trip.line.track?trip.line.express+'ごう':'かいそく '+trip.line.express}、${spoken(trip.to)} ゆき です。${trip.nozomi.length?'とちゅうの えきには とまりません。':''}`:`この でんしゃは、${spoken(trip.to)} ゆき です。`); // のぞみは 本物どおり「のぞみ号」と 区切る（「のぞみ こくら」が 駅名に 聞こえないように。2026-10-12 ゆかりさん）
   if(!raf){lastT=performance.now();raf=requestAnimationFrame(tick);}
 }
 function arrive(kind){
@@ -573,7 +573,7 @@ function tick(now){
     const r=END-s,hintBrake=!auto&&notch!==-1&&v>3&&need>=r-40;
     document.querySelector('#drive .n-brake').classList.toggle('hint',hintBrake);
     if(trip.nozomi&&!near){const i=trip.nozomi.findIndex((st,k)=>Math.abs(s-passAt(k))<30),led=i<0?`${trip.line.express} ${trip.to.reading} ゆき`:`${trip.nozomi[i].reading} つうか`;if($('drive-led').textContent!==led)$('drive-led').textContent=led;}
-    if(!near&&r<110){near=true;$('drive-led').textContent=`まもなく ${trip.to.reading}`;say(`まもなく、${spoken(trip.to)} です。`);}
+    if(!near&&r<110){near=true;$('drive-led').textContent=`まもなく ${trip.to.reading}`;const m=()=>say(`まもなく、${spoken(trip.to)} です。`);if(tenkiTalk)tenkiTalk=m;else m();} // 天気の放送の とちゅうなら、終わってから
     if(auto)setMsg('じどうブレーキが はたらいているよ');
     else if(hintBrake)setMsg('そろそろ ブレーキ！');
     else if(notch===1)setMsg(v>=VMAX-.3?'さいこう そくど！':'かそく ちゅう');
@@ -633,8 +633,8 @@ function draw(){
   weather(c,wx,hC,yRail);
 }
 /* 天気（2026-10-29 子どものアイデア、ROADMAP 16）：運転画面を開いたときに1回だけ決め、走っているあいだは変えない。走り方は変えない。
-   晴れ5・くもり3・雨2、虹・雷・霧は それぞれ 1%。雪の降る区間（SNOW の駅どうし）だけ、雨の半分が雪。雨の音あり、アナウンスなし。
-   レアの天気だけ、発車の案内のあとに車内放送（2026-10-30 ゆかりさん）。トンネルの中は降らない・光らない。確認用に ?tenki=hare|kumori|ame|yuki|niji|kaminari|kiri で決められる */
+   晴れ5・くもり3・雨2、虹・雷・霧は それぞれ 2%（2026-11-05 ゆかりさん：1%から上げた）。雪の降る区間（SNOW の駅どうし）だけ、雨の半分が雪。雨の音あり、アナウンスなし。
+   レアの天気だけ、ドアが しまって「つぎは」の案内のあとに車内放送（2026-10-30 ゆかりさん、2026-11-05 から走りだしてから）。トンネルの中は降らない・光らない。確認用に ?tenki=hare|kumori|ame|yuki|niji|kaminari|kiri で決められる */
 const TENKI={hare:'はれ',kumori:'くもり',ame:'あめ',yuki:'ゆき',niji:'にじ',kaminari:'かみなり',kiri:'きり'},TENKI_FIX=((root.location&&root.location.search||'').match(/[?&]tenki=([a-z]+)/)||[])[1];
 const TENKI_SAY={kaminari:'ほんじつは、てんこうが わるく なっておりますので、あしもとに おきをつけ ください。',kiri:'ただいま、きりが でております。そとが みえにくく なっておりますので、ごちゅうい ください。',niji:'みなさま、ただいま まどの そとに、にじが みえております。'};
 const SKY={hare:['#8ec5e6','#d9edf5'],niji:['#8ec5e6','#d9edf5'],kumori:['#a9b7c0','#dde3e6'],ame:['#8794a0','#bcc6cc'],yuki:['#b7c1c9','#e4e9ec'],kaminari:['#5d6974','#949fa7'],kiri:['#cfd7db','#eef1f2']};
@@ -648,7 +648,7 @@ const SNOW=new Set(['那須塩原','新白河','郡山','福島','白石蔵王',
   '永原','マキノ','近江中庄','近江今津','新旭','安曇川','近江高島','北小松','近江舞子','比良','志賀','蓬莱','和邇','小野','堅田','岐阜羽島','米原']);
 function pickTenki(path){
   if(TENKI[TENKI_FIX])return TENKI_FIX;const snowy=path.slice(1).some((t,i)=>SNOW.has(path[i].id)&&SNOW.has(t.id)),r=Math.random();
-  if(r<.01)return 'niji';if(r<.02)return 'kaminari';if(r<.03)return 'kiri';const u=(r-.03)/.97;return u<.5?'hare':u<.8?'kumori':snowy&&Math.random()<.5?'yuki':'ame';
+  if(r<.02)return 'niji';if(r<.04)return 'kaminari';if(r<.06)return 'kiri';const u=(r-.06)/.94;return u<.5?'hare':u<.8?'kumori':snowy&&Math.random()<.5?'yuki':'ame';
 }
 let drops=[],flash=0,nextBolt=3,bolt=null,rainNode=null;
 const tunnels=()=>!trip.line.track?[]:trip.scene==='seikan'?[seikanAt()]:trip.scene!=='shin'||trip.nozomi?.length?[]:[[70,135]],inTunnel=()=>tunnels().some(([a,b])=>s>=a&&s<=b);
@@ -798,7 +798,7 @@ function wire(){
   $('drive').addEventListener('keydown',e=>{if(phase!=='run'||e.target.closest('button:not(.notch)'))return;if(e.key==='ArrowUp'){setNotch(Math.min(1,notch+1));e.preventDefault();}if(e.key==='ArrowDown'){setNotch(Math.max(-1,notch-1));e.preventDefault();}});
   $('drive-door').onclick=()=>{
     if(phase!=='ready')return;audio();if(!motor)makeMotor(cur);rainStart();$('drive-door').disabled=true;$('drive-change').hidden=true;chime();doorTarget=0;setMsg('ドアが しまります…');
-    later(()=>{if(phase!=='ready')return;phase='run';$('drive-door').hidden=true;setNotch(0);setMsg('「すすむ」で しゅっぱつ！');$('drive-led').textContent=`つぎは ${trip.to.reading}`;say(`つぎは、${spoken(trip.to)}。${spoken(trip.to)} です。`);},1300);
+    later(()=>{if(phase!=='ready')return;phase='run';$('drive-door').hidden=true;setNotch(0);setMsg('「すすむ」で しゅっぱつ！');$('drive-led').textContent=`つぎは ${trip.to.reading}`;say(`つぎは、${spoken(trip.to)}。${spoken(trip.to)} です。`,TENKI_SAY[trip.tenki]&&(()=>{tenkiTalk=true;say(TENKI_SAY[trip.tenki],()=>{const f=tenkiTalk;tenkiTalk=false;if(typeof f==='function')f();});}));},1300); // レアの天気の放送は 走りだしてから（ドアを しめると 発車の案内が 止まって 聞こえなかった。2026-11-05 ゆかりさん）
   };
   const hb=$('drive-horn');
   hb.addEventListener('pointerdown',e=>{e.preventDefault();try{hb.setPointerCapture(e.pointerId);}catch(_){}hornStart();});
