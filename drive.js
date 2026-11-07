@@ -62,6 +62,12 @@ const TRAINS=[
  {id:'221',name:'221けい',reading:'やまとじかいそく',kind:'かいそく',cars:3,front:'slant',body:'#f3f1e4',roof:'#a3a7a8',win:'#2a3236',bigWin:true,stripe:[{t:.575,h:.03,c:'#2d4f9e'},{t:.605,h:.1,c:'#cdb47c'},{t:.705,h:.03,c:'#8d6b3a'}],doors:3,doorColor:'#e6e3d6',mask:'#262c30',panto:[1],motor:'old',vmax:120}, // クリーム色の 車体に 茶色と ベージュの 帯、前は 大きい 黒い 窓（2026-10-28。最高速度は 公式では 未確認）
  {id:'223',name:'223けい',reading:'かんくう・きしゅうじかいそく',kind:'かいそく',cars:3,front:'slant',body:'#c9ced1',roof:'#9aa1a5',win:'#22292d',tallWin:true,stripe:[{t:.56,h:.05,c:'#e1e5f5'},{t:.61,h:.05,c:'#c2c8ee'},{t:.66,h:.05,c:'#9aa1e0'},{t:.71,h:.04,c:'#6c72cc'},{t:.75,h:.035,c:'#3f45b0'}],doors:3,doorColor:'#bfc4c7',doorFoot:'#f2b800',mask:'#3b4045',panto:[1],motor:'vvvf',vmax:120}, // 銀の 車体に、窓の 下から だんだん こくなる 青い 帯（阪和線の 2500番台）、柱で 分かれた 窓、ドアの 下の 黄色い 印、前は こい 灰色の 顔（2026-10-29 ゆかりさん「カードの 車両と ちょっと ちがう」で カードの 写真に 合わせた。最高速度は 公式では 未確認）
  {id:'m250',name:'スーパーレールカーゴ',reading:'M250けい',kind:'かもつ',cars:4,loco:true,pusher:true,front:'flat',body:'#3d9be0',skirt:'#1c3f8f',skirtFrom:.6,roof:'#56606a',win:'#1f272c',boxes:['#c9cfd4','#2e5fa9','#c9cfd4','#2e5fa9'],mark:'srcargo',leadLen:1,cabFrac:.27,wagonLen:1,perWagon:2,panto:[0],motor:'vvvf',vmax:130}, // 電車の かもつれっしゃ。前の 車両は 上が 水色・下が こい 青、コンテナは 銀と 青（2026-10-28。最高速度 130キロは JR貨物の 公式）
+ {id:'hamakaze',name:'はまかぜ',reading:'キハ189けい',kind:'とっきゅう',cars:3,front:'slant',mask:'#2a3236',body:'#d4d8db',roof:'#a9afb3',win:'#2a3236',stripe:[{t:.17,h:.43,c:'#c8283c'},{t:.64,h:.025,c:'#f4f4f4'}],doors:1,doorsAtEnds:true,doorColor:'#cdd1d4',diesel:true,vmax:120}, // 銀の 車体の 窓の ところが 赤い 太い 帯、その 下に 白い 線（2026-11-07 ゆかりさんの 模型の 写真で 描き直し）
+ {id:'rakuraku',name:'らくラクはりま',reading:'289けい',kind:'とっきゅう',cars:3,front:'kantsu',cabLen:1.2,body:'#f4f4f2',roof:'#c3c6c7',win:'#1d2329',stripe:{t:.55,h:.025,c:'#2bb0c6'},doors:1,doorsAtEnds:true,doorColor:'#ebebe7',panto:[1],motor:'vvvf',vmax:130}, // 白い 車体に 水色の 細い 帯、高い 運転台の まっすぐな 顔（683系を つくりかえた 車両。2026-11-07 ゆかりさん「ポイントは 水色の ライン」、顔は 参考の 写真に 合わせた）
+ {id:'aseat',name:'Aシート',reading:'しんかいそく',kind:'かいそく',cars:3,front:'slant',body:'#c9ced1',roof:'#9aa1a5',win:'#2a3236',stripe:[{t:.15,h:.42,c:'#1d2440'},{t:.6,h:.012,c:'#f4f4f4'},{t:.615,h:.05,c:'#1f5fc8'},{t:.668,h:.012,c:'#f4f4f4'},{t:.683,h:.02,c:'#1f5fc8'}],doors:2,doorsAtEnds:true,doorBack:1.3,doorColor:'#bfc4c7',frame:'#e8b400',mask:'#4b5156',panto:[1],motor:'vvvf',vmax:130}, // 新快速の Aシートの 車両：窓の まわりが こんで、下に 青い 帯、ドアは 車両の はしに 1まいずつで ふちが 黄色（先頭の 車両は 運転台から すこし はなす）。顔は 225系（2026-11-07 ゆかりさんの 写真で 描き直し）
+ {id:'223-2000',name:'223けい',reading:'2000ばんだい',kind:'かいそく',cars:3,front:'slant',body:'#d2cfca',roof:'#aaa59e',win:'#2a3236',bigWin:true,stripe:[{t:.14,h:.44,c:'#a08b7e'},{t:.585,h:.03,c:'#f1ead8'},{t:.62,h:.3,c:'#c9ba98'}],doors:3,doorColor:'#bcb2a6',mask:'#3b4045',panto:[1],motor:'vvvf',vmax:130}, // 銀の 車体の 窓の 高さに 茶色の 太い 帯、その 下に クリーム色の 線と ベージュ、大きい 窓（JR神戸線の 新快速。2026-11-07 ゆかりさんの 写真で 描き直し）
+ {id:'hot7000',name:'スーパーはくと',reading:'HOT7000けい',kind:'とっきゅう',cars:3,front:'round',cabLen:2.2,body:'#cfd3d7',roof:'#b4babf',win:'#1b1f24',stripe:[{t:.18,h:.4,c:'#22161c'},{t:.64,h:.025,c:'#2346a8'}],hakuto:true,doors:1,doorsAtEnds:true,doorInset:.85,doorColor:'#2a2026',diesel:true,vmax:130}, // 智頭急行：銀の 車体に 窓の 黒い 帯と 青い 細い 線、ながい 青い 先頭（下は 白に 青い 線 2本）、赤い 四角は 先頭の うしろと、どの 車両も はしに 青と 赤の 四角（その 内側に こい 色の ドア）（2026-11-07 ゆかりさんの 模型の 写真で 描き直し）
+ {id:'207',name:'207けい',reading:'JRこうべせんの ふつう でんしゃ',kind:'ふつう',cars:3,front:'flat',body:'#cdd2d6',roof:'#a3aaae',win:'#d3dae0',stripe:[{t:.24,h:.34,c:'#1f2f8a'},{t:.6,h:.035,c:'#f2a020'},{t:.645,h:.02,c:'#1f2f8a'}],doors:4,doorColor:'#cfd4d8',mask:'#2a2f33',panto:[1],motor:'vvvf',vmax:120}, // 銀の 車体の 窓の ところが こんの 帯、その 下に オレンジと こんの 線、4つの ドア、前は 黒い 顔（2026-11-07 ゆかりさんの 図で 描き直し。最高速度は 公式では 未確認）
 ];
 /* 広電の車両は、その線路ができたら TRAINS と cards.js に戻す（2026-09-27 にいったん図鑑から外した。500系は 2026-10-04 に山陽新幹線と いっしょに戻した） */
 const WAITING_TRAINS=[
@@ -303,7 +309,7 @@ function drawCar(c,t,i,x,yRail,h,L,o){
   c.fillStyle=t.roof;c.fillRect(x,y,L,bodyH*.07);
   const doors=[],dw=bodyH*.3;
   if(!isLoco&&t.doors){
-    if(t.doorsAtEnds){const inset=bodyH*.55;doors.push(x+inset);if(t.doors>1||!isFront)doors.push(x+L-inset-(isFront?bodyH*.5:0));}
+    if(t.doorsAtEnds){const inset=bodyH*(t.doorInset||.55);doors.push(x+inset);if(t.doors>1||!isFront)doors.push(x+L-inset-(isFront?bodyH*(t.doorBack||.5):0));} // doorBack：先頭の 車両の ドアを 運転台から はなす（Aシート、2026-11-07）
     else for(let k=0;k<t.doors;k++)doors.push(x+L*(k+.5)/t.doors-(isFront?bodyH*.12:0));
   }
   const wy=y+bodyH*(t.tallWin?.16:.2),wh=bodyH*(t.bigWin||t.tallWin?.36:.3);
@@ -326,6 +332,7 @@ function drawCar(c,t,i,x,yRail,h,L,o){
     if(t.doorLine){c.fillStyle=t.doorLine;c.fillRect(d-open-bodyH*.035,y+bodyH*.12,bodyH*.035,bodyH*.84);c.fillRect(d+open,y+bodyH*.12,bodyH*.035,bodyH*.84);} // 323系：ドアの まんなかの 黄色い 線
     if(o.door>0){c.fillStyle='#ffe9a8';c.globalAlpha=.35*o.door;c.fillRect(d-open,y+bodyH*.12,open*2,bodyH*.84);c.globalAlpha=1;}
   }
+  if(t.hakuto)for(const e of isFront?[0]:[0,1]){const bx=e?x+L-bodyH*.32:x,rx=e?x+L-bodyH*.62:x+bodyH*.32;c.fillStyle='#2346a8';c.fillRect(bx,y+bodyH*.07,bodyH*.32,bodyH*.51);c.fillStyle='#e8333a';c.fillRect(rx,y+bodyH*.18,bodyH*.3,bodyH*.4);} // スーパーはくと：車両の はしの 青と 赤の 四角（中間車は 両はし、2026-11-07 ゆかりさんの 模型の 写真）
   if(t.mosaic&&isFront){const a=x+L-bodyH*(t.cabLen-.08),sq=bodyH*.13,g=bodyH*.045;c.fillStyle=t.mosaic;for(let r=0;r<3;r++)for(let q=2;q<6;q++)c.fillRect(a+q*(sq+g),y+bodyH*(.17+r*.12),sq,bodyH*.1);for(let r=0;r<6;r++)c.fillRect(a,y+bodyH*(.17+r*.06),(sq+g)*2-g,bodyH*.03);} // はるか：先頭の 車両の 横線と 青い 四角の もよう
   if(t.emblem){const ex=x+L*.5,ey=y+bodyH*.72;c.fillStyle='#c9a24a';c.beginPath();c.arc(ex,ey,bodyH*.12,0,Math.PI*2);c.fill();c.strokeStyle='#1f3a70';c.lineWidth=bodyH*.02;c.stroke();}
   if(isLoco&&t.mark==='thunder'){ // レッドサンダーの印：赤い いなずま
@@ -365,6 +372,11 @@ function drawCar(c,t,i,x,yRail,h,L,o){
     else if(t.front==='nose'){c.fillStyle=o.light?'#fff6c8':'#d8d2b4';c.beginPath();c.ellipse(x+L-bodyH*.55,y+bodyH*.72,bodyH*.08,bodyH*.03,.3,0,Math.PI*2);c.fill();c.fillStyle=t.win;c.beginPath();c.moveTo(x+L-bodyH*2.1,y+bodyH*.12);c.quadraticCurveTo(x+L-bodyH*1.2,y+bodyH*.14,x+L-bodyH*.9,y+bodyH*.36);c.lineTo(x+L-bodyH*1.9,y+bodyH*.38);c.closePath();c.fill();}
     else{
       if(t.cab){c.fillStyle=t.cab;c.fillRect(x+L-bodyH*.85,y,bodyH*.85,bodyH);} // 813系：ステンレスの 車体に 赤い 運転台
+      if(t.hakuto){const B='#2346a8',R='#e8333a',W='#f4f5f7',w=bodyH*2.2,x0=x+L-w; // スーパーはくと：ながい 青い 先頭（上は 青、下は 白に 青い 線 2本、運転台の うしろの 上は 白い ななめ）、赤い 四角、うしろの はしは 赤と 青
+        c.fillStyle=B;c.fillRect(x0,y,w,bodyH*.58);c.fillStyle=W;c.fillRect(x0,y+bodyH*.58,w,bodyH*.42);c.fillStyle=B;c.fillRect(x0,y+bodyH*.64,w,bodyH*.035);c.fillRect(x0,y+bodyH*.72,w,bodyH*.025);
+        c.fillStyle=W;c.beginPath();c.moveTo(x0,y);c.lineTo(x0+bodyH*1.15,y);c.lineTo(x0+bodyH*.85,y+bodyH*.16);c.lineTo(x0,y+bodyH*.16);c.closePath();c.fill();
+        c.fillStyle=t.win;c.fillRect(x0+bodyH*.15,y+bodyH*.22,bodyH*.6,bodyH*.3);c.beginPath();c.moveTo(x+L-bodyH*.55,y+bodyH*.14);c.quadraticCurveTo(x+L-bodyH*.2,y+bodyH*.18,x+L-bodyH*.08,y+bodyH*.42);c.lineTo(x+L-bodyH*.55,y+bodyH*.42);c.closePath();c.fill();
+        c.fillStyle=R;c.fillRect(x0-bodyH*.3,y+bodyH*.18,bodyH*.3,bodyH*.4);}
       if(t.mask){c.fillStyle=t.mask;c.fillRect(x+L-bodyH*.3,y+bodyH*.1,bodyH*.3,bodyH*.62);} // DENCHA：黒い 前の 顔
       if(t.face){const fx=x+L-bodyH*.32;c.fillStyle=t.win;c.fillRect(fx-bodyH*.3,y+bodyH*.2,bodyH*.2,bodyH*.3);c.fillStyle=t.face;c.fillRect(fx,y,bodyH*.32,bodyH);c.fillStyle='#f4f1e4';for(let k=0;k<9;k++){c.beginPath();c.arc(fx+bodyH*.035,y+bodyH*(.06+k*.105),bodyH*.018,0,Math.PI*2);c.fill();}c.beginPath();c.arc(fx+bodyH*.135,y+bodyH*.05,bodyH*.018,0,Math.PI*2);c.fill();} // 821系：横から 見た まっ黒な 顔の はしと ふちの LED の 点、運転席の 横の 窓。ライトは 下の 1つだけ（正面の 顔を 描くと ライトが 2つ 見えて「線路が 曲がってる」ように 見えた、2026-10-10 子ども）
       if(t.accent){c.fillStyle=t.accent;c.fillRect(x+L-bodyH*.62,y+bodyH*.5,bodyH*.62,bodyH*.16);if(t.accent2){c.fillStyle=t.accent2;c.fillRect(x+L-bodyH*.62,y+bodyH*.66,bodyH*.62,bodyH*.03);}}
@@ -592,9 +604,9 @@ function tick(now){
   batteryTick(dt);updateMotor(v,phase==='run'?notch:0);weatherTick(dt);draw();
 }
 
-/* ---------- けしき（東へ すすむと 左。線路の山がわから見る）。広島・防府〜新山口・福山・倉敷〜岡山〜備前西市・博多〜福間・水巻〜小倉の街なか、内陸と岡山〜児島・福間〜水巻の山あい（上の町〜児島は海ぞい）、それ以外は瀬戸内の海ぞい ---------- */
-const TOWN=new Set(['新井口','西広島','横川','新白島','広島','天神川','向洋','海田市','三滝','安芸長束','下祇園','矢賀','防府','大道','四辻','新山口','東福山','福山','倉敷','中庄','庭瀬','北長瀬','岡山','大元','備前西市','博多','吉塚','箱崎','千早','香椎','和白','九産大前','福工大前','新宮中央','ししぶ','古賀','千鳥','福間','水巻','折尾','陣原','黒崎','八幡','スペースワールド','枝光','戸畑','九州工大前','西小倉','小倉','上野','大宮','香西','高松','大津京','山科','京都','西大路','桂川','向日町','長岡京','高槻','摂津富田','JR総持寺','茨木','千里丘','岸辺','吹田','東淀川','新大阪','大阪','福島（大阪）','野田','西九条','弁天町','大正','芦原橋','今宮','新今宮','天王寺','寺田町','桃谷','鶴橋','玉造','森ノ宮','大阪城公園','京橋','桜ノ宮','天満','安治川口','ユニバーサルシティ','桜島']);
-const INLAND=new Set(['安芸中野','中野東','瀬野','八本松','寺家','西条','西高屋','白市','入野','河内','本郷','妹尾','備中箕島','早島','久々原','茶屋町','植松','木見','東福間','東郷','赤間','教育大前','海老津','遠賀川','八十場','鴨川','讃岐府中','国分','端岡','鬼無','新疋田','近江塩津','山崎','島本']);
+/* ---------- けしき（東へ すすむと 左。線路の山がわから見る）。広島・防府〜新山口・福山・倉敷〜岡山〜備前西市・博多〜福間・水巻〜小倉の街なか、内陸と岡山〜児島・福間〜水巻の山あい（上の町〜児島は海ぞい）、それ以外は瀬戸内の海ぞい。岡山〜姫路〜大阪（2026-11-06）は、上道〜有年が山あい、朝霧〜須磨が海ぞい（明石海峡）、ほかは街なか ---------- */
+const TOWN=new Set(['新井口','西広島','横川','新白島','広島','天神川','向洋','海田市','三滝','安芸長束','下祇園','矢賀','防府','大道','四辻','新山口','東福山','福山','倉敷','中庄','庭瀬','北長瀬','岡山','大元','備前西市','博多','吉塚','箱崎','千早','香椎','和白','九産大前','福工大前','新宮中央','ししぶ','古賀','千鳥','福間','水巻','折尾','陣原','黒崎','八幡','スペースワールド','枝光','戸畑','九州工大前','西小倉','小倉','上野','大宮','香西','高松','大津京','山科','京都','西大路','桂川','向日町','長岡京','高槻','摂津富田','JR総持寺','茨木','千里丘','岸辺','吹田','東淀川','新大阪','大阪','福島（大阪）','野田','西九条','弁天町','大正','芦原橋','今宮','新今宮','天王寺','寺田町','桃谷','鶴橋','玉造','森ノ宮','大阪城公園','京橋','桜ノ宮','天満','安治川口','ユニバーサルシティ','桜島','西川原','高島','東岡山','相生','竜野','網干','はりま勝原','英賀保','手柄山平和公園','姫路','東姫路','御着','ひめじ別所','曽根','宝殿','加古川','東加古川','土山','魚住','大久保','西明石','明石','須磨海浜公園','鷹取','新長田','兵庫','神戸','元町','三ノ宮','灘','摩耶','六甲道','住吉','摂津本山','甲南山手','芦屋','さくら夙川','西宮','甲子園口','立花','尼崎','塚本']);
+const INLAND=new Set(['安芸中野','中野東','瀬野','八本松','寺家','西条','西高屋','白市','入野','河内','本郷','妹尾','備中箕島','早島','久々原','茶屋町','植松','木見','東福間','東郷','赤間','教育大前','海老津','遠賀川','八十場','鴨川','讃岐府中','国分','端岡','鬼無','新疋田','近江塩津','山崎','島本','上道','瀬戸','万富','熊山','和気','吉永','三石','上郡','有年']);
 const SHORE=new Set(['糸魚川']);   // 山あいの路線でも、日本海のすぐそばの駅はスタンプを海の模様に（北陸新幹線、2026-10-20）
 /* 東海道新幹線の車窓（2026-10-05）：本物で富士山が見える 三島〜新富士・新横浜〜小田原は 富士山、浜名湖が見える 浜松〜豊橋は 湖。どちらも トンネルなし、かべは ひくい（JR東海ツアーズ 東海道新幹線の座席） */
 /* 青函トンネル（2026-10-15）：奥津軽いまべつ〜木古内は、ほとんどトンネルの中。運転は SEIKAN_LONG m だけ長い。
