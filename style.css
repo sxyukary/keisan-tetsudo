@@ -848,6 +848,13 @@ body.game::after{content:"";flex:0 0 14px;border-top:3px solid #fff;background:#
 .look-bench b{position:absolute;inset:0}
 .look-bench b::before{content:"";position:absolute;left:50%;top:.5cqw;width:5.4cqw;height:5.4cqw;margin-left:-2.7cqw;border-radius:50%;background:#f3d2b3}
 .look-bench b::after{content:"";position:absolute;left:1cqw;right:1cqw;bottom:0;height:6cqw;border-radius:4cqw 4cqw 1cqw 1cqw;background:var(--c)}
+/* 10 to 20 (look20): two cars side by side, the first one full */
+.look-train.two{left:3cqw;width:94cqw;grid-template-columns:1fr 1fr;gap:2cqw;padding:0;border:0;background:none;box-shadow:none}
+.look-car{display:grid;gap:2cqw;padding:2cqw 1.5cqw;border:1cqw solid #c8323c;border-radius:3cqw;background:#f4f1e8;box-shadow:0 1cqw 0 #0002}
+.look-train.two .look-bench{gap:1.2cqw;padding:.8cqw 1cqw .6cqw;border-radius:1.6cqw;box-shadow:inset 0 -1cqw 0 #0002}
+.look-train.two .look-bench i{width:6.8cqw;height:7.4cqw;border-radius:1.2cqw}
+.look-train.two .look-bench b::before{top:.3cqw;width:3.4cqw;height:3.4cqw;margin-left:-1.7cqw}
+.look-train.two .look-bench b::after{left:.6cqw;right:.6cqw;height:3.8cqw}
 .look-cue{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);white-space:nowrap;padding:2cqw 5cqw;border-radius:999px;background:#17895f;box-shadow:0 1.2cqw 0 #0d6443;font-size:8cqw;font-weight:900;letter-spacing:.05em}
 .look-cue:empty{display:none}
 .game .exercise.look .equation{padding-top:4px;padding-bottom:4px}
