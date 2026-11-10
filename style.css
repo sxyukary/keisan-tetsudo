@@ -876,6 +876,13 @@ body.game::after{content:"";flex:0 0 14px;border-top:3px solid #fff;background:#
 .look-bench b.fill-new::after{box-shadow:0 0 0 .8cqw #fff8}
 @keyframes fill-sit{from{opacity:0;transform:translateY(-6cqw)}to{opacity:1;transform:none}}
 @media(prefers-reduced-motion:reduce){.look-bench b.fill-new{animation:none}}
+/* 9にんのり・8にんのり (fill9): luggage spaces at the end of the lower bench; the empty car stands with its number plate until it passes */
+.look-bench i.bag{display:grid;place-items:center;box-sizing:border-box;border:.6cqw dashed #6b8fa0;background:#fff;font-size:8cqw;line-height:1}
+.look-stage.empty:not(.watching) .look-train{visibility:visible}
+.look-stage.empty:not(.watching) .look-bench b{visibility:hidden}
+.look-stage.empty .look-cue{top:auto;bottom:1.5cqw;transform:translateX(-50%);padding:1.2cqw 5cqw;font-size:6cqw}
+.look-plate{position:absolute;left:50%;top:1cqw;transform:translateX(-50%);padding:.6cqw 3cqw;border-radius:999px;background:#c8323c;font-size:4.6cqw;font-weight:900;white-space:nowrap}
+.look-stage.watching .look-plate{display:none}
 .exercise.look #feedback{word-break:keep-all}
 .drive-stage:has(.drive-battery:not([hidden])) .drive-led{max-width:calc(100% - 160px)}
 #reward-total{margin:10px 0 0;text-align:center;font-size:15px;font-weight:800;color:#5d6f66}#reward-total b{font-size:24px;color:#176654;font-variant-numeric:tabular-nums}
