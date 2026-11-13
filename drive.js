@@ -68,6 +68,8 @@ const TRAINS=[
  {id:'223-2000',name:'223けい',reading:'2000ばんだい',kind:'かいそく',cars:3,front:'slant',body:'#d2cfca',roof:'#aaa59e',win:'#2a3236',bigWin:true,stripe:[{t:.14,h:.44,c:'#a08b7e'},{t:.585,h:.03,c:'#f1ead8'},{t:.62,h:.3,c:'#c9ba98'}],doors:3,doorColor:'#bcb2a6',mask:'#3b4045',panto:[1],motor:'vvvf',vmax:130}, // 銀の 車体の 窓の 高さに 茶色の 太い 帯、その 下に クリーム色の 線と ベージュ、大きい 窓（JR神戸線の 新快速。2026-11-07 ゆかりさんの 写真で 描き直し）
  {id:'hot7000',name:'スーパーはくと',reading:'HOT7000けい',kind:'とっきゅう',cars:3,front:'round',cabLen:2.2,body:'#cfd3d7',roof:'#b4babf',win:'#1b1f24',stripe:[{t:.18,h:.4,c:'#22161c'},{t:.64,h:.025,c:'#2346a8'}],hakuto:true,doors:1,doorsAtEnds:true,doorInset:.85,doorColor:'#2a2026',diesel:true,vmax:130}, // 智頭急行：銀の 車体に 窓の 黒い 帯と 青い 細い 線、ながい 青い 先頭（下は 白に 青い 線 2本）、赤い 四角は 先頭の うしろと、どの 車両も はしに 青と 赤の 四角（その 内側に こい 色の ドア）（2026-11-07 ゆかりさんの 模型の 写真で 描き直し）
  {id:'207',name:'207けい',reading:'JRこうべせんの ふつう でんしゃ',kind:'ふつう',cars:3,front:'flat',body:'#cdd2d6',roof:'#a3aaae',win:'#d3dae0',stripe:[{t:.24,h:.34,c:'#1f2f8a'},{t:.6,h:.035,c:'#f2a020'},{t:.645,h:.02,c:'#1f2f8a'}],doors:4,doorColor:'#cfd4d8',mask:'#2a2f33',panto:[1],motor:'vvvf',vmax:120}, // 銀の 車体の 窓の ところが こんの 帯、その 下に オレンジと こんの 線、4つの ドア、前は 黒い 顔（2026-11-07 ゆかりさんの 図で 描き直し。最高速度は 公式では 未確認）
+ {id:'annei',name:'らくラクやまと',reading:'683けい あんねい',kind:'とっきゅう',cars:3,front:'round',cabLen:1.9,body:'#c9a54a',roof:'#a9a49a',win:'#1d2329',skirt:'#4a4a4c',skirtFrom:.9,stripe:{t:.54,h:.035,c:'#9c2b3a'},wrap:'annei',doors:1,doorsAtEnds:true,doorColor:'#c39d45',panto:[1],motor:'vvvf',vmax:130}, // 683系 安寧：金色の 車体、先頭は 赤い すおういろから 金色へ ななめに かわる（上の ほうが うしろまで 赤い。さかいめに 明るい すじ）。顔の よこに 金色の まるい 紋。窓の 下に 赤い 細い 帯。顔は 高い 運転台の まるい 鼻（2026-11-14 下書き）
+ {id:'227-1000',name:'227けい',reading:'1000ばんだい',kind:'ふつう',cars:2,front:'slant',body:'#cdd1d4',roof:'#9aa1a6',win:'#2d3539',stripe:[{t:.18,h:.34,c:'#1f7a57'},{t:.58,h:.02,c:'#1f7a57'}],doors:3,doorColor:'#bfc4c7',accent:'#1f7a57',panto:[0],motor:'vvvf',vmax:110}, // 227系1000番台：銀の 車体の 窓の 高さに 濃い 緑（窓と 窓の あいだが 緑）、その下に 細い 緑の 線。ドアは 銀で ふちの 色なし。2両（ゆかりさんの 模型の 写真、2026-11-14 下書き）
 ];
 /* 広電の車両は、その線路ができたら TRAINS と cards.js に戻す（2026-09-27 にいったん図鑑から外した。500系は 2026-10-04 に山陽新幹線と いっしょに戻した） */
 const WAITING_TRAINS=[
@@ -116,6 +118,10 @@ function river(c,x,y,w,h,t){
 }
 /* ラッピングの 模様。w は 顔を のぞいた 横の 長さ */
 const WRAP={
+  annei(c,i,x,y,w,h,isFront){ // 683系 安寧（2026-11-14）：先頭の 車両は 顔の ほうが 赤い すおういろ、ななめに 金色へ。顔の よこに 金色の まるい 紋
+    if(!isFront)return;const a=x+w-h*1.9,g=c.createLinearGradient(a,0,a+h*1.1,0);g.addColorStop(0,'#c9a54a');g.addColorStop(1,'#8e1b2c');c.fillStyle=g;c.beginPath();c.moveTo(a+h*.9,y+h);c.lineTo(a,y);c.lineTo(x+w+h*3,y);c.lineTo(x+w+h*3,y+h);c.closePath();c.fill();c.strokeStyle='#f0d9cf99';c.lineWidth=h*.12;c.beginPath();c.moveTo(a+h*1.15,y+h);c.lineTo(a+h*.25,y);c.stroke();
+    c.fillStyle='#d8b65a';c.beginPath();c.arc(x+w+h*.05,y+h*.62,h*.13,0,Math.PI*2);c.fill();c.strokeStyle='#8e1b2c';c.lineWidth=Math.max(1,h*.025);c.beginPath();c.arc(x+w+h*.05,y+h*.62,h*.08,0,Math.PI*2);c.stroke();
+  },
   torokko(c,i,x,y,w,h,isFront){ // 瀬戸大橋アンパンマントロッコ：先頭の 前の はしに 大きな 虹、車体に 白い くも（アンパンマンたちの 絵は かかない、2026-10-18）
     if(isFront){const cx=x+w+h*.75,cy=y+h*1.1;['#e8423a','#f39a2b','#f6d43a','#5cb848','#3b8fd8','#7a5ab8'].forEach((col,k)=>{c.strokeStyle=col;c.lineWidth=h*.07;c.beginPath();c.arc(cx,cy,h*(1.05-k*.07),Math.PI,Math.PI*1.5);c.stroke();});}
     c.fillStyle='#ffffffcc';for(const [u,v] of [[.2,.8],[.45,.86],[.7,.8]]){const px=x+w*u,py=y+h*v;c.beginPath();c.arc(px,py,h*.05,0,Math.PI*2);c.arc(px+h*.06,py-h*.03,h*.06,0,Math.PI*2);c.arc(px+h*.13,py,h*.045,0,Math.PI*2);c.fill();}
@@ -510,7 +516,7 @@ function say(text,then){const id=++sayId;if(!soundOn||!('speechSynthesis' in roo
 
 /* ---------- はしる ---------- */
 const BASE=220,PASS_GAP=45,VMAX=25,ACC=5,BRK=5,STOP_OK=6; // m, m/s, m/s²。停止位置の手前 STOP_OK m 以内で とうちゃく
-/* のぞみ（2026-10-12）・みずほ（九州新幹線、`express`、2026-10-14）・シティライナー（山陽本線、2026-10-31。新幹線でない線では「かいそく シティライナー」と読む）・新快速（JR神戸線、2026-11-13。「しんかいそく」と読む）：とばす駅 1つにつき PASS_GAP m 長く走り（9駅とばす 名古屋→新横浜で 約30秒）、とちゅうの駅は 短いホームを「つうか」する */
+/* のぞみ（2026-10-12）・みずほ（九州新幹線、`express`、2026-10-14）・シティライナー（山陽本線、2026-10-31。新幹線でない線では「かいそく シティライナー」と読む）・新快速（JR神戸線、2026-11-13。「しんかいそく」と読む）・らくラクやまと（大和路線、2026-11-14。特急なので「とっきゅう らくラクやまと」と読む）：とばす駅 1つにつき PASS_GAP m 長く走り（9駅とばす 名古屋→新横浜で 約30秒）、とちゅうの駅は 短いホームを「つうか」する */
 let END=BASE;const passAt=i=>{const long=trip.seikanAt>=0?SEIKAN_LONG:0;return 43+(END-long-128)*(i+.5)/trip.nozomi.length+(long&&i>=trip.seikanAt?long:0);}; // 青函トンネルの区間だけ SEIKAN_LONG m 長い
 let cur=null,trip=null,phase='closed',s=0,v=0,notch=0,auto=false,doorT=1,doorTarget=1,up=0,bat=75,batWay='',lastJoint=0,lastChuff=0,near=false,tenkiTalk=false,smoke=[],raf=0,lastT=0,timers=[];
 let cv,ctx,W=0,H=0;
@@ -541,12 +547,12 @@ function resetRun(){
   up=chargeAt()===0&&cur.battery?1:0;bat=chargeAt()===0?90:75;batWay=null;$('drive-battery').hidden=!cur.battery;
   phase='ready';s=0;v=0;notch=0;auto=false;doorT=1;doorTarget=1;lastJoint=0;lastChuff=0;near=false;tenkiTalk=false;smoke=[];
   $('drive-console').hidden=false;$('drive-arrive').hidden=true;$('drive-door').hidden=false;$('drive-door').disabled=false;$('drive-change').hidden=false;$('drive-skip').hidden=false;
-  notchUI(false);setMsg('ドアを しめて しゅっぱつ しよう！');$('drive-led').textContent=`${trip.nozomi?trip.line.express+' ':''}${trip.to.reading} ゆき`;$('drive-kind').textContent=trip.nozomi&&!trip.line.track?(trip.line.express==='新快速'?'しんかいそく':'かいそく'):cur.kind;
+  notchUI(false);setMsg('ドアを しめて しゅっぱつ しよう！');$('drive-led').textContent=`${trip.nozomi?trip.line.express+' ':''}${trip.to.reading} ゆき`;$('drive-kind').textContent=trip.nozomi&&!trip.line.track?(trip.line.express==='新快速'?'しんかいそく':trip.line.express==='らくラクやまと'?'とっきゅう':'かいそく'):cur.kind;
   document.querySelector('#drive .n-brake').classList.remove('hint');
 }
 function start(id){
   cur=rideable(byId[id])?byId[id]:byId[STARTERS[track()]||STARTER];showScreen('run');resize();resetRun();makeMotor(cur);rainStart();
-  say(trip.nozomi?`この でんしゃは、${trip.line.track?trip.line.express+'ごう':trip.line.express==='新快速'?'しんかいそく':'かいそく '+trip.line.express}、${spoken(trip.to)} ゆき です。${trip.nozomi.length?'とちゅうの えきには とまりません。':''}`:`この でんしゃは、${spoken(trip.to)} ゆき です。`); // のぞみは 本物どおり「のぞみ号」と 区切る（「のぞみ こくら」が 駅名に 聞こえないように。2026-10-12 ゆかりさん）
+  say(trip.nozomi?`この でんしゃは、${trip.line.track?trip.line.express+'ごう':trip.line.express==='新快速'?'しんかいそく':trip.line.express==='らくラクやまと'?'とっきゅう らくラクやまと':'かいそく '+trip.line.express}、${spoken(trip.to)} ゆき です。${trip.nozomi.length?'とちゅうの えきには とまりません。':''}`:`この でんしゃは、${spoken(trip.to)} ゆき です。`); // のぞみは 本物どおり「のぞみ号」と 区切る（「のぞみ こくら」が 駅名に 聞こえないように。2026-10-12 ゆかりさん）
   if(!raf){lastT=performance.now();raf=requestAnimationFrame(tick);}
 }
 function arrive(kind){
@@ -604,9 +610,9 @@ function tick(now){
   batteryTick(dt);updateMotor(v,phase==='run'?notch:0);weatherTick(dt);draw();
 }
 
-/* ---------- けしき（東へ すすむと 左。線路の山がわから見る）。広島・防府〜新山口・福山・倉敷〜岡山〜備前西市・博多〜福間・水巻〜小倉の街なか、内陸と岡山〜児島・福間〜水巻の山あい（上の町〜児島は海ぞい）、それ以外は瀬戸内の海ぞい。岡山〜姫路〜大阪（2026-11-06）は、上道〜有年が山あい、朝霧〜須磨が海ぞい（明石海峡）、ほかは街なか ---------- */
-const TOWN=new Set(['新井口','西広島','横川','新白島','広島','天神川','向洋','海田市','三滝','安芸長束','下祇園','矢賀','防府','大道','四辻','新山口','東福山','福山','倉敷','中庄','庭瀬','北長瀬','岡山','大元','備前西市','博多','吉塚','箱崎','千早','香椎','和白','九産大前','福工大前','新宮中央','ししぶ','古賀','千鳥','福間','水巻','折尾','陣原','黒崎','八幡','スペースワールド','枝光','戸畑','九州工大前','西小倉','小倉','上野','大宮','香西','高松','大津京','山科','京都','西大路','桂川','向日町','長岡京','高槻','摂津富田','JR総持寺','茨木','千里丘','岸辺','吹田','東淀川','新大阪','大阪','福島（大阪）','野田','西九条','弁天町','大正','芦原橋','今宮','新今宮','天王寺','寺田町','桃谷','鶴橋','玉造','森ノ宮','大阪城公園','京橋','桜ノ宮','天満','安治川口','ユニバーサルシティ','桜島','西川原','高島','東岡山','相生','竜野','網干','はりま勝原','英賀保','手柄山平和公園','姫路','東姫路','御着','ひめじ別所','曽根','宝殿','加古川','東加古川','土山','魚住','大久保','西明石','明石','須磨海浜公園','鷹取','新長田','兵庫','神戸','元町','三ノ宮','灘','摩耶','六甲道','住吉','摂津本山','甲南山手','芦屋','さくら夙川','西宮','甲子園口','立花','尼崎','塚本']);
-const INLAND=new Set(['安芸中野','中野東','瀬野','八本松','寺家','西条','西高屋','白市','入野','河内','本郷','妹尾','備中箕島','早島','久々原','茶屋町','植松','木見','東福間','東郷','赤間','教育大前','海老津','遠賀川','八十場','鴨川','讃岐府中','国分','端岡','鬼無','新疋田','近江塩津','山崎','島本','上道','瀬戸','万富','熊山','和気','吉永','三石','上郡','有年']);
+/* ---------- けしき（東へ すすむと 左。線路の山がわから見る）。広島・防府〜新山口・福山・倉敷〜岡山〜備前西市・博多〜福間・水巻〜小倉の街なか、内陸と岡山〜児島・福間〜水巻の山あい（上の町〜児島は海ぞい）、それ以外は瀬戸内の海ぞい。岡山〜姫路〜大阪（2026-11-06）は、上道〜有年が山あい、朝霧〜須磨が海ぞい（明石海峡）、ほかは街なか ----------。大和路線（2026-11-14）は、天王寺〜柏原が街なか、柏原〜王寺が山あい（大和川の谷） */
+const TOWN=new Set(['新井口','西広島','横川','新白島','広島','天神川','向洋','海田市','三滝','安芸長束','下祇園','矢賀','防府','大道','四辻','新山口','東福山','福山','倉敷','中庄','庭瀬','北長瀬','岡山','大元','備前西市','博多','吉塚','箱崎','千早','香椎','和白','九産大前','福工大前','新宮中央','ししぶ','古賀','千鳥','福間','水巻','折尾','陣原','黒崎','八幡','スペースワールド','枝光','戸畑','九州工大前','西小倉','小倉','上野','大宮','香西','高松','大津京','山科','京都','西大路','桂川','向日町','長岡京','高槻','摂津富田','JR総持寺','茨木','千里丘','岸辺','吹田','東淀川','新大阪','大阪','福島（大阪）','野田','西九条','弁天町','大正','芦原橋','今宮','新今宮','天王寺','寺田町','桃谷','鶴橋','玉造','森ノ宮','大阪城公園','京橋','桜ノ宮','天満','安治川口','ユニバーサルシティ','桜島','西川原','高島','東岡山','相生','竜野','網干','はりま勝原','英賀保','手柄山平和公園','姫路','東姫路','御着','ひめじ別所','曽根','宝殿','加古川','東加古川','土山','魚住','大久保','西明石','明石','須磨海浜公園','鷹取','新長田','兵庫','神戸','元町','三ノ宮','灘','摩耶','六甲道','住吉','摂津本山','甲南山手','芦屋','さくら夙川','西宮','甲子園口','立花','尼崎','塚本','東部市場前','平野','加美','久宝寺','八尾','志紀','柏原']);
+const INLAND=new Set(['安芸中野','中野東','瀬野','八本松','寺家','西条','西高屋','白市','入野','河内','本郷','妹尾','備中箕島','早島','久々原','茶屋町','植松','木見','東福間','東郷','赤間','教育大前','海老津','遠賀川','八十場','鴨川','讃岐府中','国分','端岡','鬼無','新疋田','近江塩津','山崎','島本','上道','瀬戸','万富','熊山','和気','吉永','三石','上郡','有年','高井田','河内堅上','三郷','王寺']);
 const SHORE=new Set(['糸魚川']);   // 山あいの路線でも、日本海のすぐそばの駅はスタンプを海の模様に（北陸新幹線、2026-10-20）
 /* 東海道新幹線の車窓（2026-10-05）：本物で富士山が見える 三島〜新富士・新横浜〜小田原は 富士山、浜名湖が見える 浜松〜豊橋は 湖。どちらも トンネルなし、かべは ひくい（JR東海ツアーズ 東海道新幹線の座席） */
 /* 青函トンネル（2026-10-15）：奥津軽いまべつ〜木古内は、ほとんどトンネルの中。運転は SEIKAN_LONG m だけ長い。

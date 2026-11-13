@@ -1204,5 +1204,41 @@
     "change": "Wikimedia提供の縮小画像（長辺1280px）を使用。トリミング・AI補正なし。",
     "photoDescription": "A local train bound for Nishi-Akashi (207-1000 series S33) entering Amagasaki Station",
     "station": "芦屋"
+  },
+  {
+    "id": "annei",
+    "name": "らくラクやまと 683系 安寧",
+    "reading": "らくラクやまと 683けい あんねい",
+    "category": "とっきゅう",
+    "image": "assets/annei.jpg",
+    "fact": "2025ねんに デビューした、奈良へ いく とっきゅうの でんしゃ。あかい「すおういろ」から きんいろに かわる いろは、むかしの 奈良の たからものの いろ。へいじつの あさと よるは「らくラクやまと」として 王寺・久宝寺・天王寺を はしるよ。写真は 2025ねん、京都駅に とまる 特急「いにしへ」奈良ゆき。",
+    "factSource": "https://www.westjr.co.jp/press/article/items/250822_00_press_Mahoroba_Yukyu_debut.pdf",
+    "checked": "2026-11-14",
+    "credit": "にぶさま",
+    "sourceTitle": "JR West 683-6000 N01 at Kyoto Station.jpg",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:JR_West_683-6000_N01_at_Kyoto_Station.jpg",
+    "change": "Wikimedia提供の縮小画像（長辺1280px）を使用。トリミング・AI補正なし。",
+    "photoDescription": "京都駅に停車中の683系6000番台N01（安寧）編成による特急「いにしへ」奈良行き（2025-11-02）",
+    "station": "久宝寺"
+  },
+  {
+    "id": "227-1000",
+    "name": "227系1000番台",
+    "reading": "227けい 1000ばんだい",
+    "category": "でんしゃ",
+    "image": "assets/227-1000.jpg",
+    "fact": "2019ねん 3がつに、和歌山線と 万葉まほろば線（桜井線）で デビュー。デビューの日は 王寺駅で しゅっぱつしきが あったよ。2りょうで はしって、ドアの そばで ICOCAが つかえる。写真は 2023ねん、紀勢本線の 白浜駅に はいってくる 串本ゆき。",
+    "factSource": "https://trafficnews.jp/post/84490",
+    "checked": "2026-11-14",
+    "credit": "MaedaAkihiko",
+    "sourceTitle": "RW-Series227-1000 SR02.jpg",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:RW-Series227-1000_SR02.jpg",
+    "change": "Wikimedia提供の縮小画像（長辺1280px）を使用。トリミング・AI補正なし。",
+    "photoDescription": "紀勢本線 白浜駅に入る227系1000番台SR02編成の普通 串本行き（2023-09-22）",
+    "station": "王寺"
   }
 ];if(typeof module!=='undefined')module.exports=cards;else r.RailCards=cards;})(globalThis);
