@@ -695,6 +695,12 @@ body.game::after{content:"";flex:0 0 14px;border-top:3px solid #fff;background:#
  .game.quiz .keypad button{height:auto;min-height:56px;font-size:clamp(30px,9vw,40px);border-radius:18px}
  .game.quiz .keypad .action{font-size:19px}
  .game.quiz #next{grid-row:4;width:100%;max-width:none;min-height:76px;font-size:23px}
+ /* ぼうかぞえ on a phone (2026-11-18, iPhone SE): the picture takes what the keypad and the answer can give, so the sticks are bigger to tap. */
+ .game.quiz .exercise.sticks .equation{padding:6px 6px 8px;gap:6px}
+ .game.quiz .exercise.sticks output{font-size:32px;padding:2px 6px}
+ .game.quiz .exercise.sticks #feedback{margin:6px 0}
+ .game.quiz .exercise.sticks .keypad{gap:7px}
+ .game.quiz .exercise.sticks .keypad button{min-height:44px}
 }
 /* Phones held sideways: ask for portrait instead of squeezing the keypad. Dialogs (drive, reward) still show above this. */
 @media(orientation:landscape) and (max-height:500px) and (pointer:coarse){
@@ -923,3 +929,30 @@ body.game::after{content:"";flex:0 0 14px;border-top:3px solid #fff;background:#
 .game .cherry-ball.on{border-color:#ffb23e;animation:blink 1.6s steps(2,start) infinite}
 .exercise.cherry #feedback{color:#b35f00;font-weight:800;word-break:keep-all}
 @media(prefers-reduced-motion:reduce){.game .cherry-ball.on{animation:none}}
+/* ぼうかぞえ (ROADMAP 18): the scene above the answer; the sticks can be tapped. */
+.game .exercise.sticks .equation{flex-direction:column;width:100%;padding:4px 8px;gap:4px}
+.game .exercise.sticks #question{display:flex;flex-direction:column;align-items:center;width:100%;gap:4px}
+.sticks-q{max-width:100%;font-size:clamp(16px,2.3vw,22px);font-weight:800;line-height:1.3;text-align:center;white-space:normal;word-break:keep-all;overflow-wrap:anywhere}
+.sticks-svg{display:block;width:100%;max-width:680px;max-height:max(150px,calc(100dvh - 500px));border-radius:14px;touch-action:manipulation;user-select:none;-webkit-user-select:none}
+.sticks-svg .stick{stroke-linecap:round;transition:stroke .15s}
+.sticks-svg{cursor:pointer}.exercise.sticks #feedback{word-break:keep-all}.sticks-svg .stick-hit{stroke:transparent;pointer-events:none}
+.sticks-svg .stick.marked{stroke:#7b3fe4}
+.sticks-svg .stick.blink{animation:stick-blink .5s ease-in-out 4}
+.sticks-svg .stick.shared{animation:stick-shared 3s ease-in-out}
+.sticks-svg .stick-badge circle{fill:#7b3fe4;stroke:#fff;stroke-width:4}
+.sticks-svg .stick-badge text{fill:#fff;font-size:24px;font-weight:900;text-anchor:middle;dominant-baseline:central}
+.sticks-svg .stick-spark{animation:stick-spark .25s steps(2) infinite}
+.sticks-svg .stick-glow{animation:stick-glow 1s ease-in-out infinite}
+@keyframes stick-blink{50%{stroke:#ff8a00}}
+@keyframes stick-shared{15%,85%{stroke:#ff8a00}}
+@keyframes stick-spark{50%{opacity:.2}}
+@keyframes stick-glow{50%{opacity:.3}}
+@media (prefers-reduced-motion:reduce){.sticks-svg .stick-spark,.sticks-svg .stick-glow{animation:none}}
+.game .exercise.sticks .keypad button{height:clamp(46px,6dvh,62px)}.game .exercise.sticks .keypad button:not(.action){font-size:26px}
+@media(max-width:600px) and (orientation:portrait){.game.quiz .exercise.sticks .sticks-svg{max-height:max(130px,calc(100dvh - 425px))}}
+.plan table{width:100%;border-collapse:collapse;font-size:13px;margin:6px 0}
+.plan th,.plan td{border:1px solid #dee4d9;padding:4px 6px;text-align:left;vertical-align:top}
+.plan thead th{background:#eef2e8}
+.plan h4{margin:12px 0 2px}
+.plan p{font-size:12px;margin:2px 0}
+.plan tbody th{white-space:nowrap}
