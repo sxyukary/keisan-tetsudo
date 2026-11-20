@@ -81,7 +81,7 @@ const WAITING_TRAINS=[
 ];
 const STARTER='redwing',byId=Object.fromEntries(TRAINS.map(t=>[t.id,t]));
 /* 線路ごとに走れる車両がちがう（2026-10-04）：新幹線の線路（路線の track）は新幹線の車両だけ、ほかの線路は在来線の車両だけ。新幹線は N700A から */
-const STARTERS={'':STARTER,'しんかんせん':'n700a'},track=()=>trip.line.track||'',rideable=t=>t&&(t.track||'')===track();
+const STARTERS={'':STARTER,'しんかんせん':'n700a'},track=()=>trip.line.track||'',rideable=t=>t&&(t.track||'')===track()&&(!trip.line.freight||t.kind==='かもつ');   // 貨物駅への よりみち（2026-11-20、ROADMAP 17）は 貨物の でんしゃだけ
 
 /* ---------- 車両の絵 ---------- */
 function carShape(c,x,y,L,h,isFront,front){
@@ -561,7 +561,7 @@ function resetRun(){
   document.querySelector('#drive .n-brake').classList.remove('hint');
 }
 function start(id){
-  cur=rideable(byId[id])?byId[id]:byId[STARTERS[track()]||STARTER];showScreen('run');resize();resetRun();makeMotor(cur);rainStart();
+  cur=rideable(byId[id])?byId[id]:byId[trip.line.freight?'ef210':STARTERS[track()]||STARTER];showScreen('run');resize();resetRun();makeMotor(cur);rainStart();
   say(trip.nozomi?`この でんしゃは、${trip.line.track?trip.line.express+'ごう':trip.line.express==='新快速'?'しんかいそく':trip.line.express==='らくラクやまと'?'とっきゅう らくラクやまと':'かいそく '+trip.line.express}、${spoken(trip.to)} ゆき です。${trip.nozomi.length?'とちゅうの えきには とまりません。':''}`:`この でんしゃは、${spoken(trip.to)} ゆき です。`); // のぞみは 本物どおり「のぞみ号」と 区切る（「のぞみ こくら」が 駅名に 聞こえないように。2026-10-12 ゆかりさん）
   if(!raf){lastT=performance.now();raf=requestAnimationFrame(tick);}
 }
@@ -845,7 +845,7 @@ function wire(){
 }
 /* 開通した区間を走る。from→to、next は to の先の駅（駅名標の矢印用）。owned は乗れる車両の id */
 function open(o){
-  wire();loadSfx();$('drive-heading').textContent=o.trial?'おためし うんてん':o.nozomi?`${o.line.express||'のぞみ'}で しゅっぱつ！`:o.ride?'しゅっぱつ！':'かいつう！';const path=[o.from,...(o.nozomi||[]),o.to],scenes=path.slice(1).map((t,i)=>sceneFor(path[i],t,o.line));trip={...o,line:{...o.line,express:o.line.express||'のぞみ'},nozomi:o.nozomi||null,scene:['seikan','bridge','kanmon','fuji','lake'].find(x=>scenes.includes(x))||scenes[0],seikanAt:scenes.indexOf('seikan'),tenki:pickTenki(path)};drops=[];flash=0;bolt=null;nextBolt=3;rainStop();$('drive-canvas').setAttribute('aria-label',`でんしゃが はしる けしき（${TENKI[trip.tenki]}）`);END=BASE+PASS_GAP*(trip.nozomi?.length||0)+(['seikan','bridge','kanmon'].includes(trip.scene)?SEIKAN_LONG:0);$('drive-title').innerHTML=`<ruby>${esc(o.from.name)}<rt>${esc(o.from.reading)}</rt></ruby><i style="background:${o.line.color}"></i><ruby>${esc(o.to.name)}<rt>${esc(o.to.reading)}</rt></ruby>`;
+  wire();loadSfx();$('drive-heading').textContent=o.trial?'おためし うんてん':o.nozomi?`${o.line.express||'のぞみ'}で しゅっぱつ！`:o.ride?'しゅっぱつ！':'かいつう！';const path=[o.from,...(o.nozomi||[]),o.to],scenes=path.slice(1).map((t,i)=>sceneFor(path[i],t,o.line));trip={...o,line:{...o.line,express:o.line.express||'のぞみ'},nozomi:o.nozomi||null,scene:['seikan','bridge','kanmon','fuji','lake'].find(x=>scenes.includes(x))||scenes[0],seikanAt:scenes.indexOf('seikan'),tenki:pickTenki(path)};drops=[];flash=0;bolt=null;nextBolt=3;rainStop();$('drive-canvas').setAttribute('aria-label',`でんしゃが はしる けしき（${TENKI[trip.tenki]}）`);END=BASE+PASS_GAP*(trip.nozomi?.length||0)+(['seikan','bridge','kanmon'].includes(trip.scene)?SEIKAN_LONG:0);$('drive-title').classList.toggle('long',(o.from.name+o.to.name).length>6);$('drive-title').innerHTML=`<ruby>${esc(o.from.name)}<rt>${esc(o.from.reading)}</rt></ruby><i style="background:${o.line.color}"></i><ruby>${esc(o.to.name)}<rt>${esc(o.to.reading)}</rt></ruby>`;
   $('drive-from').textContent=o.from.reading;$('drive-to').textContent=o.to.reading;$('drive-arrive-title').innerHTML=`<ruby>${esc(o.to.name)}<rt>${esc(o.to.reading)}</rt></ruby> に とうちゃく！`;
   if(!$('drive').open)$('drive').showModal();start(o.train);
 }

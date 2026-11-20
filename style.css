@@ -958,3 +958,40 @@ body.game::after{content:"";flex:0 0 14px;border-top:3px solid #fff;background:#
 .plan h4{margin:12px 0 2px}
 .plan p{font-size:12px;margin:2px 0}
 .plan tbody th{white-space:nowrap}
+/* 貨物駅への よりみち と コンテナを つむ（ROADMAP 17・19、2026-11-20）。コンテナの色は tsumiki.js の COLORS と同じ */
+.directions button.freight{--route-color:#8c2a48}
+.directions button.freight .direction-ribbon{background:#8c2a48;color:#fff}
+.exercise.freight>:not(.freight-go){display:none!important}
+.freight-go{width:100%;text-align:center;padding:10px 4px}.freight-go p{font-size:16px;font-weight:800;margin:6px 0 4px;word-break:keep-all}
+.freight-go .primary{background:#8c2a48;font-size:20px;min-height:60px}
+.tsumiki-dialog{max-width:1100px;width:calc(100% - 24px);height:calc(100dvh - 24px);max-height:calc(100dvh - 24px);padding:12px 14px;background:#dfe7f0;display:none;flex-direction:column;gap:8px;overflow:hidden;touch-action:manipulation;-webkit-user-select:none;user-select:none}
+.tsumiki-dialog[open]{display:flex}
+.tsumiki-dialog [hidden]{display:none!important}
+.tsumiki-head{display:flex;align-items:center;gap:12px}.tsumiki-head>div{flex:1;min-width:0}.tsumiki-head small{font-size:12px;font-weight:700;color:#8c2a48}
+.tsumiki-head h2{margin:0;font-size:clamp(17px,2.4vw,24px);word-break:keep-all}
+.tsumiki-lv{background:#8c2a48;color:#fff;border-radius:999px;padding:4px 14px;font-weight:800;white-space:nowrap}
+.tsumiki-main{flex:1;display:flex;gap:12px;min-height:0}
+.tsumiki-box{background:#eef3f9;border-radius:18px;display:flex;flex-direction:column;align-items:center;padding:8px;min-height:0}
+.tsumiki-model{flex:0 0 34%;background:#fff}.tsumiki-play{flex:1}
+.tsumiki-box canvas{flex:1;width:100%;min-height:0;display:block;touch-action:none}
+.tsumiki-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;align-items:center;margin-top:6px}.tsumiki-row b{padding:0 6px;font-size:17px}
+.tsumiki-row button{font-size:17px;padding:10px 14px;box-shadow:0 3px 0 #9fb4cc;min-width:52px;min-height:48px}
+.tsumiki-row button.turn{font-size:26px;line-height:1;padding:6px 12px}
+.tsumiki-row button.on{outline:4px solid #f0a020}
+.tsumiki-sw{display:inline-block;width:18px;height:18px;border-radius:4px;vertical-align:-3px;margin-right:4px;border:1px solid #0003}.tsumiki-sw.w{background:rgb(140,38,66)}.tsumiki-sw.d{background:rgb(78,156,212)}
+.tsumiki-done{position:absolute;inset:0;background:#0006;display:flex;align-items:center;justify-content:center;border-radius:inherit}
+.tsumiki-done>div{background:#fff;border-radius:24px;padding:24px 32px;text-align:center}.tsumiki-done p{font-size:34px;font-weight:900;margin:0 0 12px;color:#c0303f}
+.tsumiki-done .primary{background:#8c2a48;font-size:19px;padding:12px 22px}
+@media(max-width:700px){.tsumiki-dialog{width:100%;max-width:none;height:100dvh;max-height:100dvh;margin:0;inset:0;border-radius:0;padding:8px}.tsumiki-main{flex-direction:column}.tsumiki-model{flex:0 0 38%}.tsumiki-row{gap:6px;margin-top:2px}.tsumiki-row button{padding:8px 10px;font-size:15px;min-width:44px}}
+.game .quiz-start.freight,.tsumiki-done .primary{background:#8c2a48;box-shadow:0 4px 0 #5e1a30}
+.game .tsumiki-done .primary{background:#8c2a48;box-shadow:0 4px 0 #5e1a30}
+.directions .freight .direction-name,#build-label{word-break:keep-all}
+.game .station-sign h2.long{font-size:clamp(15px,4.4vw,30px);letter-spacing:0;word-break:keep-all}
+/* 運転の線の はしの 駅名（2026-11-20、ゆかりさんの iPhone で「おおたけ かもつえき」が はみ出た）：長い名前は 線の はしから 外へ 出すぎないように 内がわへ よせる（短い名前は 今まで通り 点の まんなか） */
+.drive-track{--edge:16px}#drive-to{transform:translateX(max(-50%,calc(-1*var(--edge))))}#drive-from{transform:translateX(min(-50%,calc(-100% + var(--edge))))}
+@media(max-width:600px) and (orientation:portrait){.drive-track{--edge:32px}}
+/* つむ（iPhone）：↺↻ は台の上に、道具は1行に（2026-11-20、ゆかりさんの iPhone で ↻ だけ 2行めに 落ちた） */
+.tsumiki-turns{display:none}
+@media(max-width:700px){.tsumiki-turns{display:flex;margin:0 0 2px}.tsumiki-tools .turn{display:none}.tsumiki-play{padding:6px 4px}.tsumiki-tools{flex-wrap:nowrap;gap:5px}.tsumiki-tools button{padding:8px 9px;font-size:15px;min-width:0;white-space:nowrap}}
+/* 運転画面の見出し（iPhone のたて）：駅名が長いと「おと あり」に かくれるので小さく（2026-11-20、大竹貨物駅〜大竹） */
+@media(max-width:600px) and (orientation:portrait){.drive-route.long{font-size:12px;gap:4px}.drive-route.long rt{font-size:7px}.drive-route.long i{width:14px}}
