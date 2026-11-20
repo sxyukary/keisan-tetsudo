@@ -995,3 +995,62 @@ body.game::after{content:"";flex:0 0 14px;border-top:3px solid #fff;background:#
 @media(max-width:700px){.tsumiki-turns{display:flex;margin:0 0 2px}.tsumiki-tools .turn{display:none}.tsumiki-play{padding:6px 4px}.tsumiki-tools{flex-wrap:nowrap;gap:5px}.tsumiki-tools button{padding:8px 9px;font-size:15px;min-width:0;white-space:nowrap}}
 /* 運転画面の見出し（iPhone のたて）：駅名が長いと「おと あり」に かくれるので小さく（2026-11-20、大竹貨物駅〜大竹） */
 @media(max-width:600px) and (orientation:portrait){.drive-route.long{font-size:12px;gap:4px}.drive-route.long rt{font-size:7px}.drive-route.long i{width:14px}}
+/* iPhone SE の縦 (2026-11-21): the home is the trip only. The route map left the home (it was squeezed to a few pixels) and opens full screen with ちずを ひらく where the map was; small helper words that the child does not read are gone. */
+.game #map-open{display:none}
+@media(max-width:600px) and (orientation:portrait){
+ .game:not(.quiz) .world:not(.map-expanded){position:relative;flex:1 1 0;min-height:50px;display:block;padding:0;overflow:visible}
+ .game .world:not(.map-expanded)>:not(#map-open):not(.map-wrap){display:none}
+ .game .world:not(.map-expanded) .map-wrap{position:absolute;inset:0 0 4px;height:auto;pointer-events:none}
+ .game .world:not(.map-expanded) .map-caption{display:none}
+ .game .world.map-expanded #map-open{display:none}
+ .game #map-open{position:absolute;inset:0 0 4px;z-index:2;display:flex;align-items:flex-end;justify-content:center;width:auto;min-height:0;margin:0;padding:6px;border-radius:20px;background:transparent;color:var(--ink)}
+ .game #map-open b{display:flex;align-items:center;gap:8px;min-height:36px;padding:2px 18px;border-radius:999px;background:#fffdf7f2;font-size:17px;letter-spacing:.06em;box-shadow:0 2px 0 var(--rim),0 4px 12px #16323c1f}
+ .game #map-open b span{font-size:20px}
+ .game #map-open:active b{transform:translateY(2px);box-shadow:0 0 0 var(--rim)}
+ .game .map-expanded .map-caption{display:none}
+ .game .map-expanded #map-full{background:var(--go);color:#fff}
+ .game .quiz-start small{display:none}
+ #reward-close{position:sticky;bottom:-25px;z-index:1;box-shadow:0 -12px 16px 4px #fffef8}
+ .stamp-page{width:min(260px,34dvh)}
+ /* B: えきの あんないばん (2026-11-21, ゆかりさん): the station sign, then the destinations on a dark board like a departure board. Only the board scrolls when there are many; NEW first, then のぞみ・よりみち, the opened ones. The chosen one stays in its place (20261121_5, ゆかりさん: moving it to the top was confusing). */
+ .game:not(.quiz) .travel-panel{padding:8px;gap:8px}
+ .game:not(.quiz) .travel-summary{display:flex;flex-direction:column;gap:0;overflow:hidden}
+ .game:not(.quiz) .station-sign{flex:none;min-height:0;margin:0 0 8px;padding:6px 10px 14px;border-radius:8px}
+ .game:not(.quiz) .station-sign small{font-size:11px;letter-spacing:.3em}
+ .game:not(.quiz) .station-sign h2{font-size:28px;letter-spacing:.3em;margin:0 0 0 .3em}
+ .game:not(.quiz) .station-sign .sign-line{height:9px;font-size:0}
+ .game:not(.quiz) .journey-progress{flex:none;flex-direction:row;align-items:center;justify-content:space-between;gap:8px;margin:0;padding:9px 14px 7px;border-radius:12px 12px 0 0;background:#151c20;color:#ffcf5c;font-size:14px;box-shadow:inset 3px 3px 0 #2b363b,inset -3px 0 0 #2b363b}
+ .game:not(.quiz) #dots{height:auto;flex:none;gap:4px;padding:0;align-items:center}
+ .game:not(.quiz) #dots::after{display:none}
+ .game:not(.quiz) #dots .dots-train{display:none}
+ .game:not(.quiz) .station-sign{order:0}
+ .game:not(.quiz) .journey-progress{order:1}
+ .game:not(.quiz) .directions{order:2}
+ .game:not(.quiz) #use-credit{order:3}
+ .game:not(.quiz) #dots i{flex:none;width:10px;height:10px;border-radius:50%;background:#33434a}
+ .game:not(.quiz) #dots i.on{background:var(--amber);box-shadow:0 0 6px var(--amber)}
+ .game:not(.quiz) .directions{flex:0 1 auto;min-height:96px;display:flex;flex-direction:column;flex-wrap:nowrap;justify-content:flex-start;align-items:stretch;gap:0;margin:0;padding:0 8px 8px;overflow-y:auto;overscroll-behavior:contain;border-radius:0 0 12px 12px;background:#151c20;box-shadow:inset 3px -3px 0 #2b363b,inset -3px 0 0 #2b363b}
+ .game:not(.quiz) .directions.more{-webkit-mask-image:linear-gradient(#000 calc(100% - 30px),#0004);mask-image:linear-gradient(#000 calc(100% - 30px),#0004)}
+ .game:not(.quiz) .directions .direction-small{display:contents}
+ .game:not(.quiz) .directions .direction-small p{order:2;margin:0;padding:10px 6px;color:#9fb3b8;font-size:14px}
+ .game:not(.quiz) .directions>.direction-choice.new:not(.nozomi):not(.freight)~.direction-small p{display:none}
+ .game:not(.quiz) .directions button.direction-choice,.game:not(.quiz) .directions button.direction-mini{order:1;position:relative;flex:none;display:flex;align-items:center;gap:10px;width:100%;min-height:48px;margin:0;padding:4px 8px;border:0;border-top:1px solid #263136;border-radius:0;background:transparent;box-shadow:none;color:#ffcf5c;text-align:left;transform:none}
+ .game:not(.quiz) .directions button.direction-choice{order:0}
+ .game:not(.quiz) .directions.directions button.active{box-shadow:none;border-top-color:transparent;border-radius:8px;background:var(--amber);color:var(--ink)}
+ .game:not(.quiz) .directions button.active+button{border-top-color:transparent}
+ .game:not(.quiz) .directions button:first-child{border-top-color:transparent}
+ .game:not(.quiz) .directions button:active{background:#22313a}
+ .game:not(.quiz) .directions button.active:active{background:#f0a12c}
+ .game:not(.quiz) .directions .direction-arrow{flex:none;width:30px;height:30px;border-radius:7px;font-size:20px;background:var(--route-color);color:#fff}
+ .game:not(.quiz) .directions .direction-name{flex:1;min-width:0;display:block;font-size:20px;font-weight:800;letter-spacing:.06em;line-height:1.2;word-break:keep-all;overflow-wrap:anywhere;color:inherit}
+ .game:not(.quiz) .directions .direction-kanji{display:inline;margin-left:7px;font-size:12px;font-weight:700;letter-spacing:0;opacity:.75}
+ .game:not(.quiz) .directions .direction-name small,.game:not(.quiz) .directions .direction-name em,.game:not(.quiz) .directions .direction-detail{display:none}
+ .game:not(.quiz) .directions button.direction-mini{color:#9fb3b8}
+ .game:not(.quiz) .directions.directions button.direction-mini.active{color:var(--ink)}
+ .game:not(.quiz) .directions .direction-ribbon{position:static;order:3;flex:none;padding:3px 9px;border-radius:999px;font-size:12px;box-shadow:none;white-space:nowrap}
+ .game:not(.quiz) .directions .direction-choice.new:not(.nozomi):not(.freight) .direction-ribbon{display:none}
+ .game:not(.quiz) .directions .direction-choice.new:not(.nozomi):not(.freight)::after{content:"NEW";order:3;flex:none;padding:3px 10px;border-radius:999px;background:#ff8a1f;color:#2a1400;font-size:13px;font-weight:900;letter-spacing:.08em;box-shadow:0 0 10px #ff8a1f80}
+ .game:not(.quiz) .directions .direction-choice.new.active:not(.nozomi):not(.freight)::after{background:var(--ink);color:var(--amber);box-shadow:none}
+ .game:not(.quiz) .directions .direction-mini.hint::after{content:"★";order:3;position:static;flex:none;display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--amber);color:#3a2600;font-size:12px;box-shadow:none}
+ .game:not(.quiz) #use-credit{flex:none;margin:8px 0 0}
+}
