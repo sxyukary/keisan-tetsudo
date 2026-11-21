@@ -494,6 +494,8 @@ function saveRest(){if(!store.who)return;try{localStorage.setItem(C.restKey(stor
 function renderRestNote(){$('rest-note').hidden=!(store.who&&C.restSoon(rest,REST_UNIT));}
 function restTap(){if(!store.who)return;C.restTick(rest,Date.now(),REST_UNIT);saveRest();renderRestNote();if($('rest').open)renderRest();}
 document.addEventListener('pointerdown',restTap,true);document.addEventListener('keydown',restTap,true);
+// No zooming the whole page with two fingers or a double tap (2026-11-21 ゆかりさん): Safari ignores user-scalable, so its gesture events and two-finger moves are stopped here. The map's own pinch is pointer events and still works.
+document.addEventListener('gesturestart',e=>e.preventDefault());document.addEventListener('gesturechange',e=>e.preventDefault());document.addEventListener('touchmove',e=>{if(e.touches.length>1)e.preventDefault();},{passive:false});
 function renderRest(){const left=C.restLeft(rest,Date.now());$('rest-bar').style.width=`${left?Math.round((1-left/(rest.rest*REST_UNIT))*100):100}%`;$('rest-left').textContent=left?`あと ${Math.ceil(left/REST_UNIT)}ふん`:'やすめたね！ また しゅっぱつ できるよ';$('rest-go').hidden=!!left;}
 function restAsk(){const a=12+Math.floor(Math.random()*8),b=3+Math.floor(Math.random()*7);restAnswer=a*b;$('rest-question').textContent=`${a} × ${b} =`;$('rest-answer').value='';}
 // Only at the start of a section (the five answers of the last one are in), so a problem or drive is never cut off.
